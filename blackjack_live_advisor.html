@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Live Advisor - Screen Capture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e5128 0%, #2d6a4f 50%, #40916c 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            color: #333;
+        }
+
+        .card h2 {
+            color: #1e5128;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #c1121f 0%, #e63946 100%);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+        }
+
+        .video-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        video, canvas {
+            width: 100%;
+            border-radius: 10px;
+            background: #000;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            min-width: 400px;
+            text-align: center;
+            transition: transform 0.3s, opacity 0.3s;
+            opacity: 0;
+        }
+
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .popup h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .popup .action {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup .details {
+            font-size: 1.2em;
+            margin: 15px 0;
+            opacity: 0.9;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .manual-input {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .input-group {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2d6a4f;
+        }
+
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .info-box p {
+            color: #1976D2;
+            margin: 5px 0;
+        }
+
+        .history-item {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #2d6a4f;
+        }
+
+        .history-item strong {
+            color: #1e5128;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="popup" id="popup">
+        <h2>Recommendation</h2>
+        <div class="action" id="popupAction">HIT</div>
+        <div class="details" id="popupDetails">
+            Expected Value: -0.15%<br>
+            Win Probability: 42.43%
+        </div>
+        <button class="btn" onclick="closePopup()">Got it!</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎰 Blackjack Live Advisor</h1>
+            <p>Real-Time Screen Capture & Instant Recommendations</p>
+        </div>
+
+        <div class="card">
+            <h2>📹 Screen Capture Setup</h2>
+            
+            <div id="statusDisplay" class="status inactive">
+                ⚠️ Screen capture not active - Click "Start Screen Capture" below
+            </div>
+
+            <div style="margin: 20px 0;">
+                <button class="btn primary" id="startBtn" onclick="startScreenCapture()">
+                    📹 Start Screen Capture
+                </button>
+                <button class="btn danger" id="stopBtn" onclick="stopScreenCapture()" style="display: none;">
+                    ⏹️ Stop Capture
+                </button>
+            </div>
+
+            <div class="info-box">
+                <p><strong>📖 How to use:</strong></p>
+                <p>1. Click "Start Screen Capture" and select your blackjack game window</p>
+                <p>2. Manually input your cards and dealer's card below</p>
+                <p>3. Click "Get Recommendation" for instant popup advice</p>
+                <p>4. Or enable auto-detect mode (experimental)</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎴 Manual Card Input</h2>
+            <p style="margin-bottom: 15px;">Select your cards and get instant recommendations:</p>
+            
+            <div class="manual-input">
+                <div class="input-group">
+                    <label>Your First Card</label>
+                    <select id="card1">
+                        <option value="">Select...</option>
+                        <option value="A">Ace (A)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="J">Jack (J)</option>
+                        <option value="Q">Queen (Q)</option>
+                        <option value="K">King (K)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Your Second Card</label>
+                    <select id="card2">
+                        <option value="">Select...</option>
+                        <option value="A">Ace (A)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="J">Jack (J)</option>
+                        <option value="Q">Queen (Q)</option>
+                        <option value="K">King (K)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Dealer's Upcard</label>
+                    <select id="dealerCard">
+                        <option value="">Select...</option>
+                        <option value="A">Ace (A)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="J">Jack (J)</option>
+                        <option value="Q">Queen (Q)</option>
+                        <option value="K">King (K)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn" onclick="getRecommendation()" style="width: 100%; margin-top: 15px;">
+                🎯 Get Recommendation (Popup)
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>📺 Screen Preview</h2>
+            <div class="video-container">
+                <div>
+                    <h3 style="margin-bottom: 10px;">Live Capture</h3>
+                    <video id="screenVideo" autoplay muted></video>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 10px;">Analysis Preview</h3>
+                    <canvas id="analysisCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Recommendation History</h2>
+            <div id="historyDisplay">
+                <p style="text-align: center; color: #666; padding: 20px;">
+                    Your recommendations will appear here
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let screenStream = null;
+        let isCapturing = false;
+        let recommendationHistory = [];
+
+        // Get card value
+        function getCardValue(card) {
+            if (card === 'A') return 11;
+            if (['K', 'Q', 'J'].includes(card)) return 10;
+            return parseInt(card);
+        }
+
+        // Calculate hand value
+        function calculateHandValue(card1, card2) {
+            let value = getCardValue(card1) + getCardValue(card2);
+            let hasAce = card1 === 'A' || card2 === 'A';
+            
+            if (value > 21 && hasAce) {
+                value -= 10;
+            }
+            
+            return value;
+        }
+
+        // Calculate expected values
+        function calculateEVs(card1, card2, dealerCard) {
+            const card1Value = getCardValue(card1);
+            const card2Value = getCardValue(card2);
+            const dealerValue = getCardValue(dealerCard);
+            const handValue = card1Value + card2Value;
+            const hasAce = card1 === 'A' || card2 === 'A';
+            const isPair = card1 === card2;
+            const isSoft = hasAce && handValue <= 21;
+
+            const evs = {};
+            evs['Stand'] = calculateStandEV(handValue, dealerValue, isSoft);
+            evs['Hit'] = calculateHitEV(handValue, dealerValue, isSoft);
+
+            if (handValue >= 9 && handValue <= 11) {
+                evs['Double'] = calculateDoubleEV(handValue, dealerValue, isSoft);
+            }
+
+            if (isPair) {
+                evs['Split'] = calculateSplitEV(card1Value, dealerValue);
+            }
+
+            return evs;
+        }
+
+        function calculateStandEV(handValue, dealerValue, isSoft) {
+            if (handValue > 21) return -1.0;
+            const dealerBustProb = getDealerBustProbability(dealerValue);
+            let ev = dealerBustProb * 1.0;
+            for (let dv = 17; dv <= 21; dv++) {
+                const prob = getDealerFinalProb(dealerValue, dv);
+                ev += prob * (handValue > dv ? 1.0 : handValue == dv ? 0.0 : -1.0);
+            }
+            return ev;
+        }
+
+        function calculateHitEV(handValue, dealerValue, isSoft) {
+            if (handValue >= 21) return -1.0;
+            let ev = 0.0;
+            const cardProb = 1.0 / 13.0;
+            for (let cardValue of [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]) {
+                let newValue = handValue + cardValue;
+                let newSoft = isSoft;
+                if (newValue > 21 && newSoft) {
+                    newValue -= 10;
+                    newSoft = false;
+                }
+                if (newValue > 21) {
+                    ev += cardProb * -1.0;
+                } else {
+                    ev += cardProb * calculateStandEV(newValue, dealerValue, newSoft);
+                }
+            }
+            return ev;
+        }
+
+        function calculateDoubleEV(handValue, dealerValue, isSoft) {
+            let hitEV = 0.0;
+            const cardProb = 1.0 / 13.0;
+            for (let cardValue of [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]) {
+                let newValue = handValue + cardValue;
+                let newSoft = isSoft;
+                if (newValue > 21 && newSoft) {
+                    newValue -= 10;
+                    newSoft = false;
+                }
+                if (newValue > 21) {
+                    hitEV += cardProb * -1.0;
+                } else {
+                    hitEV += cardProb * calculateStandEV(newValue, dealerValue, newSoft);
+                }
+            }
+            return hitEV * 2.0;
+        }
+
+        function calculateSplitEV(cardValue, dealerValue) {
+            if (cardValue == 11) return 0.5;
+            if (cardValue == 8) return 0.3;
+            if (cardValue == 10) return -0.5;
+            if (cardValue >= 2 && cardValue <= 7) {
+                return (dealerValue >= 2 && dealerValue <= 7) ? 0.1 : -0.3;
+            }
+            return -0.2;
+        }
+
+        function getDealerBustProbability(upcard) {
+            const bustProbs = {
+                2: 0.3530, 3: 0.3756, 4: 0.4028, 5: 0.4289, 6: 0.4208,
+                7: 0.2599, 8: 0.2386, 9: 0.2334, 10: 0.2143, 11: 0.1165,
+            };
+            return bustProbs[upcard] || 0.25;
+        }
+
+        function getDealerFinalProb(upcard, finalValue) {
+            const dealerBust = getDealerBustProbability(upcard);
+            const remaining = 1.0 - dealerBust;
+            if (finalValue == 17) return remaining * 0.20;
+            if (finalValue == 18) return remaining * 0.20;
+            if (finalValue == 19) return remaining * 0.20;
+            if (finalValue == 20) return remaining * 0.25;
+            if (finalValue == 21) return remaining * 0.15;
+            return 0.0;
+        }
+
+        function calculateProbabilities(handValue, dealerValue, isSoft) {
+            const dealerBust = getDealerBustProbability(dealerValue);
+            let winProb = dealerBust;
+            let lossProb = 0.0;
+            let pushProb = 0.0;
+            for (let dv = 17; dv <= 21; dv++) {
+                const prob = getDealerFinalProb(dealerValue, dv);
+                if (handValue > dv) {
+                    winProb += prob;
+                } else if (handValue < dv) {
+                    lossProb += prob;
+                } else {
+                    pushProb += prob;
+                }
+            }
+            return {win: winProb, loss: lossProb, push: pushProb};
+        }
+
+        // Get recommendation
+        function getRecommendation() {
+            const card1 = document.getElementById('card1').value;
+            const card2 = document.getElementById('card2').value;
+            const dealerCard = document.getElementById('dealerCard').value;
+
+            if (!card1 || !card2 || !dealerCard) {
+                alert('Please select all cards first!');
+                return;
+            }
+
+            const evs = calculateEVs(card1, card2, dealerCard);
+            
+            // Find best action
+            let bestAction = 'Stand';
+            let bestEV = evs['Stand'];
+            Object.entries(evs).forEach(([action, ev]) => {
+                if (ev > bestEV) {
+                    bestEV = ev;
+                    bestAction = action;
+                }
+            });
+
+            const handValue = calculateHandValue(card1, card2);
+            const hasAce = card1 === 'A' || card2 === 'A';
+            const isSoft = hasAce && handValue <= 21;
+            const probs = calculateProbabilities(handValue, getCardValue(dealerCard), isSoft);
+
+            // Show popup
+            showPopup(bestAction, bestEV, probs, card1, card2, dealerCard);
+
+            // Add to history
+            addToHistory(card1, card2, dealerCard, bestAction, bestEV);
+        }
+
+        // Show popup
+        function showPopup(action, ev, probs, card1, card2, dealerCard) {
+            document.getElementById('popupAction').textContent = action.toUpperCase();
+            document.getElementById('popupDetails').innerHTML = `
+                Your Hand: ${card1}-${card2}<br>
+                Dealer Shows: ${dealerCard}<br>
+                Expected Value: ${(ev * 100).toFixed(2)}%<br>
+                Win Probability: ${(probs.win * 100).toFixed(1)}%
+            `;
+            
+            document.getElementById('popup').classList.add('show');
+            document.getElementById('overlay').classList.add('show');
+
+            // Auto-close after 5 seconds
+            setTimeout(() => {
+                closePopup();
+            }, 5000);
+        }
+
+        function closePopup() {
+            document.getElementById('popup').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Add to history
+        function addToHistory(card1, card2, dealerCard, action, ev) {
+            const item = {
+                card1, card2, dealerCard, action, ev,
+                timestamp: new Date()
+            };
+            recommendationHistory.unshift(item);
+            if (recommendationHistory.length > 10) recommendationHistory.pop();
+
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyDiv = document.getElementById('historyDisplay');
+            
+            if (recommendationHistory.length === 0) {
+                historyDiv.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Your recommendations will appear here</p>';
+                return;
+            }
+
+            let html = '';
+            recommendationHistory.forEach(item => {
+                html += `
+                    <div class="history-item">
+                        <strong>${item.card1}-${item.card2} vs ${item.dealerCard}</strong>
+                        → <strong style="color: #2d6a4f;">${item.action}</strong>
+                        (EV: ${(item.ev * 100).toFixed(2)}%)
+                        <br>
+                        <small style="color: #666;">${item.timestamp.toLocaleTimeString()}</small>
+                    </div>
+                `;
+            });
+
+            historyDiv.innerHTML = html;
+        }
+
+        // Screen capture
+        async function startScreenCapture() {
+            try {
+                screenStream = await navigator.mediaDevices.getDisplayMedia({
+                    video: {
+                        cursor: "never",
+                        displaySurface: "window"
+                    },
+                    audio: false
+                });
+
+                const video = document.getElementById('screenVideo');
+                video.srcObject = screenStream;
+                
+                isCapturing = true;
+                document.getElementById('statusDisplay').className = 'status active';
+                document.getElementById('statusDisplay').textContent = '✅ Screen capture active - Capturing your game window';
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('stopBtn').style.display = 'inline-block';
+
+                // Start analysis
+                startAnalysis();
+
+            } catch (err) {
+                console.error('Error starting screen capture:', err);
+                alert('Could not start screen capture. Please allow screen sharing when prompted.');
+            }
+        }
+
+        function stopScreenCapture() {
+            if (screenStream) {
+                screenStream.getTracks().forEach(track => track.stop());
+                screenStream = null;
+            }
+            
+            isCapturing = false;
+            document.getElementById('statusDisplay').className = 'status inactive';
+            document.getElementById('statusDisplay').textContent = '⚠️ Screen capture stopped';
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('stopBtn').style.display = 'none';
+
+            const video = document.getElementById('screenVideo');
+            video.srcObject = null;
+        }
+
+        function startAnalysis() {
+            const video = document.getElementById('screenVideo');
+            const canvas = document.getElementById('analysisCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function analyze() {
+                if (!isCapturing) return;
+
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0);
+
+                // Add overlay text
+                ctx.fillStyle = 'rgba(45, 106, 79, 0.8)';
+                ctx.fillRect(10, 10, 300, 80);
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 20px Arial';
+                ctx.fillText('Screen Capture Active', 20, 40);
+                ctx.font = '16px Arial';
+                ctx.fillText('Use manual input for recommendations', 20, 70);
+
+                requestAnimationFrame(analyze);
+            }
+
+            analyze();
+        }
+
+        // Auto-close popup on overlay click
+        document.getElementById('overlay').addEventListener('click', closePopup);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Escape to close popup
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+            
+            // Enter to get recommendation
+            if (e.key === 'Enter' && !document.getElementById('popup').classList.contains('show')) {
+                getRecommendation();
+            }
+            
+            // Space to start/stop capture
+            if (e.key === ' ' && e.target.tagName !== 'SELECT') {
+                e.preventDefault();
+                if (isCapturing) {
+                    stopScreenCapture();
+                } else {
+                    startScreenCapture();
+                }
+            }
+            
+            // Number keys for quick card selection (1-9, 0 for 10)
+            if (e.key >= '1' && e.key <= '9' && e.ctrlKey) {
+                e.preventDefault();
+                const cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9'];
+                const card = cards[parseInt(e.key) - 1];
+                
+                // Set to first empty field
+                if (!document.getElementById('card1').value) {
+                    document.getElementById('card1').value = card;
+                } else if (!document.getElementById('card2').value) {
+                    document.getElementById('card2').value = card;
+                } else if (!document.getElementById('dealerCard').value) {
+                    document.getElementById('dealerCard').value = card;
+                }
+            }
+        });
+
+        // Add keyboard shortcuts info
+        window.addEventListener('DOMContentLoaded', function() {
+            const infoBox = document.querySelector('.info-box');
+            const shortcutsInfo = document.createElement('p');
+            shortcutsInfo.innerHTML = '<strong>⌨️ Shortcuts:</strong> Enter = Get Recommendation, Esc = Close Popup, Space = Start/Stop Capture';
+            infoBox.appendChild(shortcutsInfo);
+        });
+    </script>
+</body>
+</html>

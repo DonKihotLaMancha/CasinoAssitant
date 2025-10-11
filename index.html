@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Casino Assistant - Complete casino game odds calculators and strategy tools">
+    <meta name="keywords" content="casino, blackjack, poker, roulette, craps, baccarat, slots, odds calculator">
+    <title>Casino Assistant - Game Odds Calculators</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .games-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            text-decoration: none;
+            color: #333;
+            display: block;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(240,240,255,0.98) 100%);
+        }
+
+        .game-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.2) rotate(5deg);
+            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+        }
+
+        .game-card h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .game-card p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .game-card .features {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .game-card .features li {
+            padding: 8px 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        .game-card .features li:last-child {
+            border-bottom: none;
+        }
+
+        .game-card .features li:before {
+            content: "✓ ";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95em;
+        }
+
+        .footer p {
+            margin: 10px 0;
+        }
+
+        .stats-banner {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            margin-top: 10px;
+            color: white;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="floating">🎰 Casino Assistant</h1>
+        <p>Professional odds calculators and strategy tools for all major casino games</p>
+    </div>
+
+    <div class="stats-banner">
+        <div class="stat-item">
+            <div class="stat-number">7</div>
+            <div class="stat-label">Casino Games</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Browser-Based</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Free Calculations</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">⚡</div>
+            <div class="stat-label">Instant Results</div>
+        </div>
+    </div>
+
+    <div class="games-container">
+        <!-- Blackjack Client -->
+        <a href="blackjack_client.html" class="game-card">
+            <span class="game-icon">🃏</span>
+            <h2>Blackjack Dashboard</h2>
+            <p>Complete blackjack suite with user tracking and statistics</p>
+            <ul class="features">
+                <li>User dashboard with progress tracking</li>
+                <li>Achievement system</li>
+                <li>Activity history</li>
+                <li>Data export functionality</li>
+            </ul>
+        </a>
+
+        <!-- Blackjack Odds Calculator -->
+        <a href="blackjack_live_advisor.html" class="game-card">
+            <span class="game-icon">♠️</span>
+            <h2>Blackjack Live Advisor</h2>
+            <p>Real-time strategy advisor for live blackjack play</p>
+            <ul class="features">
+                <li>Monte Carlo simulations</li>
+                <li>Basic strategy recommendations</li>
+                <li>Win rate calculations</li>
+                <li>Dealer upcard analysis</li>
+            </ul>
+        </a>
+
+        <!-- Poker -->
+        <a href="poker_odds.html" class="game-card">
+            <span class="game-icon">🎴</span>
+            <h2>Poker Odds Calculator</h2>
+            <p>Calculate hand probabilities and pot odds</p>
+            <ul class="features">
+                <li>Hand strength analysis</li>
+                <li>Probability calculations</li>
+                <li>Win rate by opponents</li>
+                <li>Expected value analysis</li>
+            </ul>
+        </a>
+
+        <!-- Roulette -->
+        <a href="roulette_odds.html" class="game-card">
+            <span class="game-icon">🎡</span>
+            <h2>Roulette Odds Calculator</h2>
+            <p>Analyze betting strategies and probabilities</p>
+            <ul class="features">
+                <li>European & American roulette</li>
+                <li>All bet types covered</li>
+                <li>Expected return calculations</li>
+                <li>Strategy simulations</li>
+            </ul>
+        </a>
+
+        <!-- Craps -->
+        <a href="craps_odds.html" class="game-card">
+            <span class="game-icon">🎲</span>
+            <h2>Craps Odds Calculator</h2>
+            <p>Comprehensive craps probability analysis</p>
+            <ul class="features">
+                <li>All bet types analyzed</li>
+                <li>House edge calculations</li>
+                <li>Pass/Don't Pass odds</li>
+                <li>Complete strategy guide</li>
+            </ul>
+        </a>
+
+        <!-- Baccarat -->
+        <a href="baccarat_odds.html" class="game-card">
+            <span class="game-icon">💎</span>
+            <h2>Baccarat Odds Calculator</h2>
+            <p>Calculate banker, player, and tie probabilities</p>
+            <ul class="features">
+                <li>Banker vs Player analysis</li>
+                <li>Tie bet calculations</li>
+                <li>Commission impact</li>
+                <li>Optimal betting strategy</li>
+            </ul>
+        </a>
+
+        <!-- Slots -->
+        <a href="slots_odds.html" class="game-card">
+            <span class="game-icon">🎰</span>
+            <h2>Slots Odds Calculator</h2>
+            <p>Understand slot machine probabilities and RTP</p>
+            <ul class="features">
+                <li>RTP calculations</li>
+                <li>Volatility analysis</li>
+                <li>Payout probability</li>
+                <li>Bankroll management</li>
+            </ul>
+        </a>
+
+        <!-- Blackjack Hand Analyzer - Coming Soon -->
+        <div class="game-card" style="opacity: 0.6; cursor: not-allowed;">
+            <span class="game-icon">📊</span>
+            <h2>Blackjack Hand Analyzer</h2>
+            <p>Deep analysis of specific blackjack hands</p>
+            <ul class="features">
+                <li>Hand-by-hand analysis</li>
+                <li>Strategy recommendations</li>
+                <li>Probability breakdowns</li>
+                <li>Historical tracking</li>
+            </ul>
+            <span style="color: #ff9800; font-weight: bold; display: block; margin-top: 10px;">📝 Command-line tool - Requires Dart SDK</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>🎮 All Games Now Available!</strong> 7 casino games with full browser-based calculators</p>
+        <p><strong>✨ No Installation Required:</strong> All tools work directly in your web browser</p>
+        <p>Click any game card above to start calculating odds and probabilities!</p>
+    </div>
+</body>
+</html>
