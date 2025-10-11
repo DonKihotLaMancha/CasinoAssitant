@@ -1,0 +1,43 @@
+# Dart/Flutter
+*.dart.js
+*.dart.js.map
+*.dart.js.deps
+*.info.json
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# Build outputs
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# Flutter app (too large for GitHub Pages)
+flutter_app/
+
+# Local development
+node_modules/
+.env
+.env.local
