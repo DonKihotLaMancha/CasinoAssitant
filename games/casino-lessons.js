@@ -538,6 +538,31 @@ const quizzes = {
             question: "In Hi-Lo counting, what value is a King?",
             options: ["+1", "0", "-1", "+2"],
             correct: 2
+        },
+        {
+            question: "When should you double down on 11?",
+            options: ["Against any dealer card", "Against dealer 2-10", "Never", "Only vs dealer 6"],
+            correct: 1
+        },
+        {
+            question: "What is 'insurance' in blackjack?",
+            options: ["A side bet", "Protecting your hand", "Splitting pairs", "Doubling down"],
+            correct: 0
+        },
+        {
+            question: "Should you take insurance?",
+            options: ["Always", "Never (unless counting)", "Only with 20", "Only with blackjack"],
+            correct: 1
+        },
+        {
+            question: "What does 'surrender' mean?",
+            options: ["Give up and lose half bet", "Stand on your hand", "Take another card", "Split your hand"],
+            correct: 0
+        },
+        {
+            question: "What is a 'soft 17'?",
+            options: ["Ace-6", "10-7", "9-8", "Any 17"],
+            correct: 0
         }
     ],
     poker: [
@@ -550,6 +575,31 @@ const quizzes = {
             question: "If the pot is $100 and you need to call $20, what are your pot odds?",
             options: ["2:1", "5:1", "6:1", "4:1"],
             correct: 2
+        },
+        {
+            question: "What position is best in poker?",
+            options: ["Early", "Middle", "Button (Dealer)", "Small Blind"],
+            correct: 2
+        },
+        {
+            question: "What is a 'flush'?",
+            options: ["5 cards same suit", "5 cards in sequence", "3 of a kind", "2 pairs"],
+            correct: 0
+        },
+        {
+            question: "Which hand wins: Flush or Straight?",
+            options: ["Straight", "Flush", "They tie", "Depends on cards"],
+            correct: 1
+        },
+        {
+            question: "What does 'GTO' stand for?",
+            options: ["Good Time Odds", "Game Theory Optimal", "Great Tournament Option", "Go To Odds"],
+            correct: 1
+        },
+        {
+            question: "When should you fold pre-flop?",
+            options: ["Never", "With weak hands", "Always", "Only in blinds"],
+            correct: 1
         }
     ],
     roulette: [
@@ -562,6 +612,26 @@ const quizzes = {
             question: "How many numbers are on an American roulette wheel?",
             options: ["36", "37", "38", "40"],
             correct: 2
+        },
+        {
+            question: "What color is the 0 on a roulette wheel?",
+            options: ["Red", "Black", "Green", "Blue"],
+            correct: 2
+        },
+        {
+            question: "What is a 'straight up' bet?",
+            options: ["Betting on one number", "Betting on red/black", "Betting on odd/even", "Betting on a column"],
+            correct: 0
+        },
+        {
+            question: "Which roulette wheel should you play?",
+            options: ["American", "European", "Both equal", "Doesn't matter"],
+            correct: 1
+        },
+        {
+            question: "Do betting systems work in roulette?",
+            options: ["Yes, always", "No, house edge remains", "Sometimes", "Only Martingale"],
+            correct: 1
         }
     ],
     craps: [
@@ -579,6 +649,21 @@ const quizzes = {
             question: "What should you avoid betting on?",
             options: ["Pass Line", "Come bets", "Proposition bets", "Odds bets"],
             correct: 2
+        },
+        {
+            question: "What is the 'point' in craps?",
+            options: ["The first roll", "A number to hit again", "The total bets", "The dealer's number"],
+            correct: 1
+        },
+        {
+            question: "What happens if you roll 7 on come-out?",
+            options: ["You lose", "You win (Pass Line)", "Point is set", "Push"],
+            correct: 1
+        },
+        {
+            question: "What is a 'yo'?",
+            options: ["Rolling 11", "Rolling 7", "Rolling 2", "Rolling 12"],
+            correct: 0
         }
     ],
     baccarat: [
