@@ -203,6 +203,7 @@
         .playing-card.disabled {
             opacity: 0.3;
             cursor: not-allowed;
+            pointer-events: none;
         }
 
         .playing-card.red {
@@ -390,7 +391,13 @@
                         <span class="card-rank-bottom">${rank}</span>
                         <span class="card-suit-bottom">${suit.symbol}</span>
                     `;
-                    card.onclick = () => selectCard(card, rank, suit);
+                    
+                    // Use addEventListener for better compatibility
+                    card.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        selectCard(card, rank, suit);
+                    });
+                    
                     container.appendChild(card);
                 });
             });
