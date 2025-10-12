@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Casino Assistant</title>
+    <title>Login - BetSage</title>
     <style>
         * {
             margin: 0;
@@ -12,86 +12,115 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: 0;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 450px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,107,53,0.3);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 480px;
             width: 100%;
-            animation: slideIn 0.5s ease-out;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-50px);
+                transform: translateY(-30px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         .logo {
             text-align: center;
-            font-size: 4em;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            font-size: 4.5em;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(255,107,53,0.5));
         }
 
         h1 {
-            color: #667eea;
+            color: white;
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 2em;
+            margin-bottom: 8px;
+            font-size: 2.5em;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
         .subtitle {
             text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 35px;
+            font-size: 1em;
         }
 
         .tabs {
             display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 35px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
         }
 
         .tab {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             cursor: pointer;
-            color: #666;
-            font-weight: bold;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            font-size: 1.05em;
         }
 
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
         }
 
-        .tab:hover {
-            background: #f5f5f5;
+        .tab:hover:not(.active) {
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.9);
         }
 
         .form-container {
@@ -100,7 +129,7 @@
 
         .form-container.active {
             display: block;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
@@ -109,78 +138,100 @@
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: white;
+            font-size: 0.95em;
         }
 
         .input-group input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
             font-size: 1em;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .input-group input::placeholder {
+            color: rgba(255,255,255,0.5);
         }
 
         .input-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #FF6B35;
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 0 4px rgba(255,107,53,0.1);
         }
 
         .input-group input.error {
-            border-color: #f44336;
+            border-color: #ff4444;
+            background: rgba(255,68,68,0.1);
         }
 
         .error-message {
-            color: #f44336;
+            color: #ff6b6b;
             font-size: 0.85em;
-            margin-top: 5px;
+            margin-top: 6px;
             display: none;
+            font-weight: 500;
         }
 
         .error-message.show {
             display: block;
+            animation: shake 0.3s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         .remember-me {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .remember-me input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
         }
 
         .remember-me label {
-            color: #666;
-            font-size: 0.9em;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95em;
+            cursor: pointer;
         }
 
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             font-size: 1.1em;
-            font-weight: bold;
+            font-weight: 700;
             color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.5);
         }
 
         .btn:active {
@@ -188,7 +239,31 @@
         }
 
         .btn.secondary {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #004E89, #0066B3);
+            box-shadow: 0 4px 15px rgba(0,78,137,0.3);
+        }
+        
+        .btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(0,78,137,0.5);
+        }
+        
+        .guest-login {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .guest-login a {
+            color: #F7B801;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .guest-login a:hover {
+            color: #FF6B35;
+            text-decoration: underline;
         }
 
         .divider {
