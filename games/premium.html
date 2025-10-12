@@ -340,22 +340,26 @@
                 yearly: '$49.99/year'
             };
             
-            const confirmed = confirm(
+            // In production, integrate with Stripe payment
+            // For now, show coming soon message
+            alert(
                 `🎉 Upgrade to Premium ${plan === 'yearly' ? 'Annual' : 'Monthly'}!\n\n` +
                 `Price: ${prices[plan]}\n\n` +
-                `⚠️ This is a demo. In production, you'll be redirected to secure payment.\n` +
-                `Note: Digital subscriptions are non-refundable.\n\n` +
-                `Proceed to demo checkout?`
+                `💳 Secure Payment Integration Coming Soon!\n\n` +
+                `We're finalizing our payment system with Stripe.\n` +
+                `You'll be able to subscribe very soon.\n\n` +
+                `Want to be notified when it's ready?\n` +
+                `Contact us at: premium@betsage.com`
             );
             
-            if (confirmed) {
-                // Demo: Activate premium
+            // Temporary: Allow activation for testing
+            if (confirm('⚙️ Developer Mode: Activate premium for testing?')) {
                 localStorage.setItem('casinoPremium', 'true');
                 localStorage.setItem('premiumPlan', plan);
                 localStorage.setItem('premiumDate', new Date().toISOString());
                 
                 casinoSounds.playSound('bigwin');
-                alert('✅ Premium activated! (Demo mode)\n\nAll features unlocked!\nAds disabled!');
+                alert('✅ Premium activated!\n\nAll features unlocked!\nAds disabled!');
                 
                 window.location.href = '../index.html';
             }

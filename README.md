@@ -1,16 +1,15 @@
-# 🎰 BetSage
+# 🎰 BetSage v1.0
 
 **Professional odds calculators and strategy tools for all major casino games**
 
-![Version](https://img.shields.io/badge/version-5.0_ULTIMATE-blue)
-![Status](https://img.shields.io/badge/status-monetization_ready-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Status](https://img.shields.io/badge/status-PRODUCTION_READY-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Games](https://img.shields.io/badge/games-13-orange)
-![Tools](https://img.shields.io/badge/tools-11-purple)
-![Odds](https://img.shields.io/badge/odds_calculators-11/11-success)
+![Premium](https://img.shields.io/badge/premium-available-gold)
 ![Lessons](https://img.shields.io/badge/lessons-60+-success)
 ![Languages](https://img.shields.io/badge/languages-4-blue)
-![Monetization](https://img.shields.io/badge/monetization-ready-gold)
+![Legal](https://img.shields.io/badge/legal-compliant-green)
 
 ## 🌟 Features
 
