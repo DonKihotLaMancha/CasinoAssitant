@@ -105,14 +105,34 @@
         </div>
 
         <div class="card">
-            <h2 style="color: #1e3c72;">Hand Rankings</h2>
+            <h2 style="color: #1e3c72;">Your Hand Odds</h2>
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 15px; margin: 20px 0; color: white;">
+                <h3 style="margin-bottom: 15px;">📊 Winning Probability</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5em; font-weight: bold;" id="handProbability">0%</div>
+                        <div>Hand Strength</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5em; font-weight: bold;" id="winChance">50%</div>
+                        <div>Win Chance</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                    <div id="handOddsInfo">Deal cards to see odds</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #1e3c72;">Hand Rankings & Probabilities</h2>
             <div style="line-height: 2;">
-                <div><strong>1. Straight Flush</strong> - Three cards in sequence, same suit</div>
-                <div><strong>2. Three of a Kind</strong> - Three cards of same rank</div>
-                <div><strong>3. Straight</strong> - Three cards in sequence</div>
-                <div><strong>4. Flush</strong> - Three cards of same suit</div>
-                <div><strong>5. Pair</strong> - Two cards of same rank</div>
-                <div><strong>6. High Card</strong> - Highest card wins</div>
+                <div><strong>1. Straight Flush</strong> - 0.22% chance (40:1 payout)</div>
+                <div><strong>2. Three of a Kind</strong> - 0.24% chance (30:1 payout)</div>
+                <div><strong>3. Straight</strong> - 3.26% chance (6:1 payout)</div>
+                <div><strong>4. Flush</strong> - 4.96% chance (4:1 payout)</div>
+                <div><strong>5. Pair</strong> - 16.94% chance (1:1 payout)</div>
+                <div><strong>6. High Card</strong> - 74.39% chance (1:1 payout)</div>
             </div>
         </div>
 
@@ -207,6 +227,40 @@
             
             document.getElementById('playBtn').disabled = false;
             document.getElementById('foldBtn').disabled = false;
+            
+            calculateHandOdds(playerEval);
+        }
+
+        function calculateHandOdds(handEval) {
+            const oddsTable = {
+                8: { name: 'Straight Flush', prob: 0.22, strength: 100 },
+                7: { name: 'Three of a Kind', prob: 0.24, strength: 95 },
+                6: { name: 'Straight', prob: 3.26, strength: 85 },
+                5: { name: 'Flush', prob: 4.96, strength: 75 },
+                4: { name: 'Pair', prob: 16.94, strength: 60 },
+            };
+
+            const handInfo = oddsTable[handEval.rank] || { name: 'High Card', prob: 74.39, strength: 40 };
+            
+            document.getElementById('handProbability').textContent = handInfo.prob.toFixed(2) + '%';
+            document.getElementById('winChance').textContent = handInfo.strength + '%';
+            
+            let advice = '';
+            if (handInfo.strength >= 85) {
+                advice = '🔥 Excellent hand! Strong chance to win. PLAY!';
+            } else if (handInfo.strength >= 60) {
+                advice = '👍 Good hand. Recommended to PLAY.';
+            } else if (handInfo.strength >= 50) {
+                advice = '⚖️ Marginal hand. Consider playing.';
+            } else {
+                advice = '⚠️ Weak hand. Consider FOLDING unless dealer shows weakness.';
+            }
+            
+            document.getElementById('handOddsInfo').innerHTML = `
+                <strong>${handEval.name}</strong><br>
+                Probability of getting this hand: ${handInfo.prob.toFixed(2)}%<br>
+                ${advice}
+            `;
         }
 
         function play() {
