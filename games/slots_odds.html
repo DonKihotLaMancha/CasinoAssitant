@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slots Odds Calculator - Casino Assistant</title>
-    <script src="../docs/sounds.js"></script>
+    <title>Slots Odds Calculator</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -174,101 +173,11 @@
             font-weight: bold;
             color: #4CAF50;
         }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 5px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .card {
-                padding: 15px;
-                margin: 10px 5px;
-            }
-
-            .slot-machine {
-                padding: 15px;
-            }
-
-            .slot-display h3 {
-                font-size: 1.2em;
-            }
-
-            .slot-reels {
-                gap: 5px;
-                padding: 15px 5px;
-            }
-
-            .slot-reel {
-                width: 60px;
-                height: 80px;
-                font-size: 2.5em;
-            }
-
-            .spin-button {
-                width: 100px;
-                height: 100px;
-                font-size: 1.2em;
-            }
-
-            button {
-                padding: 12px 20px;
-                font-size: 0.95em;
-            }
-
-            .payout-line {
-                padding: 10px;
-                flex-direction: column;
-                gap: 5px;
-            }
-
-            .symbol-combo {
-                font-size: 1.2em;
-            }
-
-            .payout-amount {
-                font-size: 1.1em;
-            }
-
-            .input-group {
-                margin-bottom: 15px;
-            }
-
-            .input-group input,
-            .input-group select {
-                font-size: 1em;
-                padding: 12px;
-            }
-
-            table {
-                font-size: 0.85em;
-                display: block;
-                overflow-x: auto;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .spin-button:active {
-                transform: scale(0.95);
-            }
-
-            button:active {
-                transform: scale(0.98);
-            }
-
-            button, .btn {
-                min-height: 48px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
         
         <div class="header">
             <h1>🎰 Slots Odds Calculator</h1>
@@ -278,94 +187,36 @@
         <div class="card">
             <div class="slot-machine">
                 <div class="slot-display">
-                    <h3>🎰 ONLINE SLOT MACHINE 🎰</h3>
-                    <div style="display: flex; justify-content: space-around; margin-top: 15px; color: white;">
-                        <div>
-                            <div style="font-size: 0.9em; opacity: 0.8;">Balance</div>
-                            <div style="font-size: 1.5em; font-weight: bold;">$<span id="balance">1000</span></div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.9em; opacity: 0.8;">Bet</div>
-                            <div style="font-size: 1.5em; font-weight: bold;">$<span id="currentBet">10</span></div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.9em; opacity: 0.8;">Win</div>
-                            <div style="font-size: 1.5em; font-weight: bold; color: #ffd700;">$<span id="lastWin">0</span></div>
-                        </div>
-                    </div>
+                    <h3>🎰 SLOT MACHINE 🎰</h3>
                 </div>
-                
-                <div class="slot-reels" id="slotReels">
-                    <div class="slot-reel" id="reel1">
-                        <div class="reel-strip">🍒</div>
-                    </div>
-                    <div class="slot-reel" id="reel2">
-                        <div class="reel-strip">💎</div>
-                    </div>
-                    <div class="slot-reel" id="reel3">
-                        <div class="reel-strip">🍋</div>
-                    </div>
-                    <div class="slot-reel" id="reel4">
-                        <div class="reel-strip">⭐</div>
-                    </div>
-                    <div class="slot-reel" id="reel5">
-                        <div class="reel-strip">🍇</div>
-                    </div>
+                <div class="slot-reels">
+                    <div class="slot-reel">🍒</div>
+                    <div class="slot-reel">💎</div>
+                    <div class="slot-reel">🍋</div>
                 </div>
-
-                <div id="winMessage" style="text-align: center; min-height: 40px; font-size: 1.5em; font-weight: bold; color: #ffd700; margin: 15px 0;"></div>
-
-                <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
-                    <button class="spin-button" onclick="changeBet(-5)" style="width: 80px; height: 80px; font-size: 1.2em;">-$5</button>
-                    <button class="spin-button" onclick="spin()" id="spinBtn" style="width: 150px; height: 150px; font-size: 1.8em;">SPIN<br>$<span id="spinBet">10</span></button>
-                    <button class="spin-button" onclick="changeBet(5)" style="width: 80px; height: 80px; font-size: 1.2em;">+$5</button>
-                </div>
-
-                <div style="display: flex; justify-content: center; gap: 10px; margin: 15px 0;">
-                    <button onclick="maxBet()" style="padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">MAX BET ($100)</button>
-                    <button onclick="autoSpin()" id="autoSpinBtn" style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">AUTO SPIN</button>
-                    <button onclick="resetGame()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">RESET</button>
-                </div>
+                <div class="spin-button">SPIN!</div>
                 
                 <div style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;">
                     <h4 style="color: white; text-align: center; margin-bottom: 15px;">💰 PAYTABLE 💰</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div class="payout-line">
-                            <span class="symbol-combo">💎 💎 💎 💎 💎</span>
-                            <span class="payout-amount">1000x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">7️⃣ 7️⃣ 7️⃣ 7️⃣ 7️⃣</span>
-                            <span class="payout-amount">500x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">🍒 🍒 🍒 🍒 🍒</span>
-                            <span class="payout-amount">200x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">⭐ ⭐ ⭐ ⭐ ⭐</span>
-                            <span class="payout-amount">100x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">🍋 🍋 🍋 🍋 🍋</span>
-                            <span class="payout-amount">50x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">🍇 🍇 🍇 🍇 🍇</span>
-                            <span class="payout-amount">25x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">🔔 🔔 🔔 🔔 🔔</span>
-                            <span class="payout-amount">15x</span>
-                        </div>
-                        <div class="payout-line">
-                            <span class="symbol-combo">🍊 🍊 🍊 🍊 🍊</span>
-                            <span class="payout-amount">10x</span>
-                        </div>
+                    <div class="payout-line">
+                        <span class="symbol-combo">💎 💎 💎</span>
+                        <span class="payout-amount">1000x</span>
                     </div>
-                    <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; color: white; font-size: 0.9em;">
-                        <strong>Note:</strong> 4 matching symbols = 50% of 5-symbol payout<br>
-                        3 matching symbols = 25% of 5-symbol payout
+                    <div class="payout-line">
+                        <span class="symbol-combo">🍒 🍒 🍒</span>
+                        <span class="payout-amount">100x</span>
+                    </div>
+                    <div class="payout-line">
+                        <span class="symbol-combo">🍋 🍋 🍋</span>
+                        <span class="payout-amount">50x</span>
+                    </div>
+                    <div class="payout-line">
+                        <span class="symbol-combo">⭐ ⭐ ⭐</span>
+                        <span class="payout-amount">25x</span>
+                    </div>
+                    <div class="payout-line">
+                        <span class="symbol-combo">🍇 🍇 🍇</span>
+                        <span class="payout-amount">10x</span>
                     </div>
                 </div>
             </div>
@@ -414,34 +265,10 @@
 
         <div class="results" id="results">
             <div class="card">
-                <h2>Expected Returns</h2>
-                <div id="results"></div>
+                <h2>Expected Results</h2>
+                <div id="resultsContent"></div>
             </div>
 
-            <div class="card">
-                <h2>🎮 Bankroll Simulator</h2>
-                <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; margin: 20px 0;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                        <div>
-                            <label style="color: white; font-weight: bold;">Starting Bankroll:</label>
-                            <input type="number" id="startingBankroll" value="1000" style="width: 100%; padding: 10px; border-radius: 5px; border: none; margin-top: 5px;">
-                        </div>
-                        <div>
-                            <label style="color: white; font-weight: bold;">Bet Per Spin:</label>
-                            <input type="number" id="betPerSpin" value="10" style="width: 100%; padding: 10px; border-radius: 5px; border: none; margin-top: 5px;">
-                        </div>
-                    </div>
-                    <div style="text-align: center;">
-                        <button onclick="simulateBankroll()" style="padding: 15px 40px; font-size: 1.2em; background: #ffd700; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                            🎰 Simulate 100 Spins
-                        </button>
-                    </div>
-                    <div id="bankrollResult" style="margin-top: 20px; color: white; font-size: 1.1em; text-align: center; min-height: 150px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="results" id="results">
             <div class="card">
                 <h2>Common Slot RTP Ranges</h2>
                 <div id="rtpComparison"></div>
@@ -450,211 +277,6 @@
     </div>
 
     <script>
-        // Online Slots Game Variables
-        let balance = 1000;
-        let currentBet = 10;
-        let isSpinning = false;
-        let autoSpinning = false;
-        let autoSpinInterval;
-
-        const symbols = ['💎', '7️⃣', '🍒', '⭐', '🍋', '🍇', '🔔', '🍊'];
-        const symbolWeights = [1, 2, 5, 8, 12, 15, 20, 25]; // Lower = rarer
-        
-        const payouts = {
-            '💎': {5: 1000, 4: 500, 3: 250},
-            '7️⃣': {5: 500, 4: 250, 3: 125},
-            '🍒': {5: 200, 4: 100, 3: 50},
-            '⭐': {5: 100, 4: 50, 3: 25},
-            '🍋': {5: 50, 4: 25, 3: 12},
-            '🍇': {5: 25, 4: 12, 3: 6},
-            '🔔': {5: 15, 4: 7, 3: 3},
-            '🍊': {5: 10, 4: 5, 3: 2}
-        };
-
-        function getRandomSymbol() {
-            const totalWeight = symbolWeights.reduce((a, b) => a + b, 0);
-            let random = Math.random() * totalWeight;
-            
-            for (let i = 0; i < symbols.length; i++) {
-                random -= symbolWeights[i];
-                if (random <= 0) return symbols[i];
-            }
-            return symbols[symbols.length - 1];
-        }
-
-        function changeBet(amount) {
-            if (isSpinning) return;
-            
-            currentBet += amount;
-            if (currentBet < 5) currentBet = 5;
-            if (currentBet > 100) currentBet = 100;
-            if (currentBet > balance) currentBet = balance;
-            
-            updateDisplay();
-        }
-
-        function maxBet() {
-            if (isSpinning) return;
-            currentBet = Math.min(100, balance);
-            updateDisplay();
-        }
-
-        function updateDisplay() {
-            document.getElementById('balance').textContent = balance;
-            document.getElementById('currentBet').textContent = currentBet;
-            document.getElementById('spinBet').textContent = currentBet;
-        }
-
-        async function spin() {
-            if (isSpinning) return;
-            if (balance < currentBet) {
-                alert('Insufficient balance! Click RESET to start over.');
-                return;
-            }
-
-            casinoSounds.playSound('spin');
-            isSpinning = true;
-            balance -= currentBet;
-            document.getElementById('lastWin').textContent = '0';
-            document.getElementById('winMessage').textContent = '';
-            updateDisplay();
-
-            // Disable spin button
-            document.getElementById('spinBtn').style.opacity = '0.5';
-            document.getElementById('spinBtn').style.cursor = 'not-allowed';
-
-            // Spin animation
-            const results = [];
-            for (let i = 1; i <= 5; i++) {
-                const reel = document.getElementById(`reel${i}`);
-                const strip = reel.querySelector('.reel-strip');
-                
-                // Animate spinning
-                strip.style.animation = 'none';
-                setTimeout(() => {
-                    strip.style.animation = `spin-reel ${0.5 + i * 0.2}s ease-out`;
-                }, 10);
-
-                // Generate result
-                const symbol = getRandomSymbol();
-                results.push(symbol);
-
-                // Show result after animation
-                await new Promise(resolve => {
-                    setTimeout(() => {
-                        strip.textContent = symbol;
-                        strip.style.animation = 'none';
-                        resolve();
-                    }, 500 + i * 200);
-                });
-            }
-
-            // Check for wins
-            setTimeout(() => {
-                checkWin(results);
-                isSpinning = false;
-                document.getElementById('spinBtn').style.opacity = '1';
-                document.getElementById('spinBtn').style.cursor = 'pointer';
-            }, 100);
-        }
-
-        function checkWin(results) {
-            let winAmount = 0;
-            let winMessage = '';
-
-            // Count matching symbols from left
-            const firstSymbol = results[0];
-            let matchCount = 1;
-            
-            for (let i = 1; i < results.length; i++) {
-                if (results[i] === firstSymbol) {
-                    matchCount++;
-                } else {
-                    break;
-                }
-            }
-
-            // Check if there's a payout
-            if (matchCount >= 3 && payouts[firstSymbol]) {
-                const multiplier = payouts[firstSymbol][matchCount];
-                if (multiplier) {
-                    winAmount = currentBet * multiplier;
-                    balance += winAmount;
-                    
-                    if (matchCount === 5) {
-                        winMessage = `🎉 JACKPOT! ${firstSymbol} x5 - WIN $${winAmount}! 🎉`;
-                        casinoSounds.playSound('bigwin');
-                    } else if (matchCount === 4) {
-                        winMessage = `🎊 BIG WIN! ${firstSymbol} x4 - WIN $${winAmount}! 🎊`;
-                        casinoSounds.playSound('bigwin');
-                    } else {
-                        winMessage = `✨ WIN! ${firstSymbol} x3 - WIN $${winAmount}! ✨`;
-                        casinoSounds.playSound('win');
-                    }
-                }
-            } else {
-                casinoSounds.playSound('lose');
-            }
-
-            // Update display
-            document.getElementById('lastWin').textContent = winAmount;
-            document.getElementById('winMessage').textContent = winMessage;
-            updateDisplay();
-
-            // Check if bankrupt
-            if (balance <= 0) {
-                setTimeout(() => {
-                    alert('💸 You\'re out of money! Click RESET to start over.');
-                    stopAutoSpin();
-                }, 500);
-            }
-        }
-
-        function autoSpin() {
-            if (autoSpinning) {
-                stopAutoSpin();
-            } else {
-                autoSpinning = true;
-                document.getElementById('autoSpinBtn').textContent = 'STOP AUTO';
-                document.getElementById('autoSpinBtn').style.background = '#f44336';
-                
-                autoSpinInterval = setInterval(() => {
-                    if (!isSpinning && balance >= currentBet) {
-                        spin();
-                    } else if (balance < currentBet) {
-                        stopAutoSpin();
-                    }
-                }, 3000);
-            }
-        }
-
-        function stopAutoSpin() {
-            autoSpinning = false;
-            clearInterval(autoSpinInterval);
-            document.getElementById('autoSpinBtn').textContent = 'AUTO SPIN';
-            document.getElementById('autoSpinBtn').style.background = '#2196F3';
-        }
-
-        function resetGame() {
-            if (confirm('Reset game and start with $1000?')) {
-                stopAutoSpin();
-                balance = 1000;
-                currentBet = 10;
-                document.getElementById('lastWin').textContent = '0';
-                document.getElementById('winMessage').textContent = '';
-                updateDisplay();
-                
-                // Reset reels
-                for (let i = 1; i <= 5; i++) {
-                    const strip = document.getElementById(`reel${i}`).querySelector('.reel-strip');
-                    strip.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                }
-            }
-        }
-
-        // Initialize
-        updateDisplay();
-
         function calculate() {
             const rtp = parseFloat(document.getElementById('rtp').value);
             const volatility = document.getElementById('volatility').value;

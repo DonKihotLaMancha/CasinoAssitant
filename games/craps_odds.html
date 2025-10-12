@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Craps Odds Calculator - Casino Assistant</title>
-    <script src="../docs/sounds.js"></script>
+    <title>Craps Odds Calculator</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -142,81 +141,11 @@
             margin-top: 5px;
             opacity: 0.8;
         }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 5px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .card {
-                padding: 15px;
-                margin: 10px 5px;
-            }
-
-            .dice-container {
-                gap: 10px;
-            }
-
-            .dice {
-                width: 60px;
-                height: 60px;
-            }
-
-            .craps-table {
-                padding: 20px;
-                margin: 15px 0;
-            }
-
-            .bet-area {
-                padding: 15px 20px;
-                margin: 8px 5px;
-                font-size: 1em;
-            }
-
-            .bet-label {
-                font-size: 0.75em;
-            }
-
-            button {
-                padding: 18px 35px;
-                font-size: 1.1em;
-            }
-
-            table {
-                font-size: 0.8em;
-                display: block;
-                overflow-x: auto;
-            }
-
-            table th,
-            table td {
-                padding: 8px 4px;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .bet-area:active {
-                transform: scale(1.08);
-            }
-
-            button:active {
-                transform: scale(0.98);
-            }
-
-            button, .btn {
-                min-height: 48px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
         
         <div class="header">
             <h1>🎲 Craps Odds Calculator</h1>
@@ -445,88 +374,6 @@
                 <p style="margin-left: 20px;">Bet Pass Line + Maximum Odds. This gives you the absolute lowest house edge possible in craps (can be under 0.5% with 10x odds).</p>
             </div>
         </div>
-
-        <div class="card">
-            <h2>🎲 Dice Roll Simulator</h2>
-            <div style="padding: 30px; background: linear-gradient(135deg, #134e5e 0%, #0f4d0f 100%); border-radius: 15px; text-align: center;">
-                <button onclick="rollDice()" style="padding: 25px 60px; font-size: 1.5em; background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border: 4px solid white; border-radius: 20px; cursor: pointer; font-weight: bold; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: all 0.3s; color: #000;">
-                    🎲 ROLL THE DICE! 🎲
-                </button>
-                <div id="diceResult" style="margin-top: 30px; color: white; font-size: 1.5em; min-height: 150px;"></div>
-                <div id="rollHistory" style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;">
-                    <h3 style="color: white;">📊 Last 10 Rolls</h3>
-                    <div id="historyDisplay" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px;">
-                        <p style="color: rgba(255,255,255,0.6);">Roll the dice to see history</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
-    <script>
-        let rollHistory = [];
-
-        function rollDice() {
-            casinoSounds.playSound('deal');
-            const die1 = Math.floor(Math.random() * 6) + 1;
-            const die2 = Math.floor(Math.random() * 6) + 1;
-            const total = die1 + die2;
-            
-            // Determine result type
-            let resultType = '';
-            let resultColor = '';
-            
-            if ([7, 11].includes(total)) {
-                resultType = '🎉 NATURAL - Pass Line Wins!';
-                resultColor = '#4CAF50';
-            } else if ([2, 3, 12].includes(total)) {
-                resultType = '❌ CRAPS - Pass Line Loses!';
-                resultColor = '#f44336';
-            } else {
-                resultType = `📍 POINT ESTABLISHED: ${total}`;
-                resultColor = '#2196F3';
-            }
-            
-            // Display result
-            const resultHTML = `
-                <div style="background: rgba(0,0,0,0.4); padding: 30px; border-radius: 15px; margin-top: 20px;">
-                    <div style="font-size: 4em; margin-bottom: 20px;">
-                        🎲 ${die1} + ${die2} 🎲
-                    </div>
-                    <div style="font-size: 3em; font-weight: bold; margin-bottom: 15px;">
-                        = ${total}
-                    </div>
-                    <div style="background: ${resultColor}; padding: 15px; border-radius: 10px; font-size: 1.2em;">
-                        ${resultType}
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('diceResult').innerHTML = resultHTML;
-            
-            // Add to history
-            rollHistory.unshift({ die1, die2, total, type: resultType, time: new Date().toLocaleTimeString() });
-            if (rollHistory.length > 10) rollHistory.pop();
-            
-            updateRollHistory();
-        }
-
-        function updateRollHistory() {
-            let html = '';
-            rollHistory.forEach((roll, index) => {
-                const bgColor = [7, 11].includes(roll.total) ? '#4CAF50' : 
-                               [2, 3, 12].includes(roll.total) ? '#f44336' : '#2196F3';
-                html += `
-                    <div style="background: ${bgColor}; padding: 15px; border-radius: 10px; min-width: 100px; text-align: center;">
-                        <div style="font-size: 1.5em; font-weight: bold;">${roll.total}</div>
-                        <div style="font-size: 0.9em; opacity: 0.9;">🎲 ${roll.die1} + ${roll.die2}</div>
-                        <div style="font-size: 0.7em; opacity: 0.7; margin-top: 5px;">${roll.time}</div>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('historyDisplay').innerHTML = html || '<p style="color: rgba(255,255,255,0.6);">No rolls yet</p>';
-        }
-    </script>
 </body>
 </html>

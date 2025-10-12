@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Odds Calculator - Casino Assistant</title>
-    <script src="../docs/sounds.js"></script>
+    <title>Poker Odds Calculator</title>
     <style>
         * {
             margin: 0;
@@ -270,73 +269,11 @@
             font-weight: bold;
             margin: 10px 0;
         }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .card {
-                padding: 15px;
-                margin: 10px 0;
-            }
-
-            #cardSelector {
-                gap: 2px !important;
-            }
-
-            .playing-card.selectable {
-                width: 40px;
-                height: 56px;
-                padding: 3px;
-                margin: 1px;
-            }
-
-            .playing-card.selectable .card-rank {
-                font-size: 0.9em;
-            }
-
-            .playing-card.selectable .card-suit {
-                font-size: 1.3em;
-            }
-
-            .playing-card.selectable .card-rank-bottom,
-            .playing-card.selectable .card-suit-bottom {
-                font-size: 0.7em;
-            }
-
-            .btn {
-                width: 100%;
-                padding: 15px;
-                font-size: 1.1em;
-            }
-
-            table {
-                font-size: 0.8em;
-                display: block;
-                overflow-x: auto;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .playing-card.selectable:active {
-                transform: scale(1.2);
-            }
-
-            button, .btn {
-                min-height: 48px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
         
         <div class="header">
             <h1>🎴 Poker Odds Calculator</h1>
@@ -407,41 +344,6 @@
                 <h2>Hand Rankings & Probabilities</h2>
                 <div id="handRankings"></div>
             </div>
-
-            <div class="card">
-                <h2>🎮 Hand Strength Simulator</h2>
-                <div style="padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px;">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <button onclick="simulateShowdown()" style="padding: 20px 50px; font-size: 1.3em; background: #ffd700; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: all 0.3s;">
-                            🃏 Simulate Showdown
-                        </button>
-                    </div>
-                    <div id="showdownResult" style="color: white; font-size: 1.1em; min-height: 200px;"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>📊 Session Tracker</h2>
-                <div style="padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
-                        <div style="text-align: center; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                            <div style="font-size: 2.5em; font-weight: bold; color: #4CAF50;" id="handsPlayed">0</div>
-                            <div style="color: #666; margin-top: 5px;">Hands Analyzed</div>
-                        </div>
-                        <div style="text-align: center; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                            <div style="font-size: 2.5em; font-weight: bold; color: #2196F3;" id="cardsSelected">0</div>
-                            <div style="color: #666; margin-top: 5px;">Cards Selected</div>
-                        </div>
-                        <div style="text-align: center; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                            <div style="font-size: 2.5em; font-weight: bold; color: #ff9800;" id="avgWinRate">0%</div>
-                            <div style="color: #666; margin-top: 5px;">Avg Win Rate</div>
-                        </div>
-                    </div>
-                    <button onclick="resetStats()" style="padding: 10px 30px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                        Reset Statistics
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -487,12 +389,10 @@
             
             if (cardElement.classList.contains('selected')) {
                 // Deselect
-                casinoSounds.playSound('click');
                 cardElement.classList.remove('selected');
                 selectedCards = selectedCards.filter(c => c.id !== cardId);
             } else if (selectedCards.length < 2) {
                 // Select
-                casinoSounds.playSound('deal');
                 cardElement.classList.add('selected');
                 selectedCards.push({ id: cardId, rank, suit, element: cardElement });
             } else {
@@ -565,87 +465,25 @@
             updateCardStates();
         }
 
-        // Accurate win rates based on 100,000+ Monte Carlo simulations
-        // Data validated against PokerStove and CardPlayer.com
+        // Approximate win rates for different starting hands vs number of opponents
         const handWinRates = {
-            // Premium Pairs
-            'AA': [85.3, 73.4, 64.0, 56.0, 49.2, 43.5, 38.6, 34.4, 30.8],
-            'KK': [82.4, 69.1, 59.7, 51.9, 45.5, 40.3, 35.9, 32.1, 28.9],
-            'QQ': [79.9, 66.2, 56.9, 49.3, 43.2, 38.2, 34.0, 30.5, 27.4],
-            'JJ': [77.5, 63.5, 54.3, 46.8, 40.9, 36.1, 32.1, 28.7, 25.8],
-            'TT': [75.1, 60.7, 51.7, 44.3, 38.6, 34.0, 30.2, 27.0, 24.2],
-            '99': [71.7, 57.2, 48.3, 41.1, 35.7, 31.3, 27.7, 24.7, 22.1],
-            '88': [69.1, 54.6, 45.8, 38.8, 33.6, 29.4, 26.0, 23.2, 20.7],
-            '77': [66.4, 51.9, 43.2, 36.4, 31.4, 27.4, 24.2, 21.5, 19.2],
-            '66': [63.5, 49.0, 40.5, 33.9, 29.1, 25.3, 22.3, 19.8, 17.6],
-            '55': [60.4, 46.0, 37.7, 31.3, 26.7, 23.1, 20.3, 17.9, 15.9],
-            '44': [57.2, 42.8, 34.8, 28.6, 24.2, 20.8, 18.2, 16.0, 14.1],
-            '33': [53.8, 39.5, 31.8, 25.8, 21.7, 18.5, 16.1, 14.1, 12.4],
-            '22': [50.3, 36.1, 28.7, 23.0, 19.1, 16.1, 13.9, 12.1, 10.6],
-            
-            // Ace High Suited
-            'AKs': [67.0, 52.3, 43.1, 36.0, 30.6, 26.5, 23.2, 20.5, 18.2],
-            'AQs': [66.2, 51.7, 42.6, 35.5, 30.2, 26.1, 22.9, 20.2, 17.9],
-            'AJs': [65.4, 51.1, 42.0, 35.0, 29.8, 25.7, 22.5, 19.9, 17.6],
-            'ATs': [64.5, 50.4, 41.4, 34.4, 29.3, 25.3, 22.1, 19.5, 17.3],
-            'A9s': [62.3, 48.5, 39.7, 32.8, 27.8, 23.9, 20.9, 18.4, 16.2],
-            'A8s': [61.2, 47.5, 38.8, 32.0, 27.1, 23.3, 20.3, 17.9, 15.7],
-            'A7s': [60.0, 46.4, 37.9, 31.2, 26.4, 22.6, 19.7, 17.3, 15.2],
-            'A6s': [58.8, 45.3, 36.9, 30.3, 25.6, 21.9, 19.1, 16.7, 14.7],
-            'A5s': [59.9, 46.2, 37.7, 31.0, 26.2, 22.4, 19.5, 17.1, 15.0],
-            'A4s': [58.6, 45.0, 36.7, 30.1, 25.4, 21.7, 18.9, 16.5, 14.5],
-            'A3s': [57.4, 43.8, 35.6, 29.2, 24.6, 21.0, 18.2, 15.9, 13.9],
-            'A2s': [56.1, 42.6, 34.5, 28.2, 23.7, 20.2, 17.5, 15.3, 13.4],
-            
-            // Ace High Offsuit
-            'AKo': [65.4, 50.8, 41.8, 34.8, 29.6, 25.6, 22.4, 19.8, 17.5],
-            'AQo': [64.5, 50.1, 41.2, 34.3, 29.1, 25.1, 22.0, 19.4, 17.2],
-            'AJo': [63.7, 49.4, 40.5, 33.7, 28.6, 24.7, 21.6, 19.0, 16.8],
-            'ATo': [62.8, 48.6, 39.8, 33.0, 28.0, 24.1, 21.1, 18.6, 16.4],
-            'A9o': [60.5, 46.7, 38.1, 31.4, 26.6, 22.8, 19.9, 17.5, 15.4],
-            'A8o': [59.3, 45.6, 37.1, 30.5, 25.8, 22.1, 19.2, 16.9, 14.8],
-            'A7o': [58.1, 44.4, 36.1, 29.6, 25.0, 21.4, 18.6, 16.3, 14.3],
-            'A6o': [56.8, 43.2, 35.0, 28.6, 24.1, 20.6, 17.9, 15.7, 13.7],
-            'A5o': [57.9, 44.1, 35.8, 29.3, 24.7, 21.1, 18.3, 16.0, 14.0],
-            'A4o': [56.5, 42.9, 34.7, 28.3, 23.8, 20.3, 17.6, 15.4, 13.5],
-            'A3o': [55.2, 41.6, 33.5, 27.3, 22.9, 19.5, 16.9, 14.8, 12.9],
-            'A2o': [53.9, 40.3, 32.3, 26.3, 22.0, 18.7, 16.2, 14.1, 12.3],
-            
-            // King High Suited
-            'KQs': [63.5, 49.3, 40.4, 33.5, 28.4, 24.5, 21.4, 18.9, 16.7],
-            'KJs': [62.7, 48.6, 39.8, 32.9, 27.9, 24.0, 21.0, 18.5, 16.3],
-            'KTs': [61.8, 47.9, 39.1, 32.3, 27.3, 23.5, 20.5, 18.0, 15.9],
-            'K9s': [59.5, 45.8, 37.3, 30.7, 25.9, 22.2, 19.3, 16.9, 14.9],
-            
-            // King High Offsuit
-            'KQo': [61.8, 47.6, 38.8, 32.1, 27.2, 23.4, 20.4, 18.0, 15.9],
-            'KJo': [60.9, 46.8, 38.1, 31.4, 26.6, 22.8, 19.9, 17.5, 15.4],
-            'KTo': [60.0, 46.0, 37.4, 30.8, 26.0, 22.3, 19.4, 17.0, 15.0],
-            
-            // Queen High Suited
-            'QJs': [61.8, 47.8, 39.0, 32.2, 27.2, 23.4, 20.4, 18.0, 15.9],
-            'QTs': [60.9, 47.0, 38.3, 31.5, 26.6, 22.8, 19.9, 17.5, 15.4],
-            'Q9s': [58.6, 44.9, 36.5, 29.9, 25.2, 21.6, 18.8, 16.5, 14.5],
-            
-            // Queen High Offsuit
-            'QJo': [60.0, 46.0, 37.4, 30.8, 26.0, 22.3, 19.4, 17.0, 15.0],
-            'QTo': [59.1, 45.2, 36.7, 30.1, 25.4, 21.7, 18.9, 16.5, 14.5],
-            
-            // Jack High Suited
-            'JTs': [60.0, 46.1, 37.5, 30.9, 26.1, 22.4, 19.5, 17.1, 15.1],
-            'J9s': [57.6, 43.9, 35.6, 29.1, 24.5, 20.9, 18.2, 15.9, 14.0],
-            
-            // Jack High Offsuit
-            'JTo': [58.2, 44.3, 35.9, 29.4, 24.8, 21.2, 18.4, 16.1, 14.1],
-            
-            // Ten High Suited
-            'T9s': [56.7, 43.0, 34.8, 28.4, 23.9, 20.4, 17.7, 15.5, 13.6],
-            
-            // Worst Hands
-            '72o': [34.8, 24.7, 18.9, 14.8, 11.8, 9.6, 7.9, 6.6, 5.6],
-            '73o': [35.2, 25.1, 19.2, 15.0, 12.0, 9.8, 8.1, 6.8, 5.8],
-            '82o': [35.6, 25.4, 19.5, 15.2, 12.1, 9.9, 8.2, 6.9, 5.9],
-            '83o': [36.0, 25.8, 19.8, 15.5, 12.3, 10.1, 8.4, 7.0, 6.0]
+            'AA': [85, 73, 64, 56, 49, 43, 38, 34, 31],
+            'KK': [82, 69, 60, 52, 46, 40, 36, 32, 29],
+            'QQ': [80, 66, 57, 49, 43, 38, 34, 30, 27],
+            'JJ': [77, 63, 54, 46, 40, 35, 31, 28, 25],
+            'TT': [75, 60, 51, 43, 37, 33, 29, 26, 23],
+            '99': [72, 57, 48, 40, 35, 30, 27, 24, 21],
+            '88': [69, 54, 45, 38, 32, 28, 25, 22, 20],
+            '77': [66, 51, 42, 35, 30, 26, 23, 20, 18],
+            'AKs': [67, 53, 44, 37, 32, 28, 25, 22, 20],
+            'AKo': [65, 51, 42, 35, 30, 26, 23, 20, 18],
+            'AQs': [66, 52, 43, 36, 31, 27, 24, 21, 19],
+            'AQo': [64, 50, 41, 34, 29, 25, 22, 19, 17],
+            'AJs': [65, 51, 42, 35, 30, 26, 23, 20, 18],
+            'AJo': [63, 49, 40, 33, 28, 24, 21, 19, 17],
+            'KQs': [63, 49, 40, 33, 28, 24, 21, 19, 17],
+            'KQo': [61, 47, 38, 31, 26, 23, 20, 18, 16],
+            '72o': [35, 25, 19, 15, 12, 10, 8, 7, 6]
         };
 
         function createHandDisplay(hand) {
@@ -658,10 +496,6 @@
                 '9': { rank: '9', suits: ['♠', '♥', '♦', '♣'] },
                 '8': { rank: '8', suits: ['♠', '♥', '♦', '♣'] },
                 '7': { rank: '7', suits: ['♠', '♥', '♦', '♣'] },
-                '6': { rank: '6', suits: ['♠', '♥', '♦', '♣'] },
-                '5': { rank: '5', suits: ['♠', '♥', '♦', '♣'] },
-                '4': { rank: '4', suits: ['♠', '♥', '♦', '♣'] },
-                '3': { rank: '3', suits: ['♠', '♥', '♦', '♣'] },
                 '2': { rank: '2', suits: ['♠', '♥', '♦', '♣'] }
             };
 
@@ -730,15 +564,8 @@
         }
 
         function calculate() {
-            casinoSounds.playSound('shuffle');
-            
             const hand = document.getElementById('startingHand').value;
             const numOpponents = parseInt(document.getElementById('numOpponents').value);
-            
-            if (!hand || !handWinRates[hand]) {
-                alert('Please select a valid starting hand!');
-                return;
-            }
             
             const winRate = handWinRates[hand][numOpponents - 1];
             const tieRate = 2; // Approximate
@@ -844,100 +671,6 @@
             tableHTML += '</tbody></table>';
             document.getElementById('handRankings').innerHTML = tableHTML;
         }
-
-        // Session Statistics
-        let sessionStats = {
-            handsPlayed: 0,
-            cardsSelected: 0,
-            totalWinRate: 0
-        };
-
-        function simulateShowdown() {
-            const suits = ['♠', '♥', '♦', '♣'];
-            const suitColors = { '♠': 'black', '♥': 'red', '♦': 'red', '♣': 'black' };
-            
-            function getRandomCard() {
-                const rank = allRanks[Math.floor(Math.random() * allRanks.length)];
-                const suit = suits[Math.floor(Math.random() * suits.length)];
-                return { rank, suit, color: suitColors[suit] };
-            }
-            
-            function createCardHTML(card) {
-                return `<div class="playing-card ${card.color}" style="display: inline-block; margin: 5px; width: 70px; height: 98px;">
-                    <span class="card-rank" style="font-size: 1.3em;">${card.rank}</span>
-                    <span class="card-suit" style="font-size: 2.2em;">${card.suit}</span>
-                    <span class="card-rank-bottom" style="font-size: 1.3em;">${card.rank}</span>
-                    <span class="card-suit-bottom" style="font-size: 1.1em;">${card.suit}</span>
-                </div>`;
-            }
-            
-            const yourHand = [getRandomCard(), getRandomCard()];
-            const opponentHand = [getRandomCard(), getRandomCard()];
-            const communityCards = [getRandomCard(), getRandomCard(), getRandomCard(), getRandomCard(), getRandomCard()];
-            
-            const winner = Math.random() > 0.5 ? 'You' : 'Opponent';
-            const winColor = winner === 'You' ? '#4CAF50' : '#f44336';
-            
-            const resultHTML = `
-                <div style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px;">
-                    <h3 style="text-align: center; margin-bottom: 20px;">🃏 Texas Hold'em Showdown 🃏</h3>
-                    <div style="margin: 20px 0;">
-                        <h4 style="color: #4CAF50;">Your Hand:</h4>
-                        <div style="text-align: center;">${yourHand.map(createCardHTML).join('')}</div>
-                    </div>
-                    <div style="margin: 20px 0;">
-                        <h4 style="color: #ffd700;">Community Cards:</h4>
-                        <div style="text-align: center;">${communityCards.map(createCardHTML).join('')}</div>
-                    </div>
-                    <div style="margin: 20px 0;">
-                        <h4 style="color: #f44336;">Opponent's Hand:</h4>
-                        <div style="text-align: center;">${opponentHand.map(createCardHTML).join('')}</div>
-                    </div>
-                    <div style="background: ${winColor}; padding: 20px; border-radius: 10px; text-align: center; margin-top: 25px;">
-                        <h2 style="margin: 0;">${winner === 'You' ? '🎉 YOU WIN! 🎉' : '😔 OPPONENT WINS'}</h2>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('showdownResult').innerHTML = resultHTML;
-        }
-
-        function updateSessionStats() {
-            document.getElementById('handsPlayed').textContent = sessionStats.handsPlayed;
-            document.getElementById('cardsSelected').textContent = sessionStats.cardsSelected;
-            const avgWinRate = sessionStats.handsPlayed > 0 ? 
-                (sessionStats.totalWinRate / sessionStats.handsPlayed).toFixed(1) : 0;
-            document.getElementById('avgWinRate').textContent = avgWinRate + '%';
-        }
-
-        function resetStats() {
-            if (confirm('Are you sure you want to reset all statistics?')) {
-                sessionStats = { handsPlayed: 0, cardsSelected: 0, totalWinRate: 0 };
-                updateSessionStats();
-            }
-        }
-
-        // Track stats on calculate
-        const originalCalculate = calculate;
-        calculate = function() {
-            originalCalculate();
-            sessionStats.handsPlayed++;
-            const hand = document.getElementById('startingHand').value;
-            const numOpponents = parseInt(document.getElementById('numOpponents').value);
-            const winRate = handWinRates[hand] ? handWinRates[hand][numOpponents - 1] : 50;
-            sessionStats.totalWinRate += winRate;
-            updateSessionStats();
-        };
-
-        // Track card selections
-        const originalSelectCard = selectCard;
-        selectCard = function(cardElement, rank, suit) {
-            originalSelectCard(cardElement, rank, suit);
-            sessionStats.cardsSelected++;
-            updateSessionStats();
-        };
-
-        updateSessionStats();
     </script>
 </body>
 </html>

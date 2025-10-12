@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baccarat Odds Calculator - Casino Assistant</title>
-    <script src="../docs/sounds.js"></script>
+    <title>Baccarat Odds Calculator</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -168,74 +167,11 @@
             color: #8e2de2;
             margin-top: 10px;
         }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 5px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .card {
-                padding: 15px;
-                margin: 10px 5px;
-            }
-
-            .playing-card {
-                width: 60px;
-                height: 84px;
-                padding: 6px;
-                margin: 3px;
-            }
-
-            .playing-card .card-rank {
-                font-size: 1.2em;
-            }
-
-            .playing-card .card-suit {
-                font-size: 2em;
-            }
-
-            button {
-                padding: 15px 30px;
-                font-size: 1em;
-            }
-
-            table {
-                font-size: 0.8em;
-                display: block;
-                overflow-x: auto;
-            }
-
-            table th,
-            table td {
-                padding: 8px 4px;
-            }
-
-            .input-group input,
-            .input-group select {
-                font-size: 1em;
-                padding: 12px;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            button:active {
-                transform: scale(0.98);
-            }
-
-            button, .btn {
-                min-height: 48px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
         
         <div class="header">
             <h1>💎 Baccarat Odds Calculator</h1>
@@ -440,8 +376,6 @@
 
     <script>
         function simulateHand() {
-            casinoSounds.playSound('shuffle');
-            
             const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
             const suits = ['♠', '♥', '♦', '♣'];
             const suitColors = { '♠': 'black', '♥': 'red', '♦': 'red', '♣': 'black' };
@@ -491,13 +425,10 @@
             // Determine winner
             let result = '';
             if (bankerTotal > playerTotal) {
-                setTimeout(() => casinoSounds.playSound('win'), 500);
                 result = '<div style="background: #4CAF50; padding: 20px; border-radius: 10px; margin-top: 20px;"><h2>🏦 BANKER WINS!</h2></div>';
             } else if (playerTotal > bankerTotal) {
-                setTimeout(() => casinoSounds.playSound('win'), 500);
                 result = '<div style="background: #2196F3; padding: 20px; border-radius: 10px; margin-top: 20px;"><h2>👤 PLAYER WINS!</h2></div>';
             } else {
-                setTimeout(() => casinoSounds.playSound('coin'), 500);
                 result = '<div style="background: #ff9800; padding: 20px; border-radius: 10px; margin-top: 20px;"><h2>🤝 TIE!</h2></div>';
             }
             
