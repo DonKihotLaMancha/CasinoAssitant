@@ -15,7 +15,11 @@
     <meta name="apple-mobile-web-app-title" content="Casino Assistant">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
+    <script src="config.js"></script>
     <script src="docs/theme-manager.js"></script>
+    <script src="docs/adsense.js"></script>
+    <script src="docs/affiliates.js"></script>
+    <script src="docs/seo-meta.js"></script>
     
     <style>
         * {
@@ -432,6 +436,9 @@
         </div>
     </div>
 
+    <!-- Ad Slot - Top Banner -->
+    <div id="ad-top-banner" style="text-align: center; margin: 20px auto; max-width: 728px;"></div>
+
     <div class="games-container">
         <!-- Casino Academy - NEW! -->
         <a href="games/casino_academy.html" class="game-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
@@ -604,6 +611,12 @@
         </a>
     </div>
 
+    <!-- Affiliate Banner -->
+    <div id="affiliate-banner-main" style="max-width: 1200px; margin: 40px auto;"></div>
+
+    <!-- Ad Slot - Bottom Banner -->
+    <div id="ad-bottom-banner" style="text-align: center; margin: 20px auto; max-width: 728px;"></div>
+
     <div class="footer">
         <p><strong>🎉 13 Games Now Available!</strong> Complete casino game collection with tools</p>
         <p><strong>✨ No Installation Required:</strong> All tools work directly in your web browser</p>
@@ -750,6 +763,21 @@
                 }
             };
             document.body.appendChild(installBtn);
+        });
+
+        // Initialize monetization
+        window.addEventListener('DOMContentLoaded', function() {
+            // Create ad slots (will only show if AdSense ID is configured)
+            if (typeof adManager !== 'undefined') {
+                adManager.createAdSlot('ad-top-banner', '1234567890', 'horizontal');
+                adManager.createAdSlot('ad-bottom-banner', '1234567890', 'horizontal');
+            }
+
+            // Add affiliate banner
+            if (typeof affiliateManager !== 'undefined') {
+                const banner = affiliateManager.generateBanner('betmgm');
+                document.getElementById('affiliate-banner-main').innerHTML = banner;
+            }
         });
     </script>
 </body>
