@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Casino Assistant</title>
+    <script src="../docs/theme-manager.js"></script>
     <style>
         * {
             margin: 0;
@@ -307,6 +308,21 @@
                         <option value="minimal">Minimal</option>
                     </select>
                 </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Color Theme</strong>
+                        <span>Choose your preferred color scheme</span>
+                    </div>
+                    <select id="colorTheme" onchange="changeTheme(this.value)">
+                        <option value="light">Light (Default)</option>
+                        <option value="dark">Dark</option>
+                        <option value="blue">Ocean Blue</option>
+                        <option value="green">Forest Green</option>
+                        <option value="purple">Royal Purple</option>
+                        <option value="gold">Golden Luxury</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -515,6 +531,14 @@
             localStorage.setItem('casinoSettings', JSON.stringify(settings));
             
             showSuccess();
+        }
+
+        function changeTheme(themeName) {
+            if (typeof themeManager !== 'undefined') {
+                themeManager.setTheme(themeName);
+                saveSetting('colorTheme', themeName);
+                showSuccess();
+            }
         }
 
         function showSuccess() {
