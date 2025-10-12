@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Hand Rankings - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-5px); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
+        }
+        .card h2 {
+            color: var(--accent-color, #2c5364); margin-bottom: 20px;
+            font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
+        }
+        .hand-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; margin: 20px 0;
+        }
+        .hand-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px; border-radius: 15px; color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .hand-rank { font-size: 2.5em; font-weight: bold; margin-bottom: 10px; }
+        .hand-name { font-size: 1.5em; margin-bottom: 15px; }
+        .hand-example { font-size: 1.2em; margin: 10px 0; opacity: 0.9; }
+        .hand-odds { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); }
+        table {
+            width: 100%; border-collapse: collapse; background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px 0;
+        }
+        th, td {
+            padding: 15px; text-align: left; border: 1px solid #ddd;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; font-size: 1.1em;
+        }
+        .strength-premium { background: #4CAF50; color: white; font-weight: bold; }
+        .strength-strong { background: #8BC34A; color: white; }
+        .strength-good { background: #FFC107; color: #333; }
+        .strength-marginal { background: #FF9800; color: white; }
+        .strength-weak { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="poker_odds.html" class="back-btn">← Back to Poker</a>
+        
+        <div class="header">
+            <h1>🎴 Poker Hand Rankings</h1>
+            <p>Complete guide to Texas Hold'em hand strength</p>
+        </div>
+
+        <!-- Hand Rankings -->
+        <div class="card">
+            <h2>Standard Hand Rankings (Highest to Lowest)</h2>
+            <div class="hand-grid">
+                <div class="hand-card" style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);">
+                    <div class="hand-rank">1️⃣</div>
+                    <div class="hand-name">Royal Flush</div>
+                    <div class="hand-example">A♠ K♠ Q♠ J♠ 10♠</div>
+                    <div class="hand-odds">Odds: 1 in 649,740</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">2️⃣</div>
+                    <div class="hand-name">Straight Flush</div>
+                    <div class="hand-example">9♥ 8♥ 7♥ 6♥ 5♥</div>
+                    <div class="hand-odds">Odds: 1 in 72,193</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">3️⃣</div>
+                    <div class="hand-name">Four of a Kind</div>
+                    <div class="hand-example">K♠ K♥ K♦ K♣ 3♠</div>
+                    <div class="hand-odds">Odds: 1 in 4,165</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">4️⃣</div>
+                    <div class="hand-name">Full House</div>
+                    <div class="hand-example">Q♠ Q♥ Q♦ 7♣ 7♠</div>
+                    <div class="hand-odds">Odds: 1 in 694</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">5️⃣</div>
+                    <div class="hand-name">Flush</div>
+                    <div class="hand-example">K♦ J♦ 9♦ 6♦ 3♦</div>
+                    <div class="hand-odds">Odds: 1 in 509</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">6️⃣</div>
+                    <div class="hand-name">Straight</div>
+                    <div class="hand-example">10♠ 9♥ 8♦ 7♣ 6♠</div>
+                    <div class="hand-odds">Odds: 1 in 255</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">7️⃣</div>
+                    <div class="hand-name">Three of a Kind</div>
+                    <div class="hand-example">8♠ 8♥ 8♦ K♣ 4♠</div>
+                    <div class="hand-odds">Odds: 1 in 47</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">8️⃣</div>
+                    <div class="hand-name">Two Pair</div>
+                    <div class="hand-example">A♠ A♥ 5♦ 5♣ 9♠</div>
+                    <div class="hand-odds">Odds: 1 in 21</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">9️⃣</div>
+                    <div class="hand-name">One Pair</div>
+                    <div class="hand-example">J♠ J♥ A♦ 8♣ 4♠</div>
+                    <div class="hand-odds">Odds: 1 in 2.4</div>
+                </div>
+
+                <div class="hand-card">
+                    <div class="hand-rank">🔟</div>
+                    <div class="hand-name">High Card</div>
+                    <div class="hand-example">A♠ K♥ 10♦ 7♣ 4♠</div>
+                    <div class="hand-odds">Odds: 1 in 2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Starting Hands -->
+        <div class="card">
+            <h2>Starting Hand Strength Guide</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hand Type</th>
+                        <th>Examples</th>
+                        <th>Strength</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Premium Pairs</strong></td>
+                        <td>AA, KK, QQ</td>
+                        <td class="strength-premium">Premium</td>
+                        <td>Raise/Re-raise always</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Big Pairs</strong></td>
+                        <td>JJ, TT, 99</td>
+                        <td class="strength-strong">Strong</td>
+                        <td>Raise most positions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Big Aces</strong></td>
+                        <td>AK, AQ, AJ</td>
+                        <td class="strength-strong">Strong</td>
+                        <td>Raise/Call</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medium Pairs</strong></td>
+                        <td>88, 77, 66</td>
+                        <td class="strength-good">Good</td>
+                        <td>Call/Raise late position</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Suited Connectors</strong></td>
+                        <td>JTs, T9s, 98s</td>
+                        <td class="strength-good">Good</td>
+                        <td>Call in position</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Small Pairs</strong></td>
+                        <td>55, 44, 33, 22</td>
+                        <td class="strength-marginal">Marginal</td>
+                        <td>Call to set mine</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Weak Aces</strong></td>
+                        <td>A9, A8, A7</td>
+                        <td class="strength-marginal">Marginal</td>
+                        <td>Fold early, call late</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trash Hands</strong></td>
+                        <td>72o, 83o, J4o</td>
+                        <td class="strength-weak">Weak</td>
+                        <td>Fold always</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tips -->
+        <div class="card">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px;">
+                <h3>💡 Key Tips</h3>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li><strong>Position matters:</strong> Play tighter in early position, looser in late</li>
+                    <li><strong>Suited is better:</strong> Suited hands have 3% better equity</li>
+                    <li><strong>Pocket pairs:</strong> Set mining requires 15:1 implied odds</li>
+                    <li><strong>Ace-King:</strong> Strong but needs to improve post-flop</li>
+                    <li><strong>Suited connectors:</strong> Great for multiway pots</li>
+                    <li><strong>Avoid weak aces:</strong> Dominated too often</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            casinoSounds.playSound('deal');
+        });
+    </script>
+</body>
+</html>
