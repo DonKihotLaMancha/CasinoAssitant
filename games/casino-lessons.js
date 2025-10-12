@@ -563,6 +563,142 @@ const quizzes = {
             options: ["36", "37", "38", "40"],
             correct: 2
         }
+    ],
+    craps: [
+        {
+            question: "What is the house edge on a Pass Line bet?",
+            options: ["1.41%", "5.56%", "0%", "2.78%"],
+            correct: 0
+        },
+        {
+            question: "Which bet has the lowest house edge in craps?",
+            options: ["Pass Line", "Don't Pass", "Odds bet", "Field"],
+            correct: 2
+        },
+        {
+            question: "What should you avoid betting on?",
+            options: ["Pass Line", "Come bets", "Proposition bets", "Odds bets"],
+            correct: 2
+        }
+    ],
+    baccarat: [
+        {
+            question: "Which bet has the lowest house edge in Baccarat?",
+            options: ["Player", "Banker", "Tie", "All equal"],
+            correct: 1
+        },
+        {
+            question: "What is the house edge on a Tie bet?",
+            options: ["1.06%", "1.24%", "14.36%", "5.27%"],
+            correct: 2
+        },
+        {
+            question: "Should you bet on Tie?",
+            options: ["Yes, high payout", "No, terrible odds", "Sometimes", "Only if winning"],
+            correct: 1
+        }
+    ],
+    slots: [
+        {
+            question: "What does RTP stand for?",
+            options: ["Return to Player", "Real Time Payout", "Random Total Prize", "Rate to Play"],
+            correct: 0
+        },
+        {
+            question: "What is a good RTP for slot machines?",
+            options: ["85%", "90%", "96%+", "100%"],
+            correct: 2
+        },
+        {
+            question: "Does bet size affect your odds of winning?",
+            options: ["Yes, higher bets win more", "No, RTP stays the same", "Only on progressives", "Yes, always"],
+            correct: 1
+        }
+    ],
+    videopoker: [
+        {
+            question: "What is the RTP of Jacks or Better with optimal play?",
+            options: ["95.5%", "97.3%", "99.54%", "101%"],
+            correct: 2
+        },
+        {
+            question: "Should you hold a low pair or go for a Royal Flush draw?",
+            options: ["Hold the pair", "Go for Royal", "Depends on kicker", "Discard all"],
+            correct: 0
+        },
+        {
+            question: "What pays the most in Jacks or Better?",
+            options: ["Full House", "Straight Flush", "Royal Flush", "Four of a Kind"],
+            correct: 2
+        }
+    ],
+    paigow: [
+        {
+            question: "What is the house edge in Pai Gow Poker?",
+            options: ["1.46%", "2.84%", "5.27%", "0.5%"],
+            correct: 1
+        },
+        {
+            question: "How often do you push (tie) in Pai Gow?",
+            options: ["10%", "25%", "41.5%", "50%"],
+            correct: 2
+        },
+        {
+            question: "What is the 'House Way'?",
+            options: ["Dealer's strategy", "Betting system", "Card shuffle", "Side bet"],
+            correct: 0
+        }
+    ],
+    threecard: [
+        {
+            question: "What is the minimum hand to qualify as dealer?",
+            options: ["Pair", "Queen high", "King high", "Ace high"],
+            correct: 1
+        },
+        {
+            question: "When should you play (not fold)?",
+            options: ["Always", "Q-6-4 or better", "Any pair", "King high"],
+            correct: 1
+        },
+        {
+            question: "What is the house edge with optimal strategy?",
+            options: ["2.01%", "3.37%", "5.32%", "1.5%"],
+            correct: 1
+        }
+    ],
+    sicbo: [
+        {
+            question: "What is Sic Bo played with?",
+            options: ["Cards", "Three dice", "Wheel", "Tiles"],
+            correct: 1
+        },
+        {
+            question: "Which bet has the best odds?",
+            options: ["Triple", "Big/Small", "Specific double", "Any triple"],
+            correct: 1
+        },
+        {
+            question: "What is the house edge on Big/Small bets?",
+            options: ["2.78%", "5.56%", "7.87%", "10.42%"],
+            correct: 0
+        }
+    ],
+    keno: [
+        {
+            question: "What is the typical house edge in Keno?",
+            options: ["5%", "15%", "25-40%", "50%"],
+            correct: 2
+        },
+        {
+            question: "How many numbers should you pick for best odds?",
+            options: ["1-2", "4-6", "10-12", "15-20"],
+            correct: 1
+        },
+        {
+            question: "Is Keno a good game to play?",
+            options: ["Yes, great odds", "No, terrible house edge", "Only for fun", "Depends on casino"],
+            correct: 1
+        }
     ]
 };
 
