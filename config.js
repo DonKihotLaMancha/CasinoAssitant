@@ -6,7 +6,7 @@ const CASINO_CONFIG = {
     // Sign up at: https://www.google.com/adsense
     // Get your Publisher ID and replace below
     adsense: {
-        publisherId: 'ca-pub-XXXXXXXXXXXXXXXX', // REPLACE THIS!
+        publisherId: 'ca-pub-6377780758752429', // Your AdSense ID
         enabled: true, // Set to false to disable ads
         slots: {
             topBanner: '1234567890',    // Replace with your ad slot ID
