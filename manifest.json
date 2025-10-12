@@ -1,6 +1,6 @@
 {
-  "name": "Casino Assistant - Professional Odds Calculator",
-  "short_name": "Casino Assistant",
+  "name": "BetSage - Professional Odds Calculator",
+  "short_name": "BetSage",
   "description": "Professional casino odds calculators and strategy tools for 10+ casino games",
   "start_url": "/index.html",
   "display": "standalone",

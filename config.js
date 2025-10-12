@@ -1,4 +1,4 @@
-// Casino Assistant - Monetization Configuration
+// BetSage - Monetization Configuration
 // IMPORTANT: Replace these values with your actual IDs
 
 const CASINO_CONFIG = {
@@ -58,7 +58,7 @@ const CASINO_CONFIG = {
     // SEO Configuration
     seo: {
         siteUrl: 'https://yourdomain.com', // REPLACE THIS!
-        siteName: 'Casino Assistant',
+        siteName: 'BetSage',
         twitterHandle: '@casinoassistant', // REPLACE THIS!
         facebookAppId: 'YOUR_FB_APP_ID'    // Optional
     },

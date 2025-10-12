@@ -1,4 +1,4 @@
-# 🎰 Casino Assistant
+# 🎰 BetSage
 
 **Professional odds calculators and strategy tools for all major casino games**
 
@@ -139,7 +139,7 @@ CAS.Assist/
 
 ## 🔊 Sound Effects
 
-The Casino Assistant includes a complete Web Audio API sound system:
+BetSage includes a complete Web Audio API sound system:
 
 **Sound Types:**
 - 🖱️ Click - Button clicks
@@ -342,7 +342,7 @@ MIT License - Feel free to use, modify, and distribute.
 
 ## 👥 Credits
 
-**Developed by**: Casino Assistant Team  
+**Developed by**: BetSage Team  
 **Version**: 5.0 ULTIMATE EDITION  
 **Last Updated**: October 12, 2025  
 **Status**: 100% Complete & Monetization Ready  
