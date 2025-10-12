@@ -389,14 +389,16 @@
             
             if (cardElement.classList.contains('selected')) {
                 // Deselect
+                casinoSounds.playSound('click');
                 cardElement.classList.remove('selected');
                 selectedCards = selectedCards.filter(c => c.id !== cardId);
             } else if (selectedCards.length < 2) {
                 // Select
+                casinoSounds.playSound('deal');
                 cardElement.classList.add('selected');
                 selectedCards.push({ id: cardId, rank, suit, element: cardElement });
             } else {
-                alert('You can only select 2 cards for your starting hand!');
+                // Already have 2 cards selected, don't show alert, just ignore
                 return;
             }
 
@@ -453,7 +455,15 @@
                 select.value = handCode;
                 calculate();
             } else {
-                alert(`Hand ${handCode} is not in the preset list. Showing closest match.`);
+                // Hand not in preset list, try to find closest match
+                // For pairs, just use the pair notation
+                if (rank1 === rank2) {
+                    select.value = rank1 + rank1;
+                    calculate();
+                } else {
+                    // Show message in results area instead of alert
+                    console.log(`Hand ${handCode} not found in preset list`);
+                }
             }
         }
 
