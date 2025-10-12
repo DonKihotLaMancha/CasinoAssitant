@@ -123,6 +123,25 @@
                 <div class="bet-option" onclick="selectBet('17')">17 (60:1)</div>
             </div>
 
+            <!-- Odds Display -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 15px; margin: 20px 0; color: white;">
+                <h3 style="margin-bottom: 15px;">📊 Your Winning Chances</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; font-weight: bold;" id="winProbability">0%</div>
+                        <div>Win Probability</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; font-weight: bold;" id="houseEdge">2.78%</div>
+                        <div>House Edge</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; font-weight: bold;" id="expectedValue">$0.00</div>
+                        <div>Expected Value</div>
+                    </div>
+                </div>
+            </div>
+
             <div style="text-align: center; margin: 30px 0;">
                 <button class="btn btn-primary" onclick="rollDice()">🎲 ROLL DICE</button>
                 <button class="btn btn-danger" onclick="clearBets()">Clear Bets</button>
@@ -163,6 +182,59 @@
                 selectedBets.push(bet);
             }
             updateBetDisplay();
+            calculateOdds();
+        }
+
+        function calculateOdds() {
+            if (selectedBets.length === 0) {
+                document.getElementById('winProbability').textContent = '0%';
+                document.getElementById('houseEdge').textContent = '0%';
+                document.getElementById('expectedValue').textContent = '$0.00';
+                return;
+            }
+
+            const oddsTable = {
+                'small': { prob: 48.61, payout: 1, edge: 2.78 },
+                'big': { prob: 48.61, payout: 1, edge: 2.78 },
+                'odd': { prob: 48.61, payout: 1, edge: 2.78 },
+                'even': { prob: 48.61, payout: 1, edge: 2.78 },
+                '4': { prob: 1.39, payout: 60, edge: 15.28 },
+                '5': { prob: 2.78, payout: 30, edge: 13.89 },
+                '6': { prob: 4.63, payout: 18, edge: 13.89 },
+                '7': { prob: 6.94, payout: 12, edge: 9.72 },
+                '8': { prob: 9.72, payout: 8, edge: 12.50 },
+                '9': { prob: 11.57, payout: 7, edge: 7.41 },
+                '10': { prob: 12.50, payout: 6, edge: 12.50 },
+                '11': { prob: 12.50, payout: 6, edge: 12.50 },
+                '12': { prob: 11.57, payout: 7, edge: 7.41 },
+                '13': { prob: 9.72, payout: 8, edge: 12.50 },
+                '14': { prob: 6.94, payout: 12, edge: 9.72 },
+                '15': { prob: 4.63, payout: 18, edge: 13.89 },
+                '16': { prob: 2.78, payout: 30, edge: 13.89 },
+                '17': { prob: 1.39, payout: 60, edge: 15.28 }
+            };
+
+            // Calculate average for multiple bets
+            let totalProb = 0;
+            let totalEdge = 0;
+            let totalEV = 0;
+
+            selectedBets.forEach(bet => {
+                const odds = oddsTable[bet];
+                if (odds) {
+                    totalProb += odds.prob;
+                    totalEdge += odds.edge;
+                    totalEV += (odds.prob / 100 * odds.payout) - ((100 - odds.prob) / 100);
+                }
+            });
+
+            const avgProb = totalProb / selectedBets.length;
+            const avgEdge = totalEdge / selectedBets.length;
+            const avgEV = (totalEV / selectedBets.length) * 10; // Assuming $10 bet
+
+            document.getElementById('winProbability').textContent = avgProb.toFixed(2) + '%';
+            document.getElementById('houseEdge').textContent = avgEdge.toFixed(2) + '%';
+            document.getElementById('expectedValue').textContent = '$' + avgEV.toFixed(2);
         }
 
         function updateBetDisplay() {
@@ -180,6 +252,7 @@
             casinoSounds.playSound('click');
             selectedBets = [];
             updateBetDisplay();
+            calculateOdds();
         }
 
         function rollDice() {
