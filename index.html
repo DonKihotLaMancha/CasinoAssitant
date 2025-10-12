@@ -436,8 +436,8 @@
         </div>
     </div>
 
-    <!-- Ad Slot - Top Banner -->
-    <div id="ad-top-banner" style="text-align: center; margin: 20px auto; max-width: 728px;"></div>
+    <!-- Ad Slot - Top Banner - Hidden until AdSense configured -->
+    <!-- <div id="ad-top-banner" style="text-align: center; margin: 20px auto; max-width: 728px;"></div> -->
 
     <div class="games-container">
         <!-- Casino Academy - NEW! -->
@@ -611,11 +611,11 @@
         </a>
     </div>
 
-    <!-- Affiliate Banner -->
-    <div id="affiliate-banner-main" style="max-width: 1200px; margin: 40px auto;"></div>
+    <!-- Affiliate Banner - Hidden until configured -->
+    <!-- <div id="affiliate-banner-main" style="max-width: 1200px; margin: 40px auto;"></div> -->
 
-    <!-- Ad Slot - Bottom Banner -->
-    <div id="ad-bottom-banner" style="text-align: center; margin: 20px auto; max-width: 728px;"></div>
+    <!-- Ad Slot - Bottom Banner - Hidden until AdSense configured -->
+    <!-- <div id="ad-bottom-banner" style="text-align: center; margin: 20px auto; max-width: 728px;"></div> -->
 
     <div class="footer">
         <p><strong>🎉 13 Games Now Available!</strong> Complete casino game collection with tools</p>
@@ -769,7 +769,9 @@
             document.body.appendChild(installBtn);
         });
 
-        // Initialize monetization
+        // Initialize monetization (disabled until you configure your IDs in config.js)
+        // Uncomment after adding your AdSense Publisher ID and Affiliate links
+        /*
         window.addEventListener('DOMContentLoaded', function() {
             // Create ad slots (will only show if AdSense ID is configured)
             if (typeof adManager !== 'undefined') {
@@ -783,6 +785,7 @@
                 document.getElementById('affiliate-banner-main').innerHTML = banner;
             }
         });
+        */
     </script>
 </body>
 </html>
