@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsible Gambling - BetSage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255,107,53,0.2);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.5);
+        }
+
+        h1 {
+            color: #F7B801;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #FF6B35;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #F7B801;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        strong {
+            color: #F7B801;
+        }
+
+        .warning-box {
+            background: rgba(255,68,68,0.2);
+            border-left: 4px solid #ff4444;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .help-box {
+            background: rgba(76,175,80,0.2);
+            border-left: 4px solid #4CAF50;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .resource-card {
+            background: rgba(0,78,137,0.2);
+            border: 2px solid rgba(0,78,137,0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .resource-card h3 {
+            margin-top: 0;
+        }
+
+        .hotline {
+            font-size: 1.8em;
+            color: #4CAF50;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            background: rgba(76,175,80,0.1);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .quiz {
+            background: rgba(255,107,53,0.1);
+            border: 2px solid rgba(255,107,53,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .quiz-question {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        
+        <h1>🛡️ Responsible Gambling</h1>
+
+        <div class="warning-box">
+            <h3>⚠️ Important Message</h3>
+            <p><strong>Gambling should be entertainment, not a way to make money.</strong> While BetSage provides tools to understand odds and strategies, no system can guarantee wins. The house always has an edge in casino games.</p>
+        </div>
+
+        <h2>Understanding the Risks</h2>
+        <p>Gambling involves financial risk and can become addictive. It's important to understand:</p>
+        <ul>
+            <li><strong>The house always wins:</strong> Casinos have a mathematical edge in all games</li>
+            <li><strong>Losses are guaranteed:</strong> Over time, most gamblers lose money</li>
+            <li><strong>Addiction is real:</strong> Problem gambling affects millions of people</li>
+            <li><strong>It can destroy lives:</strong> Financial ruin, relationship problems, mental health issues</li>
+        </ul>
+
+        <h2>Signs of Problem Gambling</h2>
+        <p>You may have a gambling problem if you:</p>
+        <ol>
+            <li>Spend more money or time gambling than you can afford</li>
+            <li>Feel the need to gamble with increasing amounts of money</li>
+            <li>Have tried unsuccessfully to stop or cut back</li>
+            <li>Feel restless or irritable when trying to stop</li>
+            <li>Gamble to escape problems or relieve feelings of helplessness</li>
+            <li>Chase losses by gambling more to win back money</li>
+            <li>Lie to family or friends about gambling</li>
+            <li>Jeopardize relationships, job, or opportunities because of gambling</li>
+            <li>Rely on others for money to relieve desperate financial situations</li>
+            <li>Have committed illegal acts to finance gambling</li>
+        </ol>
+
+        <div class="quiz">
+            <h3>📋 Self-Assessment Quiz</h3>
+            <p>Answer these questions honestly:</p>
+            <div class="quiz-question">
+                <strong>1.</strong> Have you ever lost time from work or school due to gambling?
+            </div>
+            <div class="quiz-question">
+                <strong>2.</strong> Has gambling made your home life unhappy?
+            </div>
+            <div class="quiz-question">
+                <strong>3.</strong> Has gambling affected your reputation?
+            </div>
+            <div class="quiz-question">
+                <strong>4.</strong> Have you ever felt remorse after gambling?
+            </div>
+            <div class="quiz-question">
+                <strong>5.</strong> Have you ever gambled to get money to pay debts?
+            </div>
+            <div class="quiz-question">
+                <strong>6.</strong> Has gambling decreased your ambition or efficiency?
+            </div>
+            <div class="quiz-question">
+                <strong>7.</strong> After losing, do you feel you must return as soon as possible to win back losses?
+            </div>
+            <p style="margin-top: 15px;"><strong>If you answered "yes" to 3 or more questions, you may have a gambling problem and should seek help.</strong></p>
+        </div>
+
+        <h2>🆘 Get Help Now</h2>
+        
+        <div class="help-box">
+            <h3>24/7 Helplines - Free & Confidential</h3>
+            <div class="hotline">
+                📞 1-800-522-4700
+            </div>
+            <p style="text-align: center; margin-top: 10px;">National Problem Gambling Helpline (USA)</p>
+        </div>
+
+        <h2>Support Resources</h2>
+
+        <div class="resource-card">
+            <h3>🌐 National Council on Problem Gambling (NCPG)</h3>
+            <p><strong>Website:</strong> <a href="https://www.ncpgambling.org" style="color: #F7B801;" target="_blank">www.ncpgambling.org</a></p>
+            <p><strong>Phone:</strong> 1-800-522-4700</p>
+            <p><strong>Text:</strong> Text "HELP" to 1-800-522-4700</p>
+            <p>Provides resources, treatment referrals, and 24/7 confidential support.</p>
+        </div>
+
+        <div class="resource-card">
+            <h3>🤝 Gamblers Anonymous</h3>
+            <p><strong>Website:</strong> <a href="https://www.gamblersanonymous.org" style="color: #F7B801;" target="_blank">www.gamblersanonymous.org</a></p>
+            <p>Fellowship of men and women who share their experience, strength and hope to solve their common problem and help others recover from gambling addiction.</p>
+            <p><strong>Find a meeting near you or join online meetings.</strong></p>
+        </div>
+
+        <div class="resource-card">
+            <h3>💚 Gam-Anon</h3>
+            <p><strong>Website:</strong> <a href="https://www.gam-anon.org" style="color: #F7B801;" target="_blank">www.gam-anon.org</a></p>
+            <p>Support group for family members and friends of problem gamblers.</p>
+        </div>
+
+        <div class="resource-card">
+            <h3>🧠 SAMHSA National Helpline</h3>
+            <p><strong>Phone:</strong> 1-800-662-4357 (HELP)</p>
+            <p><strong>Website:</strong> <a href="https://www.samhsa.gov" style="color: #F7B801;" target="_blank">www.samhsa.gov</a></p>
+            <p>Substance Abuse and Mental Health Services Administration - provides treatment referrals and information.</p>
+        </div>
+
+        <h2>International Resources</h2>
+        <ul>
+            <li><strong>UK:</strong> GamCare - 0808 8020 133 | <a href="https://www.gamcare.org.uk" style="color: #F7B801;" target="_blank">www.gamcare.org.uk</a></li>
+            <li><strong>Canada:</strong> Problem Gambling Institute of Ontario | <a href="https://www.problemgambling.ca" style="color: #F7B801;" target="_blank">www.problemgambling.ca</a></li>
+            <li><strong>Australia:</strong> Gambling Help Online - 1800 858 858 | <a href="https://www.gamblinghelponline.org.au" style="color: #F7B801;" target="_blank">www.gamblinghelponline.org.au</a></li>
+            <li><strong>International:</strong> Gamblers Anonymous International | <a href="https://www.gamblersanonymous.org" style="color: #F7B801;" target="_blank">www.gamblersanonymous.org</a></li>
+        </ul>
+
+        <h2>Tips for Responsible Gambling</h2>
+        
+        <h3>✅ DO:</h3>
+        <ul>
+            <li>Set a budget before you start and stick to it</li>
+            <li>Set a time limit for gambling sessions</li>
+            <li>Think of gambling as entertainment, not income</li>
+            <li>Only gamble with money you can afford to lose</li>
+            <li>Take regular breaks</li>
+            <li>Balance gambling with other activities</li>
+            <li>Keep track of time and money spent</li>
+            <li>Accept losses as the cost of entertainment</li>
+        </ul>
+
+        <h3>❌ DON'T:</h3>
+        <ul>
+            <li>Gamble when depressed, upset, or in pain</li>
+            <li>Chase losses by gambling more</li>
+            <li>Borrow money to gamble</li>
+            <li>Use gambling to solve financial problems</li>
+            <li>Gamble under the influence of alcohol or drugs</li>
+            <li>Skip work, school, or family time to gamble</li>
+            <li>Lie about gambling habits</li>
+            <li>Gamble with money needed for bills or essentials</li>
+        </ul>
+
+        <h2>Self-Exclusion Programs</h2>
+        <p>Many casinos and online gambling sites offer self-exclusion programs that allow you to voluntarily ban yourself from gambling for a set period. Contact individual casinos or visit:</p>
+        <ul>
+            <li><strong>National Self-Exclusion Database:</strong> Available in many jurisdictions</li>
+            <li><strong>GamStop (UK):</strong> <a href="https://www.gamstop.co.uk" style="color: #F7B801;" target="_blank">www.gamstop.co.uk</a></li>
+            <li><strong>State Programs:</strong> Check your state's gaming commission website</li>
+        </ul>
+
+        <h2>Treatment Options</h2>
+        <ul>
+            <li><strong>Cognitive Behavioral Therapy (CBT):</strong> Helps change unhealthy gambling behaviors</li>
+            <li><strong>Motivational Interviewing:</strong> Helps resolve ambivalence about treatment</li>
+            <li><strong>Medication:</strong> Some medications may help reduce urges</li>
+            <li><strong>Support Groups:</strong> Gamblers Anonymous and similar programs</li>
+            <li><strong>Residential Treatment:</strong> Intensive programs for severe addiction</li>
+            <li><strong>Financial Counseling:</strong> Help managing debt and rebuilding finances</li>
+        </ul>
+
+        <h2>For Family and Friends</h2>
+        <p>If someone you know has a gambling problem:</p>
+        <ul>
+            <li>Express concern without judgment</li>
+            <li>Encourage them to seek professional help</li>
+            <li>Don't lend money or pay their gambling debts</li>
+            <li>Attend Gam-Anon meetings for support</li>
+            <li>Take care of your own mental health</li>
+            <li>Set boundaries to protect yourself</li>
+        </ul>
+
+        <h2>BetSage's Commitment</h2>
+        <p>BetSage is committed to promoting responsible gambling:</p>
+        <ul>
+            <li>We provide educational tools, not gambling services</li>
+            <li>We display responsible gambling messages</li>
+            <li>We link to support resources</li>
+            <li>We do not target minors</li>
+            <li>We encourage setting limits</li>
+            <li>We support self-exclusion programs</li>
+        </ul>
+
+        <div class="warning-box">
+            <h3>🚨 Crisis? Get Help Immediately</h3>
+            <p>If you or someone you know is in crisis:</p>
+            <p><strong>National Suicide Prevention Lifeline:</strong> 988 or 1-800-273-8255</p>
+            <p><strong>Crisis Text Line:</strong> Text HOME to 741741</p>
+            <p><strong>Emergency:</strong> Call 911</p>
+        </div>
+
+        <h2>Remember</h2>
+        <p><strong>It's never too late to get help.</strong> Problem gambling is treatable, and recovery is possible. Thousands of people have successfully overcome gambling addiction and rebuilt their lives.</p>
+        <p>If you're struggling, reach out today. You don't have to face this alone.</p>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center; color: rgba(255,255,255,0.6);">
+            <p>© 2025 BetSage. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html" style="color: #F7B801; text-decoration: none; margin: 0 10px;">Home</a> |
+                <a href="terms.html" style="color: #F7B801; text-decoration: none; margin: 0 10px;">Terms of Service</a> |
+                <a href="privacy.html" style="color: #F7B801; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
