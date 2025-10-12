@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            color: white;
+            padding: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+        }
+        .top-bar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+        .chart-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .bar-label {
+            min-width: 120px;
+            font-weight: 600;
+        }
+        .bar-container {
+            flex: 1;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .game-stat {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .game-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .game-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .game-detail:last-child {
+            border-bottom: none;
+        }
+        .refresh-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s;
+        }
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <a href="../index.html" class="back-btn">← Back to Casino</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>📊 Analytics Dashboard</h1>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.2em;">Complete overview of your casino gaming statistics</p>
+        </div>
+
+        <!-- Overall Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Games Played</div>
+                <div class="stat-value" id="totalGames">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Wins</div>
+                <div class="stat-value" id="totalWins">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Win Rate</div>
+                <div class="stat-value" id="winRate">0%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Favorite Game</div>
+                <div class="stat-value" id="favoriteGame" style="font-size: 1.8em;">🎰</div>
+            </div>
+        </div>
+
+        <!-- Performance Chart -->
+        <div class="chart-card">
+            <div class="chart-title">📈 Performance by Game</div>
+            <div class="bar-chart" id="performanceChart"></div>
+        </div>
+
+        <!-- Game Statistics -->
+        <div class="chart-card">
+            <div class="chart-title">🎮 Detailed Game Statistics</div>
+            <div class="game-list" id="gameStats"></div>
+        </div>
+
+        <!-- Actions -->
+        <div style="text-align: center; margin: 40px 0;">
+            <button class="refresh-btn" onclick="refreshAnalytics()">🔄 Refresh Data</button>
+        </div>
+    </div>
+
+    <script>
+        const games = [
+            { id: 'blackjack', name: 'Blackjack', icon: '🃏', storage: 'blackjackStats' },
+            { id: 'poker', name: 'Poker', icon: '🎴', storage: 'pokerStats' },
+            { id: 'roulette', name: 'Roulette', icon: '🎡', storage: 'rouletteStats' },
+            { id: 'craps', name: 'Craps', icon: '🎲', storage: 'crapsStats' },
+            { id: 'baccarat', name: 'Baccarat', icon: '💎', storage: 'baccaratStats' },
+            { id: 'slots', name: 'Slots', icon: '🎰', storage: 'slotsStats' },
+            { id: 'sicbo', name: 'Sic Bo', icon: '🎲', storage: 'sicboStats' },
+            { id: 'threecard', name: 'Three Card Poker', icon: '🃏', storage: '3cpStats' },
+            { id: 'videopoker', name: 'Video Poker', icon: '🎰', storage: 'videoPokerStats' },
+            { id: 'paigow', name: 'Pai Gow', icon: '🀄', storage: 'paigowStats' },
+            { id: 'keno', name: 'Keno', icon: '🎱', storage: 'kenoStats' }
+        ];
+
+        function loadAnalytics() {
+            let totalGames = 0;
+            let totalWins = 0;
+            let gameData = [];
+
+            games.forEach(game => {
+                const stats = JSON.parse(localStorage.getItem(game.storage) || '{}');
+                const wins = stats.wins || 0;
+                const losses = stats.losses || 0;
+                const games = wins + losses;
+                const winRate = games > 0 ? ((wins / games) * 100).toFixed(1) : 0;
+
+                totalGames += games;
+                totalWins += wins;
+
+                if (games > 0) {
+                    gameData.push({
+                        ...game,
+                        wins,
+                        losses,
+                        games,
+                        winRate: parseFloat(winRate)
+                    });
+                }
+            });
+
+            // Update overall stats
+            document.getElementById('totalGames').textContent = totalGames;
+            document.getElementById('totalWins').textContent = totalWins;
+            const overallWinRate = totalGames > 0 ? ((totalWins / totalGames) * 100).toFixed(1) : 0;
+            document.getElementById('winRate').textContent = overallWinRate + '%';
+
+            // Find favorite game
+            const favorite = gameData.sort((a, b) => b.games - a.games)[0];
+            document.getElementById('favoriteGame').textContent = favorite ? favorite.icon + ' ' + favorite.name : 'None';
+
+            // Render performance chart
+            renderPerformanceChart(gameData);
+
+            // Render game stats
+            renderGameStats(gameData);
+        }
+
+        function renderPerformanceChart(data) {
+            const chart = document.getElementById('performanceChart');
+            chart.innerHTML = '';
+
+            data.sort((a, b) => b.winRate - a.winRate).forEach(game => {
+                const item = document.createElement('div');
+                item.className = 'bar-item';
+                item.innerHTML = `
+                    <div class="bar-label">${game.icon} ${game.name}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${game.winRate}%">${game.winRate}%</div>
+                    </div>
+                `;
+                chart.appendChild(item);
+            });
+        }
+
+        function renderGameStats(data) {
+            const container = document.getElementById('gameStats');
+            container.innerHTML = '';
+
+            data.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-stat';
+                card.innerHTML = `
+                    <div class="game-name">${game.icon} ${game.name}</div>
+                    <div class="game-detail">
+                        <span>Games Played</span>
+                        <strong>${game.games}</strong>
+                    </div>
+                    <div class="game-detail">
+                        <span>Wins</span>
+                        <strong style="color: #4CAF50;">${game.wins}</strong>
+                    </div>
+                    <div class="game-detail">
+                        <span>Losses</span>
+                        <strong style="color: #f44336;">${game.losses}</strong>
+                    </div>
+                    <div class="game-detail">
+                        <span>Win Rate</span>
+                        <strong style="color: #667eea;">${game.winRate}%</strong>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function refreshAnalytics() {
+            casinoSounds.playSound('click');
+            loadAnalytics();
+            alert('✅ Analytics refreshed!');
+        }
+
+        // Load on page load
+        window.addEventListener('DOMContentLoaded', loadAnalytics);
+    </script>
+</body>
+</html>
