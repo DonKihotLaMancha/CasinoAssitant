@@ -112,13 +112,13 @@ class ThemeManager {
 
     getPurpleTheme() {
         return {
-            '--bg-primary': 'linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)',
+            '--bg-primary': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             '--bg-secondary': '#9c27b0',
             '--text-primary': '#ffffff',
-            '--text-secondary': '#e0e0e0',
-            '--accent-color': '#9c27b0',
-            '--card-bg': 'rgba(74, 0, 224, 0.95)',
-            '--border-color': '#ba68c8'
+            '--text-secondary': '#f0f0f0',
+            '--accent-color': '#ba68c8',
+            '--card-bg': 'rgba(118, 75, 162, 0.85)',
+            '--border-color': '#ce93d8'
         };
     }
 

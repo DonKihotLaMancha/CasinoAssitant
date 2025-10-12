@@ -6,6 +6,7 @@
     <meta name="description" content="Casino Assistant - Complete casino game odds calculators and strategy tools">
     <meta name="keywords" content="casino, blackjack, poker, roulette, craps, baccarat, slots, odds calculator">
     <title>Casino Assistant - Game Odds Calculators</title>
+    <script src="docs/theme-manager.js"></script>
     
     <style>
         * {
@@ -16,10 +17,11 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-primary, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
             min-height: 100vh;
-            color: white;
+            color: var(--text-primary, white);
             padding: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .header {
@@ -49,16 +51,15 @@
         }
 
         .game-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
             border-radius: 15px;
             padding: 30px;
             text-decoration: none;
-            color: #333;
+            color: var(--text-primary, #333);
             display: block;
-            transition: all 0.4s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 2px solid var(--border-color, transparent);
         }
 
         .game-card::before {
