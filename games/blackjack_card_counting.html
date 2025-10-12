@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Counting Trainer - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh;
+            color: var(--text-primary, white);
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-5px); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: var(--text-primary, #333);
+        }
+        .card h2 {
+            color: var(--accent-color, #2c5364); margin-bottom: 20px;
+            font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364);
+            padding-bottom: 10px;
+        }
+        .count-display {
+            text-align: center; padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px; margin: 20px 0;
+        }
+        .count-number {
+            font-size: 5em; font-weight: bold; color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        .true-count {
+            font-size: 2em; margin-top: 20px; color: white;
+        }
+        .card-display {
+            display: flex; justify-content: center; gap: 20px;
+            margin: 30px 0; flex-wrap: wrap;
+        }
+        .playing-card {
+            width: 120px; height: 170px; background: white;
+            border: 3px solid #333; border-radius: 15px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-size: 3em; font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: dealCard 0.5s ease;
+        }
+        @keyframes dealCard {
+            from { transform: translateY(-100px) rotateY(180deg); opacity: 0; }
+            to { transform: translateY(0) rotateY(0); opacity: 1; }
+        }
+        .red { color: #dc143c; }
+        .black { color: #000; }
+        .btn {
+            padding: 20px 40px; font-size: 1.3em; font-weight: bold;
+            border: none; border-radius: 15px; cursor: pointer;
+            transition: all 0.3s; margin: 10px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .controls { text-align: center; margin: 30px 0; }
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 20px; border-radius: 15px; margin: 20px 0;
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(102, 126, 234, 0.2); padding: 20px;
+            border-radius: 10px; text-align: center;
+        }
+        .stat-number { font-size: 2.5em; font-weight: bold; color: #667eea; }
+        .stat-label { margin-top: 10px; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="blackjack_dashboard.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>🔢 Card Counting Trainer</h1>
+            <p>Learn Hi-Lo counting system</p>
+        </div>
+
+        <!-- Current Count -->
+        <div class="card">
+            <h2>Running Count</h2>
+            <div class="count-display">
+                <div class="count-number" id="runningCount">0</div>
+                <div class="true-count">True Count: <span id="trueCount">0</span></div>
+                <div style="margin-top: 20px; font-size: 1.2em;">
+                    Decks Remaining: <span id="decksRemaining">6</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Display -->
+        <div class="card">
+            <h2>Current Card</h2>
+            <div class="card-display" id="cardDisplay">
+                <div class="playing-card">
+                    <div>?</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-primary" onclick="dealCard()">📇 Deal Card</button>
+                <button class="btn btn-secondary" onclick="newShoe()">🔄 New Shoe</button>
+                <button class="btn btn-danger" onclick="resetCount()">↺ Reset Count</button>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="card">
+            <h2>Session Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="cardsDealt">0</div>
+                    <div class="stat-label">Cards Dealt</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="accuracy">100%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="highCounts">0</div>
+                    <div class="stat-label">High Counts (+5)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="lowCounts">0</div>
+                    <div class="stat-label">Low Counts (-5)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hi-Lo System Guide -->
+        <div class="card">
+            <div class="info-box">
+                <h3>📚 Hi-Lo Counting System</h3>
+                <h4 style="margin-top: 20px;">Card Values:</h4>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li><strong>+1:</strong> 2, 3, 4, 5, 6 (Low cards)</li>
+                    <li><strong>0:</strong> 7, 8, 9 (Neutral cards)</li>
+                    <li><strong>-1:</strong> 10, J, Q, K, A (High cards)</li>
+                </ul>
+                <h4>How to Use:</h4>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li>Start with 0 at the beginning of a shoe</li>
+                    <li>Add/subtract as each card is dealt</li>
+                    <li>Higher counts = Player advantage</li>
+                    <li>Lower counts = House advantage</li>
+                    <li>True Count = Running Count ÷ Decks Remaining</li>
+                    <li>Bet more when True Count is +2 or higher</li>
+                </ul>
+                <h4>Betting Strategy:</h4>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li>True Count ≤ 0: Minimum bet</li>
+                    <li>True Count +1: 2x minimum</li>
+                    <li>True Count +2: 4x minimum</li>
+                    <li>True Count +3: 6x minimum</li>
+                    <li>True Count +4 or more: 8x minimum</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let runningCount = 0;
+        let decksRemaining = 6;
+        let cardsDealt = 0;
+        let highCounts = 0;
+        let lowCounts = 0;
+        
+        const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const suits = [
+            { symbol: '♠', color: 'black' },
+            { symbol: '♥', color: 'red' },
+            { symbol: '♦', color: 'red' },
+            { symbol: '♣', color: 'black' }
+        ];
+
+        function getCardValue(rank) {
+            if (['2', '3', '4', '5', '6'].includes(rank)) return 1;
+            if (['7', '8', '9'].includes(rank)) return 0;
+            return -1;
+        }
+
+        function dealCard() {
+            casinoSounds.playSound('deal');
+            
+            const rank = ranks[Math.floor(Math.random() * ranks.length)];
+            const suit = suits[Math.floor(Math.random() * suits.length)];
+            
+            // Update count
+            const value = getCardValue(rank);
+            runningCount += value;
+            cardsDealt++;
+            
+            // Update decks remaining
+            decksRemaining = Math.max(1, 6 - (cardsDealt / 52));
+            
+            // Calculate true count
+            const trueCount = Math.round(runningCount / decksRemaining);
+            
+            // Track high/low counts
+            if (runningCount >= 5) highCounts++;
+            if (runningCount <= -5) lowCounts++;
+            
+            // Display card
+            document.getElementById('cardDisplay').innerHTML = `
+                <div class="playing-card ${suit.color}">
+                    <div>${rank}${suit.symbol}</div>
+                </div>
+            `;
+            
+            // Update displays
+            document.getElementById('runningCount').textContent = runningCount > 0 ? '+' + runningCount : runningCount;
+            document.getElementById('trueCount').textContent = trueCount > 0 ? '+' + trueCount : trueCount;
+            document.getElementById('decksRemaining').textContent = decksRemaining.toFixed(1);
+            document.getElementById('cardsDealt').textContent = cardsDealt;
+            document.getElementById('highCounts').textContent = highCounts;
+            document.getElementById('lowCounts').textContent = lowCounts;
+            
+            // Color code the count
+            const countEl = document.getElementById('runningCount');
+            if (runningCount > 0) {
+                countEl.style.color = '#4CAF50';
+            } else if (runningCount < 0) {
+                countEl.style.color = '#f44336';
+            } else {
+                countEl.style.color = '#ffd700';
+            }
+        }
+
+        function resetCount() {
+            casinoSounds.playSound('click');
+            runningCount = 0;
+            updateDisplay();
+        }
+
+        function newShoe() {
+            casinoSounds.playSound('shuffle');
+            runningCount = 0;
+            decksRemaining = 6;
+            cardsDealt = 0;
+            updateDisplay();
+            document.getElementById('cardDisplay').innerHTML = `
+                <div class="playing-card">
+                    <div>?</div>
+                </div>
+            `;
+        }
+
+        function updateDisplay() {
+            document.getElementById('runningCount').textContent = runningCount;
+            document.getElementById('trueCount').textContent = 0;
+            document.getElementById('decksRemaining').textContent = decksRemaining.toFixed(1);
+            document.getElementById('cardsDealt').textContent = cardsDealt;
+            document.getElementById('runningCount').style.color = '#ffd700';
+        }
+    </script>
+</body>
+</html>
