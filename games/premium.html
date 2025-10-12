@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Premium - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            color: white;
+            padding: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+        }
+        .top-bar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 4em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
+        }
+        .pricing-card.featured {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .plan-name {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .plan-price {
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .plan-period {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+        .feature-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .feature-list li:before {
+            content: '✓';
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .subscribe-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .subscribe-btn.featured {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+        }
+        .comparison-table {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+        }
+        .comparison-table h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        th {
+            background: rgba(102, 126, 234, 0.2);
+            font-weight: 700;
+        }
+        .check { color: #4CAF50; font-size: 1.5em; }
+        .cross { color: #f44336; font-size: 1.5em; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <a href="../index.html" class="back-btn">← Back to Casino</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>👑 Go Premium</h1>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.3em;">Unlock all features and become a casino master</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Free Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Free</div>
+                <div class="plan-price">$0</div>
+                <div class="plan-period">Forever free</div>
+                <ul class="feature-list">
+                    <li>Basic odds calculators</li>
+                    <li>5 lessons per game</li>
+                    <li>Standard themes</li>
+                    <li>Basic analytics</li>
+                    <li>Ads supported</li>
+                </ul>
+                <button class="subscribe-btn" onclick="selectPlan('free')">Current Plan</button>
+            </div>
+
+            <!-- Monthly Plan -->
+            <div class="pricing-card featured">
+                <div class="badge">🔥 POPULAR</div>
+                <div class="plan-name">Premium</div>
+                <div class="plan-price">$9.99</div>
+                <div class="plan-period">per month</div>
+                <ul class="feature-list">
+                    <li>All odds calculators</li>
+                    <li>60+ complete lessons</li>
+                    <li>All themes unlocked</li>
+                    <li>Advanced analytics</li>
+                    <li>Ad-free experience</li>
+                    <li>Personalized AI tips</li>
+                    <li>Export statistics</li>
+                    <li>Priority support</li>
+                </ul>
+                <button class="subscribe-btn featured" onclick="selectPlan('monthly')">Subscribe Monthly</button>
+            </div>
+
+            <!-- Yearly Plan -->
+            <div class="pricing-card">
+                <div class="badge">💎 BEST VALUE</div>
+                <div class="plan-name">Premium Annual</div>
+                <div class="plan-price">$49.99</div>
+                <div class="plan-period">per year (Save 58%!)</div>
+                <ul class="feature-list">
+                    <li>Everything in Premium</li>
+                    <li>Exclusive strategies</li>
+                    <li>Custom strategy builder</li>
+                    <li>1-on-1 coaching session</li>
+                    <li>Lifetime updates</li>
+                    <li>VIP Discord access</li>
+                    <li>Early feature access</li>
+                    <li>Money-back guarantee</li>
+                </ul>
+                <button class="subscribe-btn" onclick="selectPlan('yearly')">Subscribe Yearly</button>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-table">
+            <h2>📊 Feature Comparison</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free</th>
+                        <th>Premium</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Odds Calculators</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>All 60+ Lessons</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Advanced Analytics</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Ad-Free</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>AI Recommendations</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Strategy Builder</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>1-on-1 Coaching</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td>VIP Discord</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <p style="color: rgba(255, 255, 255, 0.6);">
+                💳 Secure payment via Stripe • Cancel anytime • 30-day money-back guarantee
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function selectPlan(plan) {
+            casinoSounds.playSound('click');
+            
+            if (plan === 'free') {
+                alert('You are currently on the Free plan!');
+                return;
+            }
+            
+            // In production, integrate with Stripe/PayPal
+            const prices = {
+                monthly: '$9.99/month',
+                yearly: '$49.99/year'
+            };
+            
+            const confirmed = confirm(
+                `🎉 Upgrade to Premium ${plan === 'yearly' ? 'Annual' : 'Monthly'}!\n\n` +
+                `Price: ${prices[plan]}\n\n` +
+                `This is a demo. In production, you'll be redirected to secure payment.\n\n` +
+                `Proceed to payment?`
+            );
+            
+            if (confirmed) {
+                // Demo: Activate premium
+                localStorage.setItem('casinoPremium', 'true');
+                localStorage.setItem('premiumPlan', plan);
+                localStorage.setItem('premiumDate', new Date().toISOString());
+                
+                casinoSounds.playSound('bigwin');
+                alert('✅ Premium activated! (Demo mode)\n\nAll features unlocked!\nAds disabled!');
+                
+                window.location.href = '../index.html';
+            }
+        }
+    </script>
+</body>
+</html>
