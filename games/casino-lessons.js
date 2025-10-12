@@ -794,6 +794,21 @@ let score = 0;
 function startQuiz(game) {
     casinoSounds.playSound('click');
     
+    // Check premium status for quizzes
+    const isPremium = checkPremiumStatus();
+    if (!isPremium) {
+        if (confirm('📝 Quizzes are a Premium feature!\n\n' +
+                   'Upgrade to Premium to unlock:\n' +
+                   '✓ All 11 game quizzes\n' +
+                   '✓ 56 total questions\n' +
+                   '✓ Score tracking\n' +
+                   '✓ Progress badges\n\n' +
+                   'Want to upgrade now?')) {
+            window.location.href = 'premium.html';
+        }
+        return;
+    }
+    
     if (!quizzes[game]) {
         alert(`📝 ${lessons[game].title} Quiz\n\nQuiz questions for this game are being prepared!\n\nCheck back soon.`);
         return;
@@ -804,6 +819,24 @@ function startQuiz(game) {
     score = 0;
     
     showQuizQuestion();
+}
+
+function checkPremiumStatus() {
+    const premium = localStorage.getItem('casinoPremium');
+    const plan = localStorage.getItem('premiumPlan');
+    const date = localStorage.getItem('premiumDate');
+    
+    if (premium !== 'true' || !date) return false;
+    
+    const startDate = new Date(date);
+    const now = new Date();
+    const daysSince = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+    
+    // Check if subscription is still valid
+    if (plan === 'yearly') return daysSince < 365;
+    if (plan === 'monthly') return daysSince < 30;
+    
+    return false;
 }
 
 function showQuizQuestion() {
