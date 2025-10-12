@@ -636,10 +636,14 @@
         window.addEventListener('DOMContentLoaded', function() {
             const currentUser = localStorage.getItem('currentUser');
             
+            // Allow browsing without login - optional authentication
             if (!currentUser) {
-                // No user logged in, redirect to login
-                window.location.href = 'auth/login.html';
-                return;
+                // Create guest user for tracking
+                const guestUser = {
+                    username: 'Guest',
+                    isGuest: true
+                };
+                localStorage.setItem('currentUser', JSON.stringify(guestUser));
             }
 
             const userData = JSON.parse(currentUser);
