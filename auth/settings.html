@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Casino Assistant</title>
-    <script src="../docs/theme-manager.js"></script>
+    <script src="../docs/theme-manager.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -441,10 +441,17 @@
     <script>
         // Load user data
         window.addEventListener('DOMContentLoaded', function() {
-            const currentUser = localStorage.getItem('currentUser');
+            let currentUser = localStorage.getItem('currentUser');
+            
+            // Create guest user if none exists
             if (!currentUser) {
-                window.location.href = 'login.html';
-                return;
+                const guestUser = {
+                    username: 'Guest',
+                    isGuest: true,
+                    createdAt: new Date().toISOString()
+                };
+                localStorage.setItem('currentUser', JSON.stringify(guestUser));
+                currentUser = JSON.stringify(guestUser);
             }
 
             const userData = JSON.parse(currentUser);
@@ -538,11 +545,11 @@
         }
 
         function changeTheme(themeName) {
-            if (typeof themeManager !== 'undefined') {
+            if (typeof themeManager !== 'undefined' && themeManager.setTheme) {
                 themeManager.setTheme(themeName);
-                saveSetting('colorTheme', themeName);
-                showSuccess();
             }
+            saveSetting('colorTheme', themeName);
+            showSuccess();
         }
 
         function showSuccess() {
@@ -554,9 +561,10 @@
         }
 
         function exportData() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
-            const settings = JSON.parse(localStorage.getItem('casinoSettings') || '{}');
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
+                const settings = JSON.parse(localStorage.getItem('casinoSettings') || '{}');
             
             const exportData = {
                 user: currentUser,
@@ -575,6 +583,10 @@
             link.click();
             
             alert('✅ Data exported successfully!');
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('❌ Error exporting data!');
+            }
         }
 
         function importData() {
@@ -622,10 +634,16 @@
         }
 
         function changePassword() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (currentUser.isGuest) {
+                alert('❌ Guest users cannot change password. Please create an account.');
+                return;
+            }
+            
             const newPassword = prompt('Enter new password (min 6 characters):');
             
             if (newPassword && newPassword.length >= 6) {
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
                 
                 const userIndex = users.findIndex(u => u.username === currentUser.username);
@@ -640,11 +658,17 @@
         }
 
         function deleteAccount() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (currentUser.isGuest) {
+                alert('❌ Guest users cannot delete account. No account to delete.');
+                return;
+            }
+            
             if (confirm('⚠️ This will permanently delete your account and all data. Continue?')) {
                 const password = prompt('Enter your password to confirm:');
                 
                 if (password) {
-                    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                     const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
                     
                     const user = users.find(u => u.username === currentUser.username && u.password === password);
