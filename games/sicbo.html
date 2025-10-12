@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sic Bo - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #c31432 0%, #240b36 100%));
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
+        }
+        .dice-container {
+            display: flex; justify-content: center; gap: 20px;
+            margin: 30px 0; flex-wrap: wrap;
+        }
+        .die {
+            width: 80px; height: 80px; background: white;
+            border: 3px solid #333; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3em; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: roll 0.5s ease;
+        }
+        @keyframes roll {
+            0%, 100% { transform: rotateX(0) rotateY(0); }
+            50% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        .betting-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px; margin: 20px 0;
+        }
+        .bet-option {
+            padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: 2px solid transparent;
+            border-radius: 10px; cursor: pointer; text-align: center;
+            transition: all 0.3s; font-weight: bold;
+        }
+        .bet-option:hover { transform: translateY(-3px); border-color: #ffd700; }
+        .bet-option.selected { border-color: #4CAF50; box-shadow: 0 0 20px rgba(76, 175, 80, 0.8); }
+        .btn {
+            padding: 15px 30px; font-size: 1.2em; font-weight: bold;
+            border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.3s; margin: 5px;
+        }
+        .btn-primary { background: #4CAF50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn:hover { transform: translateY(-2px); }
+        .result {
+            text-align: center; padding: 20px; border-radius: 10px;
+            margin: 20px 0; font-size: 1.5em; font-weight: bold;
+            display: none;
+        }
+        .result.show { display: block; }
+        .result.win { background: #4CAF50; color: white; }
+        .result.lose { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← Back to Casino</a>
+        
+        <div class="header">
+            <h1>🎲 Sic Bo</h1>
+            <p>Ancient Chinese dice game</p>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #c31432;">Dice Roll</h2>
+            <div class="dice-container" id="diceContainer">
+                <div class="die">?</div>
+                <div class="die">?</div>
+                <div class="die">?</div>
+            </div>
+            <div style="text-align: center; font-size: 1.5em; font-weight: bold; margin: 20px 0;">
+                Total: <span id="total">0</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #c31432;">Place Your Bets</h2>
+            <h3 style="margin: 20px 0;">Total Bets</h3>
+            <div class="betting-grid">
+                <div class="bet-option" onclick="selectBet('small')">Small (4-10)<br>1:1</div>
+                <div class="bet-option" onclick="selectBet('big')">Big (11-17)<br>1:1</div>
+                <div class="bet-option" onclick="selectBet('odd')">Odd<br>1:1</div>
+                <div class="bet-option" onclick="selectBet('even')">Even<br>1:1</div>
+            </div>
+            
+            <h3 style="margin: 20px 0;">Specific Totals</h3>
+            <div class="betting-grid">
+                <div class="bet-option" onclick="selectBet('4')">4 (60:1)</div>
+                <div class="bet-option" onclick="selectBet('5')">5 (30:1)</div>
+                <div class="bet-option" onclick="selectBet('6')">6 (18:1)</div>
+                <div class="bet-option" onclick="selectBet('7')">7 (12:1)</div>
+                <div class="bet-option" onclick="selectBet('8')">8 (8:1)</div>
+                <div class="bet-option" onclick="selectBet('9')">9 (7:1)</div>
+                <div class="bet-option" onclick="selectBet('10')">10 (6:1)</div>
+                <div class="bet-option" onclick="selectBet('11')">11 (6:1)</div>
+                <div class="bet-option" onclick="selectBet('12')">12 (7:1)</div>
+                <div class="bet-option" onclick="selectBet('13')">13 (8:1)</div>
+                <div class="bet-option" onclick="selectBet('14')">14 (12:1)</div>
+                <div class="bet-option" onclick="selectBet('15')">15 (18:1)</div>
+                <div class="bet-option" onclick="selectBet('16')">16 (30:1)</div>
+                <div class="bet-option" onclick="selectBet('17')">17 (60:1)</div>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn btn-primary" onclick="rollDice()">🎲 ROLL DICE</button>
+                <button class="btn btn-danger" onclick="clearBets()">Clear Bets</button>
+            </div>
+
+            <div id="result" class="result"></div>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #c31432;">Statistics</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                <div style="text-align: center; padding: 20px; background: #4CAF50; color: white; border-radius: 10px;">
+                    <div style="font-size: 2em; font-weight: bold;" id="wins">0</div>
+                    <div>Wins</div>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #f44336; color: white; border-radius: 10px;">
+                    <div style="font-size: 2em; font-weight: bold;" id="losses">0</div>
+                    <div>Losses</div>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #2196F3; color: white; border-radius: 10px;">
+                    <div style="font-size: 2em; font-weight: bold;" id="rolls">0</div>
+                    <div>Total Rolls</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedBets = [];
+        let stats = JSON.parse(localStorage.getItem('sicboStats') || '{"wins":0,"losses":0,"rolls":0}');
+
+        function selectBet(bet) {
+            casinoSounds.playSound('chip');
+            const index = selectedBets.indexOf(bet);
+            if (index > -1) {
+                selectedBets.splice(index, 1);
+            } else {
+                selectedBets.push(bet);
+            }
+            updateBetDisplay();
+        }
+
+        function updateBetDisplay() {
+            document.querySelectorAll('.bet-option').forEach(el => {
+                const betText = el.textContent.split('(')[0].trim().toLowerCase();
+                if (selectedBets.includes(betText) || selectedBets.includes(el.textContent.split(' ')[0])) {
+                    el.classList.add('selected');
+                } else {
+                    el.classList.remove('selected');
+                }
+            });
+        }
+
+        function clearBets() {
+            casinoSounds.playSound('click');
+            selectedBets = [];
+            updateBetDisplay();
+        }
+
+        function rollDice() {
+            if (selectedBets.length === 0) {
+                alert('Please place at least one bet!');
+                return;
+            }
+
+            casinoSounds.playSound('spin');
+            const dice = [
+                Math.floor(Math.random() * 6) + 1,
+                Math.floor(Math.random() * 6) + 1,
+                Math.floor(Math.random() * 6) + 1
+            ];
+
+            const container = document.getElementById('diceContainer');
+            container.innerHTML = dice.map(d => `<div class="die">${d}</div>`).join('');
+
+            const total = dice.reduce((a, b) => a + b, 0);
+            document.getElementById('total').textContent = total;
+
+            stats.rolls++;
+            let won = false;
+
+            selectedBets.forEach(bet => {
+                if (bet === 'small' && total >= 4 && total <= 10) won = true;
+                if (bet === 'big' && total >= 11 && total <= 17) won = true;
+                if (bet === 'odd' && total % 2 === 1) won = true;
+                if (bet === 'even' && total % 2 === 0) won = true;
+                if (bet === total.toString()) won = true;
+            });
+
+            const resultEl = document.getElementById('result');
+            if (won) {
+                stats.wins++;
+                resultEl.className = 'result win show';
+                resultEl.textContent = '🎉 YOU WIN!';
+                casinoSounds.playSound('win');
+            } else {
+                stats.losses++;
+                resultEl.className = 'result lose show';
+                resultEl.textContent = '❌ You Lose';
+                casinoSounds.playSound('lose');
+            }
+
+            localStorage.setItem('sicboStats', JSON.stringify(stats));
+            updateStats();
+            clearBets();
+        }
+
+        function updateStats() {
+            document.getElementById('wins').textContent = stats.wins;
+            document.getElementById('losses').textContent = stats.losses;
+            document.getElementById('rolls').textContent = stats.rolls;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+        });
+    </script>
+</body>
+</html>
