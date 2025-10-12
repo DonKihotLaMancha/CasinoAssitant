@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slots RTP Calculator - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-5px); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
+        }
+        .card h2 {
+            color: var(--accent-color, #2c5364); margin-bottom: 20px;
+            font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        .input-group label {
+            display: block; margin-bottom: 10px; font-weight: bold; font-size: 1.1em;
+        }
+        .input-group input, .input-group select {
+            width: 100%; padding: 15px; font-size: 1.1em;
+            border-radius: 10px; border: 2px solid #ddd;
+        }
+        .btn {
+            padding: 20px 40px; font-size: 1.3em; font-weight: bold;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white; border: none; border-radius: 15px;
+            cursor: pointer; transition: all 0.3s; width: 100%;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .results {
+            display: none; margin-top: 30px;
+        }
+        .results.show { display: block; }
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px; border-radius: 15px; text-align: center;
+            color: white; margin: 15px 0;
+        }
+        .result-number {
+            font-size: 3em; font-weight: bold; margin: 15px 0;
+        }
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 20px; border-radius: 15px; margin: 20px 0;
+        }
+        table {
+            width: 100%; border-collapse: collapse; background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px 0;
+        }
+        th, td { padding: 15px; text-align: left; border: 1px solid #ddd; }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="slots_odds.html" class="back-btn">← Back to Slots</a>
+        
+        <div class="header">
+            <h1>🎰 RTP Calculator</h1>
+            <p>Calculate Return to Player and expected losses</p>
+        </div>
+
+        <!-- Calculator -->
+        <div class="card">
+            <h2>Calculate Your Expected Returns</h2>
+            
+            <div class="input-group">
+                <label>RTP (Return to Player) %</label>
+                <input type="number" id="rtpPercent" value="96" min="85" max="99" step="0.1">
+            </div>
+
+            <div class="input-group">
+                <label>Bet Per Spin ($)</label>
+                <input type="number" id="betAmount" value="1" min="0.01" step="0.01">
+            </div>
+
+            <div class="input-group">
+                <label>Number of Spins</label>
+                <input type="number" id="numSpins" value="100" min="1" step="1">
+            </div>
+
+            <div class="input-group">
+                <label>Starting Bankroll ($)</label>
+                <input type="number" id="bankroll" value="100" min="1" step="1">
+            </div>
+
+            <button class="btn" onclick="calculate()">📊 Calculate</button>
+        </div>
+
+        <!-- Results -->
+        <div class="card results" id="results">
+            <h2>Results</h2>
+            <div id="resultsContent"></div>
+        </div>
+
+        <!-- Common RTP Values -->
+        <div class="card">
+            <h2>Common Slot RTP Values</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Slot Type</th>
+                        <th>Typical RTP</th>
+                        <th>House Edge</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>High RTP Online Slots</strong></td>
+                        <td>97-99%</td>
+                        <td>1-3%</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standard Online Slots</strong></td>
+                        <td>95-97%</td>
+                        <td>3-5%</td>
+                        <td>⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Las Vegas Strip Slots</strong></td>
+                        <td>92-95%</td>
+                        <td>5-8%</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Airport/Convenience Slots</strong></td>
+                        <td>85-90%</td>
+                        <td>10-15%</td>
+                        <td>⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low RTP Slots</strong></td>
+                        <td>Below 85%</td>
+                        <td>15%+</td>
+                        <td>❌</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tips -->
+        <div class="card">
+            <div class="info-box">
+                <h3>💡 Understanding RTP</h3>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li><strong>RTP = Return to Player</strong> - Percentage returned over time</li>
+                    <li><strong>House Edge = 100% - RTP</strong> - Casino's advantage</li>
+                    <li><strong>Long-term average</strong> - Not guaranteed per session</li>
+                    <li><strong>Higher RTP = Better odds</strong> - Always choose higher RTP</li>
+                    <li><strong>Online slots usually better</strong> - 95-97% vs 88-92% land-based</li>
+                    <li><strong>Volatility matters too</strong> - High volatility = bigger swings</li>
+                    <li><strong>Check the paytable</strong> - RTP should be disclosed</li>
+                    <li><strong>Progressive jackpots</strong> - Often have lower base RTP</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            casinoSounds.playSound('spin');
+            
+            const rtp = parseFloat(document.getElementById('rtpPercent').value) / 100;
+            const bet = parseFloat(document.getElementById('betAmount').value);
+            const spins = parseInt(document.getElementById('numSpins').value);
+            const bankroll = parseFloat(document.getElementById('bankroll').value);
+            
+            const totalWagered = bet * spins;
+            const expectedReturn = totalWagered * rtp;
+            const expectedLoss = totalWagered - expectedReturn;
+            const houseEdge = (1 - rtp) * 100;
+            const finalBankroll = bankroll - expectedLoss;
+            const lossPercent = (expectedLoss / bankroll) * 100;
+            
+            const resultsContent = `
+                <div class="result-card">
+                    <h3>Total Wagered</h3>
+                    <div class="result-number">$${totalWagered.toFixed(2)}</div>
+                    <p>${spins} spins × $${bet.toFixed(2)} per spin</p>
+                </div>
+
+                <div class="result-card" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+                    <h3>Expected Loss</h3>
+                    <div class="result-number">$${expectedLoss.toFixed(2)}</div>
+                    <p>${lossPercent.toFixed(1)}% of your bankroll</p>
+                </div>
+
+                <div class="result-card" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
+                    <h3>Expected Return</h3>
+                    <div class="result-number">$${expectedReturn.toFixed(2)}</div>
+                    <p>${(rtp * 100).toFixed(1)}% RTP</p>
+                </div>
+
+                <div class="result-card" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                    <h3>Expected Final Bankroll</h3>
+                    <div class="result-number">$${finalBankroll.toFixed(2)}</div>
+                    <p>Started with $${bankroll.toFixed(2)}</p>
+                </div>
+
+                <div class="result-card" style="background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);">
+                    <h3>House Edge</h3>
+                    <div class="result-number">${houseEdge.toFixed(2)}%</div>
+                    <p>Casino advantage</p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">⚠️ Important Notes</h3>
+                    <ul style="line-height: 2;">
+                        <li>These are <strong>expected values</strong> based on long-term averages</li>
+                        <li>Actual results will vary due to <strong>variance</strong></li>
+                        <li>You could win or lose much more in the short term</li>
+                        <li>The more you play, the closer results get to expected values</li>
+                        <li>Set a loss limit and stick to it!</li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('resultsContent').innerHTML = resultsContent;
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            casinoSounds.playSound('coin');
+        });
+    </script>
+</body>
+</html>

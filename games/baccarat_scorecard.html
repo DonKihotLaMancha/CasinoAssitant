@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baccarat Scorecard - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-5px); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
+        }
+        .card h2 {
+            color: var(--accent-color, #2c5364); margin-bottom: 20px;
+            font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
+        }
+        .btn-group {
+            display: flex; gap: 15px; justify-content: center;
+            flex-wrap: wrap; margin: 20px 0;
+        }
+        .btn {
+            padding: 20px 40px; font-size: 1.3em; font-weight: bold;
+            border: none; border-radius: 15px; cursor: pointer;
+            transition: all 0.3s; min-width: 150px;
+        }
+        .btn-banker {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+        .btn-player {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+        .btn-tie {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+        .btn-clear {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .scorecard {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 5px; padding: 20px; background: rgba(0,0,0,0.1);
+            border-radius: 15px; margin: 20px 0; min-height: 200px;
+        }
+        .result-dot {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.2em; color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .banker-dot { background: #f44336; }
+        .player-dot { background: #2196F3; }
+        .tie-dot { background: #4CAF50; }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px; border-radius: 15px; text-align: center; color: white;
+        }
+        .stat-number { font-size: 2.5em; font-weight: bold; }
+        .stat-label { margin-top: 10px; font-size: 1.1em; }
+        .pattern-box {
+            background: rgba(102, 126, 234, 0.1); padding: 20px;
+            border-radius: 10px; margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="baccarat_odds.html" class="back-btn">← Back to Baccarat</a>
+        
+        <div class="header">
+            <h1>💎 Baccarat Scorecard</h1>
+            <p>Track results and spot patterns</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="card">
+            <h2>Record Results</h2>
+            <div class="btn-group">
+                <button class="btn btn-banker" onclick="recordResult('B')">🏦 Banker</button>
+                <button class="btn btn-player" onclick="recordResult('P')">👤 Player</button>
+                <button class="btn btn-tie" onclick="recordResult('T')">🤝 Tie</button>
+                <button class="btn btn-clear" onclick="clearScorecard()">🔄 Clear All</button>
+            </div>
+        </div>
+
+        <!-- Scorecard -->
+        <div class="card">
+            <h2>Scorecard</h2>
+            <div class="scorecard" id="scorecard">
+                <p style="text-align: center; color: #999; grid-column: 1/-1;">No results yet - Record your first hand!</p>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="card">
+            <h2>Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+                    <div class="stat-number" id="bankerCount">0</div>
+                    <div class="stat-label">Banker Wins</div>
+                    <div style="margin-top: 10px;" id="bankerPercent">0%</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
+                    <div class="stat-number" id="playerCount">0</div>
+                    <div class="stat-label">Player Wins</div>
+                    <div style="margin-top: 10px;" id="playerPercent">0%</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
+                    <div class="stat-number" id="tieCount">0</div>
+                    <div class="stat-label">Ties</div>
+                    <div style="margin-top: 10px;" id="tiePercent">0%</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                    <div class="stat-number" id="totalHands">0</div>
+                    <div class="stat-label">Total Hands</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patterns -->
+        <div class="card">
+            <h2>Current Patterns</h2>
+            <div class="pattern-box">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Streaks</h3>
+                <div id="streaks" style="font-size: 1.2em; line-height: 2;">
+                    No streaks yet
+                </div>
+            </div>
+            <div class="pattern-box">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Last 10 Results</h3>
+                <div id="lastTen" style="font-size: 1.5em; letter-spacing: 10px;">
+                    -
+                </div>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="card">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px;">
+                <h3>💡 Pattern Tracking Tips</h3>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li><strong>Patterns are for entertainment</strong> - Each hand is independent</li>
+                    <li><strong>Past results don't predict future</strong> - Gambler's fallacy</li>
+                    <li><strong>Banker has slight edge</strong> - 50.68% vs 49.32% (excluding ties)</li>
+                    <li><strong>Commission on Banker</strong> - Usually 5% on wins</li>
+                    <li><strong>Tie bet is terrible</strong> - 14.4% house edge</li>
+                    <li><strong>Stick to Banker or Player</strong> - Best odds in baccarat</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let results = [];
+        
+        function loadResults() {
+            const saved = localStorage.getItem('baccaratScorecard');
+            if (saved) {
+                results = JSON.parse(saved);
+                updateDisplay();
+            }
+        }
+
+        function saveResults() {
+            localStorage.setItem('baccaratScorecard', JSON.stringify(results));
+        }
+
+        function recordResult(type) {
+            casinoSounds.playSound(type === 'T' ? 'coin' : 'deal');
+            results.push(type);
+            saveResults();
+            updateDisplay();
+        }
+
+        function clearScorecard() {
+            if (confirm('Clear all results?')) {
+                casinoSounds.playSound('click');
+                results = [];
+                saveResults();
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            // Update scorecard
+            const scorecard = document.getElementById('scorecard');
+            if (results.length === 0) {
+                scorecard.innerHTML = '<p style="text-align: center; color: #999; grid-column: 1/-1;">No results yet - Record your first hand!</p>';
+            } else {
+                scorecard.innerHTML = results.map(r => {
+                    const classes = {
+                        'B': 'banker-dot',
+                        'P': 'player-dot',
+                        'T': 'tie-dot'
+                    };
+                    return `<div class="result-dot ${classes[r]}">${r}</div>`;
+                }).join('');
+            }
+
+            // Update stats
+            const bankerCount = results.filter(r => r === 'B').length;
+            const playerCount = results.filter(r => r === 'P').length;
+            const tieCount = results.filter(r => r === 'T').length;
+            const total = results.length;
+
+            document.getElementById('bankerCount').textContent = bankerCount;
+            document.getElementById('playerCount').textContent = playerCount;
+            document.getElementById('tieCount').textContent = tieCount;
+            document.getElementById('totalHands').textContent = total;
+
+            if (total > 0) {
+                document.getElementById('bankerPercent').textContent = ((bankerCount / total) * 100).toFixed(1) + '%';
+                document.getElementById('playerPercent').textContent = ((playerCount / total) * 100).toFixed(1) + '%';
+                document.getElementById('tiePercent').textContent = ((tieCount / total) * 100).toFixed(1) + '%';
+            }
+
+            // Update streaks
+            updateStreaks();
+            
+            // Update last 10
+            const lastTen = results.slice(-10).join(' ');
+            document.getElementById('lastTen').textContent = lastTen || '-';
+        }
+
+        function updateStreaks() {
+            if (results.length === 0) {
+                document.getElementById('streaks').textContent = 'No streaks yet';
+                return;
+            }
+
+            let currentStreak = 1;
+            let currentType = results[results.length - 1];
+            
+            for (let i = results.length - 2; i >= 0; i--) {
+                if (results[i] === currentType) {
+                    currentStreak++;
+                } else {
+                    break;
+                }
+            }
+
+            const streakNames = {
+                'B': 'Banker',
+                'P': 'Player',
+                'T': 'Tie'
+            };
+
+            document.getElementById('streaks').innerHTML = `
+                <strong>Current Streak:</strong> ${currentStreak} ${streakNames[currentType]} in a row
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadResults();
+            casinoSounds.playSound('shuffle');
+        });
+    </script>
+</body>
+</html>
