@@ -20,14 +20,36 @@
         .top-bar {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            padding: 20px;
+            padding: 20px;`n            position: relative;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px;`n            position: relative; }
         .back-btn {
             display: inline-block;
             padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
             text-decoration: none;
             border-radius: 50px;
@@ -47,7 +69,7 @@
         .header h1 {
             font-size: 3.5em;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -64,7 +86,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 25px;
+            padding: 25px;`n            position: relative;
             transition: all 0.3s;
         }
         .stat-card:hover {
@@ -82,7 +104,7 @@
         .stat-value {
             font-size: 2.5em;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -92,7 +114,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 30px;
+            padding: 30px;`n            position: relative;
             margin-bottom: 25px;
         }
         .chart-title {
@@ -124,7 +146,7 @@
         }
         .bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 15px;
             transition: width 1s ease;
             display: flex;
@@ -143,7 +165,7 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            padding: 20px;
+            padding: 20px;`n            position: relative;
         }
         .game-name {
             font-size: 1.3em;
@@ -160,7 +182,7 @@
             border-bottom: none;
         }
         .refresh-btn {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
             padding: 15px 40px;
             border: none;
@@ -344,4 +366,5 @@
     </script>
 </body>
 </html>
+
 

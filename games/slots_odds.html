@@ -8,18 +8,40 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
             color: white;
-            padding: 20px;
+            padding: 20px;`n            position: relative;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; }
         .header { text-align: center; padding: 30px 20px; margin-bottom: 30px; }
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 30px;
+            padding: 30px;`n            position: relative;
             margin-bottom: 20px;
             color: #333;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -29,18 +51,18 @@
         .input-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
         .input-group select, .input-group input {
             width: 100%;
-            padding: 12px;
+            padding: 12px;`n            position: relative;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1em;
         }
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             font-size: 1.2em;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -51,14 +73,14 @@
         .results { display: none; margin-top: 30px; }
         .result-item {
             background: #f5f5f5;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             margin-bottom: 10px;
             border-radius: 8px;
             border-left: 4px solid #f5576c;
         }
         .result-item strong { color: #f5576c; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th, td { padding: 12px;`n            position: relative; text-align: left; border-bottom: 1px solid #ddd; }
         th { background: #f5576c; color: white; }
         .back-btn {
             display: inline-block;
@@ -74,9 +96,9 @@
         .bad { color: #f44336; font-weight: bold; }
         
         .slot-machine {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 20px;
-            padding: 30px;
+            padding: 30px;`n            position: relative;
             margin: 20px auto;
             max-width: 400px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -130,7 +152,7 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: 8px solid #ff6b6b;
             color: #000;
             font-size: 1.5em;
@@ -157,9 +179,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             margin: 10px 0;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 10px;
             border-left: 4px solid #ffd700;
         }
@@ -196,7 +218,7 @@
                 </div>
                 <div class="spin-button">SPIN!</div>
                 
-                <div style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;">
+                <div style="margin-top: 20px; padding: 20px;`n            position: relative; background: rgba(0,0,0,0.3); border-radius: 10px;">
                     <h4 style="color: white; text-align: center; margin-bottom: 15px;">💰 PAYTABLE 💰</h4>
                     <div class="payout-line">
                         <span class="symbol-combo">💎 💎 💎</span>
@@ -416,4 +438,5 @@
     </script>
 </body>
 </html>
+
 

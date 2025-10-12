@@ -22,6 +22,28 @@
             margin: 0;
         }
 
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -74,7 +96,7 @@
         .header h1 {
             font-size: 3em;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -86,7 +108,7 @@
         }
 
         .user-welcome {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 30px;
@@ -172,7 +194,7 @@
         }
 
         .tool-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             padding: 30px;
             border-radius: 15px;
             cursor: pointer;
@@ -337,7 +359,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #ffd700 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -391,7 +413,7 @@
             flex: 1;
             min-width: 200px;
             padding: 20px;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: none;
             border-radius: 12px;
             color: white;
@@ -411,7 +433,7 @@
         }
 
         .action-btn.danger {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
         }
 
         /* Mobile Responsive */
@@ -608,7 +630,7 @@
         </div>
 
         <!-- Daily Goal -->
-        <div class="section" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); padding: 30px; border-radius: 20px; color: white; margin-bottom: 30px;">
+        <div class="section" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%); padding: 30px; border-radius: 20px; color: white; margin-bottom: 30px;">
             <h2 style="color: white; border: none; margin-bottom: 20px;">🎯 Daily Goal</h2>
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                 <div>
@@ -632,22 +654,22 @@
         <div class="section">
             <h2>📊 Your Stats</h2>
             <div class="stats-grid">
-                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="stat-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <div class="stat-icon">🎯</div>
                     <div class="stat-value" id="userLevel">1</div>
                     <div class="stat-label">Level</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="stat-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <div class="stat-icon">⭐</div>
                     <div class="stat-value" id="userXP">0</div>
                     <div class="stat-label">Total XP</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="stat-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <div class="stat-icon">📚</div>
                     <div class="stat-value" id="lessonsCompleted">0</div>
                     <div class="stat-label">Lessons Done</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <div class="stat-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <div class="stat-icon">🏆</div>
                     <div class="stat-value" id="userAchievements">0/20</div>
                     <div class="stat-label">Achievements</div>
@@ -968,7 +990,7 @@
             const popup = document.createElement('div');
             popup.style.cssText = `
                 position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+                background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
                 padding: 40px 60px; border-radius: 20px; z-index: 10000;
                 font-size: 2em; font-weight: bold; color: white;
                 box-shadow: 0 10px 40px rgba(0,0,0,0.5);
@@ -989,4 +1011,5 @@
     </script>
 </body>
 </html>
+
 

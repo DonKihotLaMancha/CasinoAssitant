@@ -11,8 +11,30 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
-            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;`n            position: relative;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; }
         .back-btn {
             display: inline-block; padding: 12px 24px;
@@ -25,7 +47,7 @@
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .card {
             background: var(--card-bg, rgba(255, 255, 255, 0.95));
-            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            border-radius: 20px; padding: 30px;`n            position: relative; margin-bottom: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
         }
         .card h2 {
@@ -39,12 +61,12 @@
             display: block; margin-bottom: 10px; font-weight: bold; font-size: 1.1em;
         }
         .input-group input, .input-group select {
-            width: 100%; padding: 15px; font-size: 1.1em;
+            width: 100%; padding: 15px;`n            position: relative; font-size: 1.1em;
             border-radius: 10px; border: 2px solid #ddd;
         }
         .btn {
             padding: 20px 40px; font-size: 1.3em; font-weight: bold;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white; border: none; border-radius: 15px;
             cursor: pointer; transition: all 0.3s; width: 100%;
         }
@@ -54,24 +76,24 @@
         }
         .results.show { display: block; }
         .result-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px; border-radius: 15px; text-align: center;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            padding: 30px;`n            position: relative; border-radius: 15px; text-align: center;
             color: white; margin: 15px 0;
         }
         .result-number {
             font-size: 3em; font-weight: bold; margin: 15px 0;
         }
         .info-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 20px; border-radius: 15px; margin: 20px 0;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            color: white; padding: 20px;`n            position: relative; border-radius: 15px; margin: 20px 0;
         }
         table {
             width: 100%; border-collapse: collapse; background: white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px 0;
         }
-        th, td { padding: 15px; text-align: left; border: 1px solid #ddd; }
+        th, td { padding: 15px;`n            position: relative; text-align: left; border: 1px solid #ddd; }
         th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
         }
     </style>
@@ -206,31 +228,31 @@
                     <p>${spins} spins × $${bet.toFixed(2)} per spin</p>
                 </div>
 
-                <div class="result-card" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+                <div class="result-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>Expected Loss</h3>
                     <div class="result-number">$${expectedLoss.toFixed(2)}</div>
                     <p>${lossPercent.toFixed(1)}% of your bankroll</p>
                 </div>
 
-                <div class="result-card" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
+                <div class="result-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>Expected Return</h3>
                     <div class="result-number">$${expectedReturn.toFixed(2)}</div>
                     <p>${(rtp * 100).toFixed(1)}% RTP</p>
                 </div>
 
-                <div class="result-card" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                <div class="result-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>Expected Final Bankroll</h3>
                     <div class="result-number">$${finalBankroll.toFixed(2)}</div>
                     <p>Started with $${bankroll.toFixed(2)}</p>
                 </div>
 
-                <div class="result-card" style="background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);">
+                <div class="result-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>House Edge</h3>
                     <div class="result-number">${houseEdge.toFixed(2)}%</div>
                     <p>Casino advantage</p>
                 </div>
 
-                <div style="margin-top: 30px; padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                <div style="margin-top: 30px; padding: 20px;`n            position: relative; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
                     <h3 style="color: #667eea; margin-bottom: 15px;">⚠️ Important Notes</h3>
                     <ul style="line-height: 2;">
                         <li>These are <strong>expected values</strong> based on long-term averages</li>
@@ -253,4 +275,5 @@
     </script>
 </body>
 </html>
+
 

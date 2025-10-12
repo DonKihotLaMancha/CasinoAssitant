@@ -11,8 +11,30 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
-            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;`n            position: relative;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; }
         .back-btn {
             display: inline-block; padding: 12px 24px;
@@ -25,7 +47,7 @@
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .card {
             background: var(--card-bg, rgba(255, 255, 255, 0.95));
-            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            border-radius: 20px; padding: 30px;`n            position: relative; margin-bottom: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
         }
         .card h2 {
@@ -33,7 +55,7 @@
             font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
         }
         .game-table {
-            background: #0a6e0a; padding: 40px; border-radius: 20px;
+            background: #0a6e0a; padding: 40px;`n            position: relative; border-radius: 20px;
             margin: 20px 0; min-height: 400px;
         }
         .hand {
@@ -71,7 +93,7 @@
         .controls { text-align: center; margin: 20px 0; }
         .result {
             text-align: center; font-size: 2em; font-weight: bold;
-            padding: 20px; border-radius: 10px; margin: 20px 0;
+            padding: 20px;`n            position: relative; border-radius: 10px; margin: 20px 0;
             display: none;
         }
         .result.win { background: #4CAF50; color: white; display: block; }
@@ -117,19 +139,19 @@
         <div class="card">
             <h2>Statistics</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <div style="text-align: center; padding: 20px; background: #4CAF50; color: white; border-radius: 10px;">
+                <div style="text-align: center; padding: 20px;`n            position: relative; background: #4CAF50; color: white; border-radius: 10px;">
                     <div style="font-size: 2.5em; font-weight: bold;" id="wins">0</div>
                     <div>Wins</div>
                 </div>
-                <div style="text-align: center; padding: 20px; background: #f44336; color: white; border-radius: 10px;">
+                <div style="text-align: center; padding: 20px;`n            position: relative; background: #f44336; color: white; border-radius: 10px;">
                     <div style="font-size: 2.5em; font-weight: bold;" id="losses">0</div>
                     <div>Losses</div>
                 </div>
-                <div style="text-align: center; padding: 20px; background: #FF9800; color: white; border-radius: 10px;">
+                <div style="text-align: center; padding: 20px;`n            position: relative; background: #FF9800; color: white; border-radius: 10px;">
                     <div style="font-size: 2.5em; font-weight: bold;" id="pushes">0</div>
                     <div>Pushes</div>
                 </div>
-                <div style="text-align: center; padding: 20px; background: #2196F3; color: white; border-radius: 10px;">
+                <div style="text-align: center; padding: 20px;`n            position: relative; background: #2196F3; color: white; border-radius: 10px;">
                     <div style="font-size: 2.5em; font-weight: bold;" id="winRate">0%</div>
                     <div>Win Rate</div>
                 </div>
@@ -311,4 +333,5 @@
     </script>
 </body>
 </html>
+
 

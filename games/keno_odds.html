@@ -14,15 +14,37 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
             color: #333;
+        }
+
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px;`n            position: relative;
         }
 
         .header {
@@ -54,7 +76,7 @@
         .card {
             background: white;
             border-radius: 15px;
-            padding: 30px;
+            padding: 30px;`n            position: relative;
             margin: 20px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
@@ -70,8 +92,8 @@
             grid-template-columns: repeat(10, 1fr);
             gap: 8px;
             margin: 30px 0;
-            padding: 30px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 30px;`n            position: relative;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
@@ -97,21 +119,21 @@
         }
 
         .keno-number.selected {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
             border-color: #2e7d32;
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
         }
 
         .keno-number.drawn {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
             border-color: #c62828;
             animation: pulse 0.5s;
         }
 
         .keno-number.matched {
-            background: linear-gradient(135deg, #ffd700 0%, #ffa000 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: #000;
             border-color: #ff6f00;
             animation: celebrate 0.5s;
@@ -142,7 +164,7 @@
         .input-group input,
         .input-group select {
             width: 100%;
-            padding: 12px;
+            padding: 12px;`n            position: relative;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1em;
@@ -153,7 +175,7 @@
             font-size: 1.2em;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -167,11 +189,11 @@
         }
 
         .btn.secondary {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
         }
 
         .btn.danger {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
         }
 
         .stats-grid {
@@ -182,8 +204,8 @@
         }
 
         .stat-box {
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;`n            position: relative;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 10px;
             text-align: center;
             border-left: 5px solid #667eea;
@@ -208,7 +230,7 @@
 
         .payout-table th,
         .payout-table td {
-            padding: 12px;
+            padding: 12px;`n            position: relative;
             text-align: center;
             border: 1px solid #ddd;
         }
@@ -239,7 +261,7 @@
 
         .selection-info {
             text-align: center;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             background: #e3f2fd;
             border-radius: 10px;
             margin: 20px 0;
@@ -250,8 +272,30 @@
 
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
-            .container {
-                padding: 5px;
+    
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
+        .container {
+                padding: 5px;`n            position: relative;
             }
 
             .header h1 {
@@ -259,14 +303,14 @@
             }
 
             .card {
-                padding: 15px;
+                padding: 15px;`n            position: relative;
                 margin: 10px 5px;
             }
 
             .keno-board {
                 grid-template-columns: repeat(10, 1fr);
                 gap: 4px;
-                padding: 15px;
+                padding: 15px;`n            position: relative;
             }
 
             .keno-number {
@@ -276,7 +320,7 @@
 
             .selection-info {
                 font-size: 1em;
-                padding: 12px;
+                padding: 12px;`n            position: relative;
             }
 
             .btn {
@@ -291,7 +335,7 @@
             }
 
             .stat-box {
-                padding: 15px;
+                padding: 15px;`n            position: relative;
             }
 
             .stat-box .number {
@@ -348,7 +392,7 @@
             </div>
 
             <!-- Odds Display -->
-            <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); padding: 20px; border-radius: 15px; margin: 20px 0; color: white;">
+            <div style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%); padding: 20px;`n            position: relative; border-radius: 15px; margin: 20px 0; color: white;">
                 <h3 style="margin-bottom: 15px;">📊 Your Winning Odds</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
                     <div style="text-align: center;">
@@ -364,7 +408,7 @@
                         <div>House Edge</div>
                     </div>
                 </div>
-                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px; font-size: 0.9em;">
+                <div style="margin-top: 15px; padding: 15px;`n            position: relative; background: rgba(0,0,0,0.2); border-radius: 10px; font-size: 0.9em;">
                     <div id="kenoOddsInfo">Select numbers to see your odds</div>
                 </div>
             </div>
@@ -607,7 +651,7 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; text-align: center;">
+                <div style="margin-top: 30px; padding: 20px;`n            position: relative; background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%); border-radius: 15px; color: white; text-align: center;">
                     <h3 style="margin-bottom: 15px;">Your Result</h3>
                     <div style="font-size: 2em; margin: 10px 0;">
                         ${matches} out of ${selectedNumbers.length} matches
@@ -706,4 +750,5 @@
     </script>
 </body>
 </html>
+
 

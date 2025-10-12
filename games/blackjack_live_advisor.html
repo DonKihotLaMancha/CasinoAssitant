@@ -13,10 +13,32 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e5128 0%, #2d6a4f 50%, #40916c 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 20px;`n            position: relative;
             color: #fff;
+        }
+
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
         }
 
         .container {
@@ -41,7 +63,7 @@
         .card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 25px;
+            padding: 25px;`n            position: relative;
             margin-bottom: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             color: #333;
@@ -57,7 +79,7 @@
             font-size: 1.2em;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -72,11 +94,11 @@
         }
 
         .btn.danger {
-            background: linear-gradient(135deg, #c1121f 0%, #e63946 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
         }
 
         .btn.primary {
-            background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
         }
 
         .video-container {
@@ -97,9 +119,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
-            padding: 40px;
+            padding: 40px;`n            position: relative;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             z-index: 1000;
@@ -149,7 +171,7 @@
         }
 
         .status {
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             border-radius: 10px;
             margin: 10px 0;
             font-weight: bold;
@@ -176,7 +198,7 @@
 
         .input-group {
             background: #f5f5f5;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             border-radius: 10px;
         }
 
@@ -189,7 +211,7 @@
 
         .input-group select {
             width: 100%;
-            padding: 10px;
+            padding: 10px;`n            position: relative;
             font-size: 1.1em;
             border-radius: 5px;
             border: 2px solid #ddd;
@@ -198,7 +220,7 @@
         .info-box {
             background: #e7f3ff;
             border-left: 4px solid #2196F3;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             border-radius: 5px;
             margin: 15px 0;
         }
@@ -210,7 +232,7 @@
 
         .history-item {
             background: #f5f5f5;
-            padding: 15px;
+            padding: 15px;`n            position: relative;
             margin: 10px 0;
             border-radius: 10px;
             border-left: 4px solid #2d6a4f;
@@ -353,7 +375,7 @@
         <div class="card">
             <h2>📊 Recommendation History</h2>
             <div id="historyDisplay">
-                <p style="text-align: center; color: #666; padding: 20px;">
+                <p style="text-align: center; color: #666; padding: 20px;`n            position: relative;">
                     Your recommendations will appear here
                 </p>
             </div>
@@ -581,7 +603,7 @@
             const historyDiv = document.getElementById('historyDisplay');
             
             if (recommendationHistory.length === 0) {
-                historyDiv.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Your recommendations will appear here</p>';
+                historyDiv.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;`n            position: relative;">Your recommendations will appear here</p>';
                 return;
             }
 
@@ -725,4 +747,5 @@
     </script>
 </body>
 </html>
+
 

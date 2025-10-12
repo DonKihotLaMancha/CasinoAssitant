@@ -11,8 +11,30 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
-            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;`n            position: relative;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1000px; margin: 0 auto; }
         .back-btn {
             display: inline-block; padding: 12px 24px;
@@ -25,7 +47,7 @@
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .card {
             background: var(--card-bg, rgba(255, 255, 255, 0.95));
-            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            border-radius: 20px; padding: 30px;`n            position: relative; margin-bottom: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
         }
         .card h2 {
@@ -33,7 +55,7 @@
             font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
         }
         .scenario {
-            background: #0a6e0a; padding: 30px; border-radius: 15px;
+            background: #0a6e0a; padding: 30px;`n            position: relative; border-radius: 15px;
             text-align: center; margin: 20px 0;
         }
         .scenario h3 { color: white; margin-bottom: 20px; font-size: 1.5em; }
@@ -69,7 +91,7 @@
         .btn-double { background: #2196F3; color: white; }
         .btn-split { background: #FF9800; color: white; }
         .result {
-            text-align: center; padding: 20px; border-radius: 10px;
+            text-align: center; padding: 20px;`n            position: relative; border-radius: 10px;
             margin: 20px 0; font-size: 1.5em; font-weight: bold;
             display: none;
         }
@@ -80,8 +102,8 @@
             gap: 15px; margin: 20px 0;
         }
         .stat-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px; border-radius: 10px; text-align: center; color: white;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            padding: 20px;`n            position: relative; border-radius: 10px; text-align: center; color: white;
         }
         .stat-number { font-size: 2.5em; font-weight: bold; }
         .stat-label { margin-top: 5px; }
@@ -122,7 +144,7 @@
 
             <div id="result" class="result"></div>
 
-            <button onclick="nextScenario()" style="width: 100%; padding: 15px; font-size: 1.2em; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">
+            <button onclick="nextScenario()" style="width: 100%; padding: 15px;`n            position: relative; font-size: 1.2em; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">
                 ➡️ Next Scenario
             </button>
         </div>
@@ -234,4 +256,5 @@
     </script>
 </body>
 </html>
+
 

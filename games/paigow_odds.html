@@ -14,9 +14,31 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
             color: #333;
+        }
+
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
         }
 
         .container {
@@ -64,7 +86,7 @@
             display: inline-block;
             width: 80px;
             height: 112px;
-            background: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: 2px solid #333;
             border-radius: 10px;
             margin: 5px;
@@ -105,7 +127,7 @@
         .hand-section {
             margin: 30px 0;
             padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 15px;
             border-left: 5px solid #134e5e;
         }
@@ -120,7 +142,7 @@
             font-size: 1.2em;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -142,7 +164,7 @@
 
         .stat-box {
             padding: 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 15px;
             text-align: center;
             color: white;
@@ -192,7 +214,29 @@
 
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
-            .container {
+    
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
+        .container {
                 padding: 5px;
             }
 
@@ -330,7 +374,7 @@
             <div id="resultsContent"></div>
         </div>
 
-        <div class="card" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%); color: white;">
+        <div class="card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%); color: white;">
             <h2 style="color: white;">📊 Your Winning Odds</h2>
             
             <div class="stats-grid">
@@ -645,4 +689,5 @@
     </script>
 </body>
 </html>
+
 

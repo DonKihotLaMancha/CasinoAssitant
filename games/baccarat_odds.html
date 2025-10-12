@@ -8,11 +8,33 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
             color: white;
             padding: 20px;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; }
         .header { text-align: center; padding: 30px 20px; margin-bottom: 30px; }
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
@@ -32,7 +54,7 @@
             margin: 20px 0;
         }
         .bet-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             padding: 25px;
             border-radius: 12px;
             color: white;
@@ -72,17 +94,17 @@
         }
         
         .chip.banker {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
         }
         
         .chip.player {
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
         }
         
         .chip.tie {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             color: white;
         }
         
@@ -98,7 +120,7 @@
             display: inline-block;
             width: 80px;
             height: 112px;
-            background: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border: 2px solid #333;
             border-radius: 10px;
             margin: 5px;
@@ -227,7 +249,7 @@
             
             <h2>Main Bets Comparison</h2>
             <div class="bet-grid">
-                <div class="bet-card" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
+                <div class="bet-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>🏦 BANKER</h3>
                     <div class="big-number">45.86%</div>
                     <div class="stat">Win Probability</div>
@@ -236,7 +258,7 @@
                     <div class="stat"><strong>✓ BEST BET</strong></div>
                 </div>
                 
-                <div class="bet-card" style="background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
+                <div class="bet-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>👤 PLAYER</h3>
                     <div class="big-number">44.62%</div>
                     <div class="stat">Win Probability</div>
@@ -245,7 +267,7 @@
                     <div class="stat"><strong>✓ Good Bet</strong></div>
                 </div>
                 
-                <div class="bet-card" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+                <div class="bet-card" style="background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);">
                     <h3>🤝 TIE</h3>
                     <div class="big-number">9.52%</div>
                     <div class="stat">Win Probability</div>
@@ -335,7 +357,7 @@
 
         <div class="card">
             <h2>🎮 Live Simulator</h2>
-            <div style="text-align: center; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; margin: 20px 0;">
+            <div style="text-align: center; padding: 30px; background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%); border-radius: 15px; margin: 20px 0;">
                 <h3 style="color: white; margin-bottom: 20px;">Simulate a Hand</h3>
                 <button onclick="simulateHand()" style="padding: 20px 40px; font-size: 1.3em; background: #ffd700; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: all 0.3s;">
                     🎲 Deal Cards
@@ -451,4 +473,5 @@
     </script>
 </body>
 </html>
+
 

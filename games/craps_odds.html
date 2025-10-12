@@ -8,25 +8,47 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             min-height: 100vh;
             color: white;
-            padding: 20px;
+            padding: 20px;`n            position: relative;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; }
         .header { text-align: center; padding: 30px 20px; margin-bottom: 30px; }
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 30px;
+            padding: 30px;`n            position: relative;
             margin-bottom: 20px;
             color: #333;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         .card h2 { color: #134e5e; margin-bottom: 20px; font-size: 1.8em; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th, td { padding: 12px;`n            position: relative; text-align: left; border-bottom: 1px solid #ddd; }
         th { background: #134e5e; color: white; }
         .back-btn {
             display: inline-block;
@@ -57,7 +79,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            padding: 10px;
+            padding: 10px;`n            position: relative;
             gap: 5px;
             animation: roll 1s ease-in-out infinite;
         }
@@ -91,9 +113,9 @@
         }
 
         .craps-table {
-            background: linear-gradient(135deg, #0f4d0f 0%, #134e5e 100%);
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 20px;
-            padding: 30px;
+            padding: 30px;`n            position: relative;
             margin: 20px 0;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
@@ -377,4 +399,5 @@
     </div>
 </body>
 </html>
+
 

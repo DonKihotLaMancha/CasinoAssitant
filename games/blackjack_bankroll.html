@@ -11,8 +11,30 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
-            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;`n            position: relative;
         }
+
+        
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; }
         .back-btn {
             display: inline-block; padding: 12px 24px;
@@ -25,7 +47,7 @@
         .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .card {
             background: var(--card-bg, rgba(255, 255, 255, 0.95));
-            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            border-radius: 20px; padding: 30px;`n            position: relative; margin-bottom: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
         }
         .card h2 {
@@ -33,8 +55,8 @@
             font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
         }
         .bankroll-display {
-            text-align: center; padding: 40px;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            text-align: center; padding: 40px;`n            position: relative;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
             border-radius: 15px; margin: 20px 0; color: white;
         }
         .bankroll-amount {
@@ -48,7 +70,7 @@
             display: block; margin-bottom: 10px; font-weight: bold; font-size: 1.1em;
         }
         .input-group input, .input-group select {
-            width: 100%; padding: 15px; font-size: 1.1em;
+            width: 100%; padding: 15px;`n            position: relative; font-size: 1.1em;
             border-radius: 10px; border: 2px solid #ddd;
         }
         .btn {
@@ -62,10 +84,10 @@
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .session-log {
             max-height: 400px; overflow-y: auto;
-            background: rgba(0,0,0,0.05); padding: 20px; border-radius: 10px;
+            background: rgba(0,0,0,0.05); padding: 20px;`n            position: relative; border-radius: 10px;
         }
         .session-entry {
-            padding: 15px; margin: 10px 0;
+            padding: 15px;`n            position: relative; margin: 10px 0;
             background: white; border-radius: 10px;
             border-left: 5px solid #667eea;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -77,14 +99,14 @@
             gap: 20px; margin: 20px 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px; border-radius: 15px; text-align: center; color: white;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            padding: 30px;`n            position: relative; border-radius: 15px; text-align: center; color: white;
         }
         .stat-number { font-size: 2.5em; font-weight: bold; }
         .stat-label { margin-top: 10px; font-size: 1.1em; }
         .info-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 20px; border-radius: 15px; margin: 20px 0;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            color: white; padding: 20px;`n            position: relative; border-radius: 15px; margin: 20px 0;
         }
     </style>
 </head>
@@ -318,4 +340,5 @@
     </script>
 </body>
 </html>
+
 
