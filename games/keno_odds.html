@@ -346,6 +346,28 @@
                 <button class="btn danger" onclick="clearSelection()">🗑️ Clear All</button>
                 <button class="btn" onclick="drawNumbers()">🎯 Draw Numbers</button>
             </div>
+
+            <!-- Odds Display -->
+            <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); padding: 20px; border-radius: 15px; margin: 20px 0; color: white;">
+                <h3 style="margin-bottom: 15px;">📊 Your Winning Odds</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; font-weight: bold;" id="matchProbability">0%</div>
+                        <div>Match Probability</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; font-weight: bold;" id="expectedMatches">0</div>
+                        <div>Expected Matches</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; font-weight: bold;" id="houseEdgeKeno">25%</div>
+                        <div>House Edge</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px; font-size: 0.9em;">
+                    <div id="kenoOddsInfo">Select numbers to see your odds</div>
+                </div>
+            </div>
         </div>
 
         <div class="card">
@@ -424,20 +446,57 @@
             }
 
             if (selectedNumbers.includes(num)) {
-                casinoSounds.playSound('click');
                 selectedNumbers = selectedNumbers.filter(n => n !== num);
                 element.classList.remove('selected');
             } else {
                 if (selectedNumbers.length >= 10) {
-                    alert('You can only select up to 10 numbers!');
+                    alert('Maximum 10 numbers can be selected!');
                     return;
                 }
-                casinoSounds.playSound('chip');
                 selectedNumbers.push(num);
                 element.classList.add('selected');
             }
+            updateSelectedCount();
+            calculateKenoOdds();
+        }
 
+        function updateSelectedCount() {
             document.getElementById('selectedCount').textContent = selectedNumbers.length;
+        }
+
+        function calculateKenoOdds() {
+            const numSelected = selectedNumbers.length;
+            if (numSelected === 0) {
+                document.getElementById('matchProbability').textContent = '0%';
+                document.getElementById('expectedMatches').textContent = '0';
+                document.getElementById('kenoOddsInfo').textContent = 'Select numbers to see your odds';
+                return;
+            }
+
+            // Keno odds table (probability of matching X numbers when Y are selected)
+            const oddsTable = {
+                1: { prob: 25.0, expected: 0.25, info: '1 in 4 chance' },
+                2: { prob: 6.01, expected: 0.50, info: '1 in 16.6 chance' },
+                3: { prob: 1.39, expected: 0.75, info: '1 in 72 chance' },
+                4: { prob: 0.31, expected: 1.00, info: '1 in 327 chance' },
+                5: { prob: 0.064, expected: 1.25, info: '1 in 1,551 chance' },
+                6: { prob: 0.013, expected: 1.50, info: '1 in 7,753 chance' },
+                7: { prob: 0.0024, expected: 1.75, info: '1 in 40,980 chance' },
+                8: { prob: 0.00043, expected: 2.00, info: '1 in 230,115 chance' },
+                9: { prob: 0.000072, expected: 2.25, info: '1 in 1.4 million chance' },
+                10: { prob: 0.000011, expected: 2.50, info: '1 in 8.9 million chance' }
+            };
+
+            const odds = oddsTable[numSelected] || oddsTable[10];
+            
+            document.getElementById('matchProbability').textContent = odds.prob.toFixed(3) + '%';
+            document.getElementById('expectedMatches').textContent = odds.expected.toFixed(2);
+            document.getElementById('kenoOddsInfo').innerHTML = `
+                <strong>${numSelected} numbers selected</strong><br>
+                Chance to match all: ${odds.info}<br>
+                Expected matches: ${odds.expected.toFixed(2)} out of ${numSelected}<br>
+                House edge: ~25% (typical for Keno)
+            `;
         }
 
         function quickPick() {
