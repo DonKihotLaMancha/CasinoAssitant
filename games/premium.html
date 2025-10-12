@@ -250,11 +250,11 @@
                     <li>Everything in Premium</li>
                     <li>Exclusive strategies</li>
                     <li>Custom strategy builder</li>
-                    <li>1-on-1 coaching session</li>
+                    <li>Advanced simulations</li>
                     <li>Lifetime updates</li>
-                    <li>VIP Discord access</li>
+                    <li>VIP community access</li>
                     <li>Early feature access</li>
-                    <li>Money-back guarantee</li>
+                    <li>Priority email support</li>
                 </ul>
                 <button class="subscribe-btn" onclick="selectPlan('yearly')">Subscribe Yearly</button>
             </div>
@@ -310,13 +310,13 @@
                         <td class="check">✓</td>
                     </tr>
                     <tr>
-                        <td>1-on-1 Coaching</td>
+                        <td>Advanced Simulations</td>
                         <td class="cross">✗</td>
                         <td class="cross">✗</td>
                         <td class="check">✓</td>
                     </tr>
                     <tr>
-                        <td>VIP Discord</td>
+                        <td>VIP Community Access</td>
                         <td class="cross">✗</td>
                         <td class="cross">✗</td>
                         <td class="check">✓</td>
@@ -327,7 +327,10 @@
 
         <div style="text-align: center; margin: 40px 0;">
             <p style="color: rgba(255, 255, 255, 0.6);">
-                💳 Secure payment via Stripe • Cancel anytime • 30-day money-back guarantee
+                💳 Secure payment via Stripe • Cancel anytime • No refunds on digital products
+            </p>
+            <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.9em; margin-top: 10px;">
+                By subscribing, you agree to our Terms of Service and Privacy Policy
             </p>
         </div>
     </div>
@@ -350,8 +353,9 @@
             const confirmed = confirm(
                 `🎉 Upgrade to Premium ${plan === 'yearly' ? 'Annual' : 'Monthly'}!\n\n` +
                 `Price: ${prices[plan]}\n\n` +
-                `This is a demo. In production, you'll be redirected to secure payment.\n\n` +
-                `Proceed to payment?`
+                `⚠️ This is a demo. In production, you'll be redirected to secure payment.\n` +
+                `Note: Digital subscriptions are non-refundable.\n\n` +
+                `Proceed to demo checkout?`
             );
             
             if (confirmed) {
