@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slots Odds Calculator - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; padding: 30px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            color: #333;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .card h2 { color: #f5576c; margin-bottom: 20px; font-size: 1.8em; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .input-group select, .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .results { display: none; margin-top: 30px; }
+        .result-item {
+            background: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+        }
+        .result-item strong { color: #f5576c; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5576c; color: white; }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .good { color: #4CAF50; font-weight: bold; }
+        .bad { color: #f44336; font-weight: bold; }
+        
+        .slot-machine {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        
+        .slot-reels {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .slot-reel {
+            width: 80px;
+            height: 100px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.2);
+            animation: spin-reel 1s ease-in-out infinite;
+        }
+        
+        .slot-reel:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .slot-reel:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes spin-reel {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .slot-display {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .slot-display h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .spin-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: 8px solid #ff6b6b;
+            color: #000;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .spin-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .spin-button:active {
+            transform: scale(0.95);
+        }
+
+        .payout-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .symbol-combo {
+            font-size: 1.5em;
+        }
+
+        .payout-amount {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .card {
+                padding: 15px;
+                margin: 10px 5px;
+            }
+
+            .slot-machine {
+                padding: 15px;
+            }
+
+            .slot-display h3 {
+                font-size: 1.2em;
+            }
+
+            .slot-reels {
+                gap: 5px;
+                padding: 15px 5px;
+            }
+
+            .slot-reel {
+                width: 60px;
+                height: 80px;
+                font-size: 2.5em;
+            }
+
+            .spin-button {
+                width: 100px;
+                height: 100px;
+                font-size: 1.2em;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 0.95em;
+            }
+
+            .payout-line {
+                padding: 10px;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .symbol-combo {
+                font-size: 1.2em;
+            }
+
+            .payout-amount {
+                font-size: 1.1em;
+            }
+
+            .input-group {
+                margin-bottom: 15px;
+            }
+
+            .input-group input,
+            .input-group select {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            table {
+                font-size: 0.85em;
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .spin-button:active {
+                transform: scale(0.95);
+            }
+
+            button:active {
+                transform: scale(0.98);
+            }
+
+            button, .btn {
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>🎰 Slots Odds Calculator</h1>
+            <p>Understand RTP, volatility, and expected returns</p>
+        </div>
+
+        <div class="card">
+            <div class="slot-machine">
+                <div class="slot-display">
+                    <h3>🎰 ONLINE SLOT MACHINE 🎰</h3>
+                    <div style="display: flex; justify-content: space-around; margin-top: 15px; color: white;">
+                        <div>
+                            <div style="font-size: 0.9em; opacity: 0.8;">Balance</div>
+                            <div style="font-size: 1.5em; font-weight: bold;">$<span id="balance">1000</span></div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.9em; opacity: 0.8;">Bet</div>
+                            <div style="font-size: 1.5em; font-weight: bold;">$<span id="currentBet">10</span></div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.9em; opacity: 0.8;">Win</div>
+                            <div style="font-size: 1.5em; font-weight: bold; color: #ffd700;">$<span id="lastWin">0</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slot-reels" id="slotReels">
+                    <div class="slot-reel" id="reel1">
+                        <div class="reel-strip">🍒</div>
+                    </div>
+                    <div class="slot-reel" id="reel2">
+                        <div class="reel-strip">💎</div>
+                    </div>
+                    <div class="slot-reel" id="reel3">
+                        <div class="reel-strip">🍋</div>
+                    </div>
+                    <div class="slot-reel" id="reel4">
+                        <div class="reel-strip">⭐</div>
+                    </div>
+                    <div class="slot-reel" id="reel5">
+                        <div class="reel-strip">🍇</div>
+                    </div>
+                </div>
+
+                <div id="winMessage" style="text-align: center; min-height: 40px; font-size: 1.5em; font-weight: bold; color: #ffd700; margin: 15px 0;"></div>
+
+                <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
+                    <button class="spin-button" onclick="changeBet(-5)" style="width: 80px; height: 80px; font-size: 1.2em;">-$5</button>
+                    <button class="spin-button" onclick="spin()" id="spinBtn" style="width: 150px; height: 150px; font-size: 1.8em;">SPIN<br>$<span id="spinBet">10</span></button>
+                    <button class="spin-button" onclick="changeBet(5)" style="width: 80px; height: 80px; font-size: 1.2em;">+$5</button>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 10px; margin: 15px 0;">
+                    <button onclick="maxBet()" style="padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">MAX BET ($100)</button>
+                    <button onclick="autoSpin()" id="autoSpinBtn" style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">AUTO SPIN</button>
+                    <button onclick="resetGame()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">RESET</button>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px;">
+                    <h4 style="color: white; text-align: center; margin-bottom: 15px;">💰 PAYTABLE 💰</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="payout-line">
+                            <span class="symbol-combo">💎 💎 💎 💎 💎</span>
+                            <span class="payout-amount">1000x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">7️⃣ 7️⃣ 7️⃣ 7️⃣ 7️⃣</span>
+                            <span class="payout-amount">500x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">🍒 🍒 🍒 🍒 🍒</span>
+                            <span class="payout-amount">200x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">⭐ ⭐ ⭐ ⭐ ⭐</span>
+                            <span class="payout-amount">100x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">🍋 🍋 🍋 🍋 🍋</span>
+                            <span class="payout-amount">50x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">🍇 🍇 🍇 🍇 🍇</span>
+                            <span class="payout-amount">25x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">🔔 🔔 🔔 🔔 🔔</span>
+                            <span class="payout-amount">15x</span>
+                        </div>
+                        <div class="payout-line">
+                            <span class="symbol-combo">🍊 🍊 🍊 🍊 🍊</span>
+                            <span class="payout-amount">10x</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; color: white; font-size: 0.9em;">
+                        <strong>Note:</strong> 4 matching symbols = 50% of 5-symbol payout<br>
+                        3 matching symbols = 25% of 5-symbol payout
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Slot Machine Calculator</h2>
+            
+            <div class="input-group">
+                <label>RTP (Return to Player) %</label>
+                <select id="rtp">
+                    <option value="96">96% - Excellent (Online slots)</option>
+                    <option value="95">95% - Very Good</option>
+                    <option value="94">94% - Good</option>
+                    <option value="92">92% - Average (Vegas Strip)</option>
+                    <option value="90">90% - Below Average</option>
+                    <option value="88">88% - Poor (Airport/Gas Station)</option>
+                    <option value="85">85% - Very Poor</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Volatility</label>
+                <select id="volatility">
+                    <option value="low">Low - Frequent small wins</option>
+                    <option value="medium">Medium - Balanced</option>
+                    <option value="high">High - Rare big wins</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Bet Per Spin ($)</label>
+                <input type="number" id="betAmount" value="1" min="0.01" step="0.01">
+            </div>
+
+            <div class="input-group">
+                <label>Number of Spins</label>
+                <input type="number" id="numSpins" value="1000" min="10" max="100000">
+            </div>
+
+            <div class="input-group">
+                <label>Starting Bankroll ($)</label>
+                <input type="number" id="bankroll" value="100" min="1">
+            </div>
+
+            <button class="btn" onclick="calculate()">Calculate Expected Results</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="card">
+                <h2>Expected Returns</h2>
+                <div id="results"></div>
+            </div>
+
+            <div class="card">
+                <h2>🎮 Bankroll Simulator</h2>
+                <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; margin: 20px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label style="color: white; font-weight: bold;">Starting Bankroll:</label>
+                            <input type="number" id="startingBankroll" value="1000" style="width: 100%; padding: 10px; border-radius: 5px; border: none; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <label style="color: white; font-weight: bold;">Bet Per Spin:</label>
+                            <input type="number" id="betPerSpin" value="10" style="width: 100%; padding: 10px; border-radius: 5px; border: none; margin-top: 5px;">
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button onclick="simulateBankroll()" style="padding: 15px 40px; font-size: 1.2em; background: #ffd700; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                            🎰 Simulate 100 Spins
+                        </button>
+                    </div>
+                    <div id="bankrollResult" style="margin-top: 20px; color: white; font-size: 1.1em; text-align: center; min-height: 150px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="card">
+                <h2>Common Slot RTP Ranges</h2>
+                <div id="rtpComparison"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Online Slots Game Variables
+        let balance = 1000;
+        let currentBet = 10;
+        let isSpinning = false;
+        let autoSpinning = false;
+        let autoSpinInterval;
+
+        const symbols = ['💎', '7️⃣', '🍒', '⭐', '🍋', '🍇', '🔔', '🍊'];
+        const symbolWeights = [1, 2, 5, 8, 12, 15, 20, 25]; // Lower = rarer
+        
+        const payouts = {
+            '💎': {5: 1000, 4: 500, 3: 250},
+            '7️⃣': {5: 500, 4: 250, 3: 125},
+            '🍒': {5: 200, 4: 100, 3: 50},
+            '⭐': {5: 100, 4: 50, 3: 25},
+            '🍋': {5: 50, 4: 25, 3: 12},
+            '🍇': {5: 25, 4: 12, 3: 6},
+            '🔔': {5: 15, 4: 7, 3: 3},
+            '🍊': {5: 10, 4: 5, 3: 2}
+        };
+
+        function getRandomSymbol() {
+            const totalWeight = symbolWeights.reduce((a, b) => a + b, 0);
+            let random = Math.random() * totalWeight;
+            
+            for (let i = 0; i < symbols.length; i++) {
+                random -= symbolWeights[i];
+                if (random <= 0) return symbols[i];
+            }
+            return symbols[symbols.length - 1];
+        }
+
+        function changeBet(amount) {
+            if (isSpinning) return;
+            
+            currentBet += amount;
+            if (currentBet < 5) currentBet = 5;
+            if (currentBet > 100) currentBet = 100;
+            if (currentBet > balance) currentBet = balance;
+            
+            updateDisplay();
+        }
+
+        function maxBet() {
+            if (isSpinning) return;
+            currentBet = Math.min(100, balance);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('balance').textContent = balance;
+            document.getElementById('currentBet').textContent = currentBet;
+            document.getElementById('spinBet').textContent = currentBet;
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+            if (balance < currentBet) {
+                alert('Insufficient balance! Click RESET to start over.');
+                return;
+            }
+
+            casinoSounds.playSound('spin');
+            isSpinning = true;
+            balance -= currentBet;
+            document.getElementById('lastWin').textContent = '0';
+            document.getElementById('winMessage').textContent = '';
+            updateDisplay();
+
+            // Disable spin button
+            document.getElementById('spinBtn').style.opacity = '0.5';
+            document.getElementById('spinBtn').style.cursor = 'not-allowed';
+
+            // Spin animation
+            const results = [];
+            for (let i = 1; i <= 5; i++) {
+                const reel = document.getElementById(`reel${i}`);
+                const strip = reel.querySelector('.reel-strip');
+                
+                // Animate spinning
+                strip.style.animation = 'none';
+                setTimeout(() => {
+                    strip.style.animation = `spin-reel ${0.5 + i * 0.2}s ease-out`;
+                }, 10);
+
+                // Generate result
+                const symbol = getRandomSymbol();
+                results.push(symbol);
+
+                // Show result after animation
+                await new Promise(resolve => {
+                    setTimeout(() => {
+                        strip.textContent = symbol;
+                        strip.style.animation = 'none';
+                        resolve();
+                    }, 500 + i * 200);
+                });
+            }
+
+            // Check for wins
+            setTimeout(() => {
+                checkWin(results);
+                isSpinning = false;
+                document.getElementById('spinBtn').style.opacity = '1';
+                document.getElementById('spinBtn').style.cursor = 'pointer';
+            }, 100);
+        }
+
+        function checkWin(results) {
+            let winAmount = 0;
+            let winMessage = '';
+
+            // Count matching symbols from left
+            const firstSymbol = results[0];
+            let matchCount = 1;
+            
+            for (let i = 1; i < results.length; i++) {
+                if (results[i] === firstSymbol) {
+                    matchCount++;
+                } else {
+                    break;
+                }
+            }
+
+            // Check if there's a payout
+            if (matchCount >= 3 && payouts[firstSymbol]) {
+                const multiplier = payouts[firstSymbol][matchCount];
+                if (multiplier) {
+                    winAmount = currentBet * multiplier;
+                    balance += winAmount;
+                    
+                    if (matchCount === 5) {
+                        winMessage = `🎉 JACKPOT! ${firstSymbol} x5 - WIN $${winAmount}! 🎉`;
+                        casinoSounds.playSound('bigwin');
+                    } else if (matchCount === 4) {
+                        winMessage = `🎊 BIG WIN! ${firstSymbol} x4 - WIN $${winAmount}! 🎊`;
+                        casinoSounds.playSound('bigwin');
+                    } else {
+                        winMessage = `✨ WIN! ${firstSymbol} x3 - WIN $${winAmount}! ✨`;
+                        casinoSounds.playSound('win');
+                    }
+                }
+            } else {
+                casinoSounds.playSound('lose');
+            }
+
+            // Update display
+            document.getElementById('lastWin').textContent = winAmount;
+            document.getElementById('winMessage').textContent = winMessage;
+            updateDisplay();
+
+            // Check if bankrupt
+            if (balance <= 0) {
+                setTimeout(() => {
+                    alert('💸 You\'re out of money! Click RESET to start over.');
+                    stopAutoSpin();
+                }, 500);
+            }
+        }
+
+        function autoSpin() {
+            if (autoSpinning) {
+                stopAutoSpin();
+            } else {
+                autoSpinning = true;
+                document.getElementById('autoSpinBtn').textContent = 'STOP AUTO';
+                document.getElementById('autoSpinBtn').style.background = '#f44336';
+                
+                autoSpinInterval = setInterval(() => {
+                    if (!isSpinning && balance >= currentBet) {
+                        spin();
+                    } else if (balance < currentBet) {
+                        stopAutoSpin();
+                    }
+                }, 3000);
+            }
+        }
+
+        function stopAutoSpin() {
+            autoSpinning = false;
+            clearInterval(autoSpinInterval);
+            document.getElementById('autoSpinBtn').textContent = 'AUTO SPIN';
+            document.getElementById('autoSpinBtn').style.background = '#2196F3';
+        }
+
+        function resetGame() {
+            if (confirm('Reset game and start with $1000?')) {
+                stopAutoSpin();
+                balance = 1000;
+                currentBet = 10;
+                document.getElementById('lastWin').textContent = '0';
+                document.getElementById('winMessage').textContent = '';
+                updateDisplay();
+                
+                // Reset reels
+                for (let i = 1; i <= 5; i++) {
+                    const strip = document.getElementById(`reel${i}`).querySelector('.reel-strip');
+                    strip.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                }
+            }
+        }
+
+        // Initialize
+        updateDisplay();
+
+        function calculate() {
+            const rtp = parseFloat(document.getElementById('rtp').value);
+            const volatility = document.getElementById('volatility').value;
+            const betAmount = parseFloat(document.getElementById('betAmount').value);
+            const numSpins = parseInt(document.getElementById('numSpins').value);
+            const bankroll = parseFloat(document.getElementById('bankroll').value);
+
+            const houseEdge = 100 - rtp;
+            const totalWagered = betAmount * numSpins;
+            const expectedReturn = totalWagered * (rtp / 100);
+            const expectedLoss = totalWagered - expectedReturn;
+            const finalBankroll = bankroll - expectedLoss;
+            
+            // Volatility adjustments
+            let hitFrequency, avgWin, maxWin;
+            if (volatility === 'low') {
+                hitFrequency = 30; // 30% of spins win
+                avgWin = betAmount * 1.5;
+                maxWin = betAmount * 50;
+            } else if (volatility === 'medium') {
+                hitFrequency = 20; // 20% of spins win
+                avgWin = betAmount * 3;
+                maxWin = betAmount * 500;
+            } else {
+                hitFrequency = 10; // 10% of spins win
+                avgWin = betAmount * 8;
+                maxWin = betAmount * 5000;
+            }
+
+            const expectedWins = numSpins * (hitFrequency / 100);
+            const expectedLosses = numSpins - expectedWins;
+            
+            // Risk of ruin calculation
+            const riskOfRuin = calculateRiskOfRuin(bankroll, betAmount, houseEdge, numSpins);
+
+            const resultsContent = `
+                <div class="result-item">
+                    <strong>RTP (Return to Player):</strong> ${rtp}%
+                </div>
+                <div class="result-item">
+                    <strong>House Edge:</strong> ${houseEdge.toFixed(2)}%
+                </div>
+                <div class="result-item">
+                    <strong>Total Wagered:</strong> $${totalWagered.toFixed(2)} (${numSpins} spins × $${betAmount})
+                </div>
+                <div class="result-item">
+                    <strong>Expected Return:</strong> $${expectedReturn.toFixed(2)}
+                </div>
+                <div class="result-item">
+                    <strong>Expected Loss:</strong> <span class="bad">-$${expectedLoss.toFixed(2)}</span>
+                </div>
+                <div class="result-item">
+                    <strong>Starting Bankroll:</strong> $${bankroll.toFixed(2)}
+                </div>
+                <div class="result-item">
+                    <strong>Expected Final Bankroll:</strong> $${finalBankroll.toFixed(2)}
+                </div>
+                <div class="result-item">
+                    <strong>Hit Frequency:</strong> ~${hitFrequency}% (${expectedWins.toFixed(0)} wins, ${expectedLosses.toFixed(0)} losses)
+                </div>
+                <div class="result-item">
+                    <strong>Average Win:</strong> $${avgWin.toFixed(2)}
+                </div>
+                <div class="result-item">
+                    <strong>Potential Max Win:</strong> $${maxWin.toFixed(2)}
+                </div>
+                <div class="result-item">
+                    <strong>Risk of Losing Entire Bankroll:</strong> ${riskOfRuin.toFixed(1)}%
+                </div>
+                <div class="result-item">
+                    <strong>Recommended Session Length:</strong> ${Math.floor(bankroll / betAmount / 2)} spins (to preserve bankroll)
+                </div>
+            `;
+
+            document.getElementById('resultsContent').innerHTML = resultsContent;
+            generateRTPComparison();
+            
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function calculateRiskOfRuin(bankroll, betSize, houseEdge, spins) {
+            // Simplified risk of ruin calculation
+            const avgLossPerSpin = betSize * (houseEdge / 100);
+            const totalExpectedLoss = avgLossPerSpin * spins;
+            
+            if (totalExpectedLoss >= bankroll) {
+                return Math.min(95, 50 + (totalExpectedLoss / bankroll) * 20);
+            }
+            return Math.max(5, (totalExpectedLoss / bankroll) * 100);
+        }
+
+        function generateRTPComparison() {
+            const locations = [
+                { name: 'Online Slots (Best)', rtp: '95-97%', edge: '3-5%', rating: 'good' },
+                { name: 'Las Vegas Strip', rtp: '90-92%', edge: '8-10%', rating: 'good' },
+                { name: 'Downtown Las Vegas', rtp: '92-94%', edge: '6-8%', rating: 'good' },
+                { name: 'Local Casinos', rtp: '88-92%', edge: '8-12%', rating: 'bad' },
+                { name: 'Airport/Gas Station', rtp: '75-85%', edge: '15-25%', rating: 'bad' },
+                { name: 'Penny Slots', rtp: '85-90%', edge: '10-15%', rating: 'bad' },
+                { name: 'Progressive Jackpots', rtp: '85-88%', edge: '12-15%', rating: 'bad' }
+            ];
+
+            let tableHTML = '<table><thead><tr><th>Location/Type</th><th>Typical RTP</th><th>House Edge</th><th>Rating</th></tr></thead><tbody>';
+            
+            locations.forEach(loc => {
+                const ratingClass = loc.rating === 'good' ? 'good' : 'bad';
+                const ratingText = loc.rating === 'good' ? '✓ Good' : '✗ Avoid';
+                tableHTML += `
+                    <tr>
+                        <td><strong>${loc.name}</strong></td>
+                        <td>${loc.rtp}</td>
+                        <td>${loc.edge}</td>
+                        <td class="${ratingClass}">${ratingText}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table>';
+            
+            tableHTML += `
+                <div style="margin-top: 20px; line-height: 1.8;">
+                    <h3 style="color: #f5576c; margin-bottom: 10px;">💡 Important Tips:</h3>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Higher denomination = Higher RTP:</strong> $1 slots typically have better RTP than penny slots</li>
+                        <li><strong>Online is best:</strong> Online slots have the highest RTP (95-97%)</li>
+                        <li><strong>Avoid progressives:</strong> Progressive jackpot slots have lower base RTP</li>
+                        <li><strong>Set limits:</strong> Slots have the highest house edge - set strict loss limits</li>
+                        <li><strong>Volatility matters:</strong> High volatility = bigger wins but less frequent</li>
+                        <li><strong>No strategy works:</strong> Slots are 100% random - no system can beat them</li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('rtpComparison').innerHTML = tableHTML;
+        }
+    </script>
+</body>
+</html>

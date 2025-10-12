@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Casino Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .setting-group {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f5f7fa;
+            border-radius: 10px;
+        }
+
+        .setting-group h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            flex: 1;
+        }
+
+        .setting-label strong {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .setting-label span {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #ccc;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #4CAF50;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 32px;
+        }
+
+        select, input[type="number"], input[type="text"] {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-info h3 {
+            margin-bottom: 15px;
+        }
+
+        .user-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .user-stat:last-child {
+            border-bottom: none;
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>⚙️ Settings</h1>
+            <p>Customize your Casino Assistant experience</p>
+        </div>
+
+        <div class="success-message" id="successMessage">Settings saved successfully!</div>
+
+        <!-- User Profile -->
+        <div class="card">
+            <h2>👤 User Profile</h2>
+            <div class="user-info">
+                <h3 id="userName">Welcome, User!</h3>
+                <div class="user-stat">
+                    <span>Account Created:</span>
+                    <strong id="accountCreated">-</strong>
+                </div>
+                <div class="user-stat">
+                    <span>Total Sessions:</span>
+                    <strong id="totalSessions">0</strong>
+                </div>
+                <div class="user-stat">
+                    <span>Favorite Game:</span>
+                    <strong id="favoriteGame">None</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Settings -->
+        <div class="card">
+            <h2>🎨 Display Settings</h2>
+            
+            <div class="setting-group">
+                <h3>Theme & Appearance</h3>
+                
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Dark Mode</strong>
+                        <span>Switch to dark theme for better night viewing</span>
+                    </div>
+                    <div class="toggle-switch" id="darkMode" onclick="toggleSetting('darkMode')"></div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Animations</strong>
+                        <span>Enable smooth animations and transitions</span>
+                    </div>
+                    <div class="toggle-switch active" id="animations" onclick="toggleSetting('animations')"></div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Card Style</strong>
+                        <span>Choose your preferred card design</span>
+                    </div>
+                    <select id="cardStyle" onchange="saveSetting('cardStyle', this.value)">
+                        <option value="classic">Classic</option>
+                        <option value="modern">Modern</option>
+                        <option value="minimal">Minimal</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Settings -->
+        <div class="card">
+            <h2>🎮 Game Settings</h2>
+            
+            <div class="setting-group">
+                <h3>Gameplay Preferences</h3>
+                
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Sound Effects</strong>
+                        <span>Play sounds for wins, spins, and actions</span>
+                    </div>
+                    <div class="toggle-switch active" id="soundEffects" onclick="toggleSetting('soundEffects')"></div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Auto-Save Progress</strong>
+                        <span>Automatically save your game progress</span>
+                    </div>
+                    <div class="toggle-switch active" id="autoSave" onclick="toggleSetting('autoSave')"></div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Default Bet Amount</strong>
+                        <span>Starting bet for new games</span>
+                    </div>
+                    <input type="number" id="defaultBet" value="10" min="1" max="1000" onchange="saveSetting('defaultBet', this.value)">
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Show Probabilities</strong>
+                        <span>Display win probabilities during gameplay</span>
+                    </div>
+                    <div class="toggle-switch active" id="showProbabilities" onclick="toggleSetting('showProbabilities')"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="card">
+            <h2>🔔 Notifications</h2>
+            
+            <div class="setting-group">
+                <h3>Alert Preferences</h3>
+                
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Achievement Notifications</strong>
+                        <span>Get notified when you unlock achievements</span>
+                    </div>
+                    <div class="toggle-switch active" id="achievementNotifs" onclick="toggleSetting('achievementNotifs')"></div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Win Celebrations</strong>
+                        <span>Show celebration animations for big wins</span>
+                    </div>
+                    <div class="toggle-switch active" id="winCelebrations" onclick="toggleSetting('winCelebrations')"></div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Tips & Hints</strong>
+                        <span>Display helpful tips while playing</span>
+                    </div>
+                    <div class="toggle-switch active" id="tipsHints" onclick="toggleSetting('tipsHints')"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data & Privacy -->
+        <div class="card">
+            <h2>🔒 Data & Privacy</h2>
+            
+            <div class="setting-group">
+                <h3>Data Management</h3>
+                
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <strong>Save Statistics</strong>
+                        <span>Store your game statistics locally</span>
+                    </div>
+                    <div class="toggle-switch active" id="saveStats" onclick="toggleSetting('saveStats')"></div>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn secondary" onclick="exportData()">📥 Export My Data</button>
+                    <button class="btn" onclick="importData()">📤 Import Data</button>
+                    <button class="btn danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Actions -->
+        <div class="card">
+            <h2>🔐 Account</h2>
+            
+            <div style="text-align: center; padding: 20px;">
+                <button class="btn" onclick="changePassword()">🔑 Change Password</button>
+                <button class="btn danger" onclick="deleteAccount()">❌ Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load user data
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const userData = JSON.parse(currentUser);
+            document.getElementById('userName').textContent = `Welcome, ${userData.username}!`;
+
+            // Load user stats
+            const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
+            const user = users.find(u => u.username === userData.username);
+            
+            if (user) {
+                // Initialize stats if they don't exist
+                if (!user.stats) {
+                    user.stats = {
+                        sessionsCompleted: 0,
+                        favoriteGame: 'None',
+                        totalGamesPlayed: 0,
+                        lastLogin: new Date().toISOString()
+                    };
+                }
+                
+                // Ensure createdAt exists
+                if (!user.createdAt) {
+                    user.createdAt = new Date().toISOString();
+                }
+                
+                document.getElementById('accountCreated').textContent = new Date(user.createdAt).toLocaleDateString();
+                document.getElementById('totalSessions').textContent = user.stats.sessionsCompleted || 0;
+                document.getElementById('favoriteGame').textContent = user.stats.favoriteGame || 'None';
+                
+                // Save updated user data
+                localStorage.setItem('casinoUsers', JSON.stringify(users));
+            }
+
+            // Initialize default settings if they don't exist
+            const settings = JSON.parse(localStorage.getItem('casinoSettings') || '{}');
+            if (Object.keys(settings).length === 0) {
+                const defaultSettings = {
+                    darkMode: false,
+                    animations: true,
+                    cardStyle: 'classic',
+                    soundEffects: true,
+                    autoSave: true,
+                    defaultBet: 10,
+                    showProbabilities: true,
+                    achievementNotifs: true,
+                    winCelebrations: true,
+                    tipsHints: true,
+                    saveStats: true
+                };
+                localStorage.setItem('casinoSettings', JSON.stringify(defaultSettings));
+            }
+
+            // Load settings
+            loadSettings();
+        });
+
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('casinoSettings') || '{}');
+            
+            // Apply saved settings
+            Object.keys(settings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.classList.contains('toggle-switch')) {
+                        if (settings[key]) {
+                            element.classList.add('active');
+                        } else {
+                            element.classList.remove('active');
+                        }
+                    } else if (element.tagName === 'SELECT' || element.tagName === 'INPUT') {
+                        element.value = settings[key];
+                    }
+                }
+            });
+        }
+
+        function toggleSetting(settingId) {
+            const element = document.getElementById(settingId);
+            element.classList.toggle('active');
+            
+            const isActive = element.classList.contains('active');
+            saveSetting(settingId, isActive);
+        }
+
+        function saveSetting(key, value) {
+            const settings = JSON.parse(localStorage.getItem('casinoSettings') || '{}');
+            settings[key] = value;
+            localStorage.setItem('casinoSettings', JSON.stringify(settings));
+            
+            showSuccess();
+        }
+
+        function showSuccess() {
+            const msg = document.getElementById('successMessage');
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000);
+        }
+
+        function exportData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
+            const settings = JSON.parse(localStorage.getItem('casinoSettings') || '{}');
+            
+            const exportData = {
+                user: currentUser,
+                users: users,
+                settings: settings,
+                exportDate: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `casino-assistant-data-${Date.now()}.json`;
+            link.click();
+            
+            alert('✅ Data exported successfully!');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        
+                        if (confirm('This will overwrite your current data. Continue?')) {
+                            if (data.users) localStorage.setItem('casinoUsers', JSON.stringify(data.users));
+                            if (data.settings) localStorage.setItem('casinoSettings', JSON.stringify(data.settings));
+                            
+                            alert('✅ Data imported successfully!');
+                            location.reload();
+                        }
+                    } catch (error) {
+                        alert('❌ Invalid data file!');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        function clearAllData() {
+            if (confirm('⚠️ This will delete ALL your data including account, settings, and statistics. This cannot be undone!\n\nAre you absolutely sure?')) {
+                if (confirm('Last chance! Really delete everything?')) {
+                    localStorage.removeItem('casinoUsers');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('casinoSettings');
+                    
+                    alert('✅ All data cleared!');
+                    window.location.href = 'login.html';
+                }
+            }
+        }
+
+        function changePassword() {
+            const newPassword = prompt('Enter new password (min 6 characters):');
+            
+            if (newPassword && newPassword.length >= 6) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
+                
+                const userIndex = users.findIndex(u => u.username === currentUser.username);
+                if (userIndex !== -1) {
+                    users[userIndex].password = newPassword;
+                    localStorage.setItem('casinoUsers', JSON.stringify(users));
+                    alert('✅ Password changed successfully!');
+                }
+            } else if (newPassword !== null) {
+                alert('❌ Password must be at least 6 characters!');
+            }
+        }
+
+        function deleteAccount() {
+            if (confirm('⚠️ This will permanently delete your account and all data. Continue?')) {
+                const password = prompt('Enter your password to confirm:');
+                
+                if (password) {
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                    const users = JSON.parse(localStorage.getItem('casinoUsers') || '[]');
+                    
+                    const user = users.find(u => u.username === currentUser.username && u.password === password);
+                    
+                    if (user) {
+                        const updatedUsers = users.filter(u => u.username !== currentUser.username);
+                        localStorage.setItem('casinoUsers', JSON.stringify(updatedUsers));
+                        localStorage.removeItem('currentUser');
+                        
+                        alert('✅ Account deleted successfully!');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('❌ Incorrect password!');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

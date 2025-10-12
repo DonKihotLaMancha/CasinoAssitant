@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keno Odds Calculator - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .keno-board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .keno-number {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .keno-number:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .keno-number.selected {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border-color: #2e7d32;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+
+        .keno-number.drawn {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+            border-color: #c62828;
+            animation: pulse 0.5s;
+        }
+
+        .keno-number.matched {
+            background: linear-gradient(135deg, #ffd700 0%, #ffa000 100%);
+            color: #000;
+            border-color: #ff6f00;
+            animation: celebrate 0.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid #667eea;
+        }
+
+        .stat-box .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-box .label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .payout-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .payout-table th,
+        .payout-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .payout-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .payout-table tr:nth-child(even) {
+            background: #f5f7fa;
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .selection-info {
+            text-align: center;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1976D2;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .card {
+                padding: 15px;
+                margin: 10px 5px;
+            }
+
+            .keno-board {
+                grid-template-columns: repeat(10, 1fr);
+                gap: 4px;
+                padding: 15px;
+            }
+
+            .keno-number {
+                font-size: 1em;
+                border-width: 2px;
+            }
+
+            .selection-info {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+                margin: 8px 3px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-box {
+                padding: 15px;
+            }
+
+            .stat-box .number {
+                font-size: 2em;
+            }
+
+            table {
+                font-size: 0.75em;
+                display: block;
+                overflow-x: auto;
+            }
+
+            table th,
+            table td {
+                padding: 6px 3px;
+            }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .keno-number:active {
+                transform: scale(1.15);
+            }
+
+            button, .btn {
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>🎱 Keno Odds Calculator</h1>
+            <p>Select your numbers and calculate your winning odds</p>
+        </div>
+
+        <div class="card">
+            <h2>Select Your Numbers</h2>
+            
+            <div class="selection-info">
+                Selected: <span id="selectedCount">0</span> / 10 numbers
+            </div>
+
+            <div class="keno-board" id="kenoBoard">
+                <!-- Numbers 1-80 will be generated here -->
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="btn secondary" onclick="quickPick()">🎲 Quick Pick (Random)</button>
+                <button class="btn danger" onclick="clearSelection()">🗑️ Clear All</button>
+                <button class="btn" onclick="drawNumbers()">🎯 Draw Numbers</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Game Settings</h2>
+            
+            <div class="input-group">
+                <label>Bet Amount ($)</label>
+                <input type="number" id="betAmount" value="1" min="1" max="100">
+            </div>
+
+            <div class="input-group">
+                <label>Numbers to Draw</label>
+                <select id="drawCount">
+                    <option value="20" selected>20 (Standard)</option>
+                    <option value="10">10 (Quick)</option>
+                    <option value="15">15 (Medium)</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="calculate()">Calculate Odds</button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="card">
+                <h2>Results</h2>
+                <div id="resultsContent"></div>
+            </div>
+
+            <div class="card">
+                <h2>📊 Statistics</h2>
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+
+            <div class="card">
+                <h2>💰 Payout Table (Standard Keno)</h2>
+                <table class="payout-table">
+                    <thead>
+                        <tr>
+                            <th>Spots Picked</th>
+                            <th>Matches</th>
+                            <th>Payout (per $1)</th>
+                            <th>Probability</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payoutTableBody">
+                        <!-- Will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedNumbers = [];
+        let drawnNumbers = [];
+
+        // Generate Keno board
+        function generateBoard() {
+            const board = document.getElementById('kenoBoard');
+            board.innerHTML = '';
+            
+            for (let i = 1; i <= 80; i++) {
+                const number = document.createElement('div');
+                number.className = 'keno-number';
+                number.textContent = i;
+                number.onclick = () => toggleNumber(i, number);
+                number.dataset.number = i;
+                board.appendChild(number);
+            }
+        }
+
+        function toggleNumber(num, element) {
+            if (drawnNumbers.length > 0) {
+                alert('Please clear the board before selecting new numbers!');
+                return;
+            }
+
+            if (selectedNumbers.includes(num)) {
+                casinoSounds.playSound('click');
+                selectedNumbers = selectedNumbers.filter(n => n !== num);
+                element.classList.remove('selected');
+            } else {
+                if (selectedNumbers.length >= 10) {
+                    alert('You can only select up to 10 numbers!');
+                    return;
+                }
+                casinoSounds.playSound('chip');
+                selectedNumbers.push(num);
+                element.classList.add('selected');
+            }
+
+            document.getElementById('selectedCount').textContent = selectedNumbers.length;
+        }
+
+        function quickPick() {
+            clearSelection();
+            const numbers = [];
+            while (numbers.length < 10) {
+                const num = Math.floor(Math.random() * 80) + 1;
+                if (!numbers.includes(num)) {
+                    numbers.push(num);
+                }
+            }
+
+            numbers.forEach(num => {
+                selectedNumbers.push(num);
+                const element = document.querySelector(`[data-number="${num}"]`);
+                element.classList.add('selected');
+            });
+
+            document.getElementById('selectedCount').textContent = selectedNumbers.length;
+        }
+
+        function clearSelection() {
+            selectedNumbers = [];
+            drawnNumbers = [];
+            document.querySelectorAll('.keno-number').forEach(el => {
+                el.classList.remove('selected', 'drawn', 'matched');
+            });
+            document.getElementById('selectedCount').textContent = 0;
+            document.getElementById('results').classList.remove('show');
+        }
+
+        function drawNumbers() {
+            if (selectedNumbers.length === 0) {
+                alert('Please select at least 1 number first!');
+                return;
+            }
+
+            casinoSounds.playSound('shuffle');
+
+            // Clear previous draws
+            document.querySelectorAll('.keno-number').forEach(el => {
+                el.classList.remove('drawn', 'matched');
+            });
+
+            drawnNumbers = [];
+            const drawCount = parseInt(document.getElementById('drawCount').value);
+
+            // Draw random numbers
+            while (drawnNumbers.length < drawCount) {
+                const num = Math.floor(Math.random() * 80) + 1;
+                if (!drawnNumbers.includes(num)) {
+                    drawnNumbers.push(num);
+                }
+            }
+
+            // Animate drawing
+            let delay = 0;
+            drawnNumbers.forEach(num => {
+                setTimeout(() => {
+                    const element = document.querySelector(`[data-number="${num}"]`);
+                    element.classList.add('drawn');
+                    
+                    if (selectedNumbers.includes(num)) {
+                        setTimeout(() => {
+                            element.classList.add('matched');
+                        }, 200);
+                    }
+                }, delay);
+                delay += 100;
+            });
+
+            // Calculate results after animation
+            setTimeout(() => {
+                calculate();
+            }, delay + 500);
+        }
+
+        function calculate() {
+            if (selectedNumbers.length === 0) {
+                alert('Please select at least 1 number!');
+                return;
+            }
+
+            const matches = selectedNumbers.filter(n => drawnNumbers.includes(n)).length;
+            const betAmount = parseFloat(document.getElementById('betAmount').value);
+            const payout = calculatePayout(selectedNumbers.length, matches);
+            const totalPayout = payout * betAmount;
+            const profit = totalPayout - betAmount;
+
+            // Display results
+            const resultsHTML = `
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="number">${selectedNumbers.length}</div>
+                        <div class="label">Numbers Picked</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">${drawnNumbers.length}</div>
+                        <div class="label">Numbers Drawn</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number" style="color: #4CAF50;">${matches}</div>
+                        <div class="label">Matches</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number" style="color: ${profit >= 0 ? '#4CAF50' : '#f44336'};">${profit >= 0 ? '+' : ''}$${profit.toFixed(2)}</div>
+                        <div class="label">Profit/Loss</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; text-align: center;">
+                    <h3 style="margin-bottom: 15px;">Your Result</h3>
+                    <div style="font-size: 2em; margin: 10px 0;">
+                        ${matches} out of ${selectedNumbers.length} matches
+                    </div>
+                    <div style="font-size: 1.5em; margin: 10px 0;">
+                        Payout: ${payout}x = $${totalPayout.toFixed(2)}
+                    </div>
+                    <div style="font-size: 1.2em; margin-top: 15px;">
+                        ${profit >= 0 ? '🎉 You Won!' : '😔 Better luck next time!'}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+            generatePayoutTable();
+            document.getElementById('results').classList.add('show');
+        }
+
+        function calculatePayout(spots, matches) {
+            // Standard Keno payout table
+            const payouts = {
+                1: {1: 3},
+                2: {2: 12},
+                3: {2: 1, 3: 42},
+                4: {2: 1, 3: 4, 4: 120},
+                5: {3: 2, 4: 20, 5: 500},
+                6: {3: 1, 4: 7, 5: 50, 6: 1500},
+                7: {4: 2, 5: 20, 6: 100, 7: 5000},
+                8: {5: 10, 6: 50, 7: 500, 8: 10000},
+                9: {5: 5, 6: 25, 7: 200, 8: 2000, 9: 10000},
+                10: {5: 2, 6: 20, 7: 80, 8: 500, 9: 5000, 10: 25000}
+            };
+
+            return payouts[spots]?.[matches] || 0;
+        }
+
+        function generatePayoutTable() {
+            const tbody = document.getElementById('payoutTableBody');
+            tbody.innerHTML = '';
+
+            for (let spots = 1; spots <= 10; spots++) {
+                const payouts = {
+                    1: {1: 3},
+                    2: {2: 12},
+                    3: {2: 1, 3: 42},
+                    4: {2: 1, 3: 4, 4: 120},
+                    5: {3: 2, 4: 20, 5: 500},
+                    6: {3: 1, 4: 7, 5: 50, 6: 1500},
+                    7: {4: 2, 5: 20, 6: 100, 7: 5000},
+                    8: {5: 10, 6: 50, 7: 500, 8: 10000},
+                    9: {5: 5, 6: 25, 7: 200, 8: 2000, 9: 10000},
+                    10: {5: 2, 6: 20, 7: 80, 8: 500, 9: 5000, 10: 25000}
+                };
+
+                const spotPayouts = payouts[spots];
+                for (const [matches, payout] of Object.entries(spotPayouts)) {
+                    const prob = calculateProbability(spots, parseInt(matches));
+                    const row = `
+                        <tr>
+                            <td>${spots}</td>
+                            <td>${matches}</td>
+                            <td>${payout}x</td>
+                            <td>${(prob * 100).toFixed(4)}%</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                }
+            }
+        }
+
+        function calculateProbability(spots, matches) {
+            // Simplified probability calculation
+            const totalNumbers = 80;
+            const drawn = 20;
+            
+            // Using hypergeometric distribution
+            function combination(n, k) {
+                if (k > n) return 0;
+                if (k === 0 || k === n) return 1;
+                
+                let result = 1;
+                for (let i = 1; i <= k; i++) {
+                    result *= (n - k + i) / i;
+                }
+                return result;
+            }
+
+            const numerator = combination(spots, matches) * combination(totalNumbers - spots, drawn - matches);
+            const denominator = combination(totalNumbers, drawn);
+            
+            return numerator / denominator;
+        }
+
+        // Initialize board on load
+        window.addEventListener('DOMContentLoaded', generateBoard);
+    </script>
+</body>
+</html>

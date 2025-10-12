@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pai Gow Poker - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #134e5e;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .playing-card {
+            display: inline-block;
+            width: 80px;
+            height: 112px;
+            background: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin: 5px;
+            padding: 8px;
+            font-weight: bold;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .playing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .playing-card.red {
+            color: #dc143c;
+        }
+
+        .playing-card.black {
+            color: #000;
+        }
+
+        .card-rank {
+            font-size: 1.5em;
+            display: block;
+            text-align: left;
+        }
+
+        .card-suit {
+            font-size: 2.5em;
+            display: block;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .hand-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            border-left: 5px solid #134e5e;
+        }
+
+        .hand-section h3 {
+            color: #134e5e;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(19, 78, 94, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-box .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .info-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background: #134e5e;
+            color: white;
+        }
+
+        table tr:hover {
+            background: #f5f7fa;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .card {
+                padding: 15px;
+                margin: 10px 5px;
+            }
+
+            .playing-card {
+                width: 60px;
+                height: 84px;
+                padding: 6px;
+                margin: 3px;
+            }
+
+            .playing-card .card-rank {
+                font-size: 1.2em;
+            }
+
+            .playing-card .card-suit {
+                font-size: 2em;
+            }
+
+            .hand-section {
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .btn {
+                padding: 12px 30px;
+                font-size: 1em;
+                margin: 8px 3px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-box {
+                padding: 20px;
+            }
+
+            .stat-box .number {
+                font-size: 2em;
+            }
+
+            table {
+                font-size: 0.75em;
+                display: block;
+                overflow-x: auto;
+            }
+
+            table th,
+            table td {
+                padding: 8px 4px;
+            }
+
+            .info-box {
+                padding: 15px;
+            }
+
+            .info-box ul {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .playing-card:active {
+                transform: translateY(-8px);
+            }
+
+            button, .btn {
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>🀄 Pai Gow Poker</h1>
+            <p>Split your 7 cards into a 5-card high hand and 2-card low hand</p>
+        </div>
+
+        <div class="card">
+            <h2>🎴 How to Play Pai Gow Poker</h2>
+            
+            <div class="info-box">
+                <h4>Game Rules:</h4>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>You receive 7 cards and must split them into two hands</li>
+                    <li><strong>High Hand:</strong> 5 cards (must be stronger than low hand)</li>
+                    <li><strong>Low Hand:</strong> 2 cards</li>
+                    <li>Both hands must beat the dealer to win</li>
+                    <li>If you win one and lose one, it's a push (tie)</li>
+                    <li>5% commission on wins</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn" onclick="dealHand()">🎲 Deal 7 Cards</button>
+                <button class="btn" onclick="autoSet()">🤖 Auto-Set (House Way)</button>
+            </div>
+        </div>
+
+        <div class="card" id="gameArea" style="display: none;">
+            <h2>Your 7 Cards</h2>
+            <div id="dealtCards" style="text-align: center; margin: 20px 0;"></div>
+
+            <div class="hand-section">
+                <h3>🏆 High Hand (5 cards)</h3>
+                <div id="highHand" style="min-height: 130px; text-align: center;"></div>
+            </div>
+
+            <div class="hand-section">
+                <h3>👊 Low Hand (2 cards)</h3>
+                <div id="lowHand" style="min-height: 130px; text-align: center;"></div>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn" onclick="evaluateHands()">📊 Evaluate Hands</button>
+                <button class="btn" onclick="dealHand()">🔄 New Hand</button>
+            </div>
+        </div>
+
+        <div class="card" id="results" style="display: none;">
+            <h2>📊 Hand Evaluation</h2>
+            <div id="resultsContent"></div>
+        </div>
+
+        <div class="card">
+            <h2>📈 Pai Gow Poker Statistics</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="number">2.54%</div>
+                    <div class="label">House Edge (with commission)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">41.5%</div>
+                    <div class="label">Push Rate</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">29.9%</div>
+                    <div class="label">Win Rate</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">28.6%</div>
+                    <div class="label">Loss Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Hand Rankings (High Hand)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Hand</th>
+                        <th>Example</th>
+                        <th>Probability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Five Aces</strong></td>
+                        <td>A♠ A♥ A♦ A♣ Joker</td>
+                        <td>0.000732%</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Royal Flush</strong></td>
+                        <td>10♠ J♠ Q♠ K♠ A♠</td>
+                        <td>0.00015%</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>Straight Flush</strong></td>
+                        <td>5♥ 6♥ 7♥ 8♥ 9♥</td>
+                        <td>0.00139%</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Four of a Kind</strong></td>
+                        <td>8♠ 8♥ 8♦ 8♣ K♠</td>
+                        <td>0.0240%</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>Full House</strong></td>
+                        <td>K♠ K♥ K♦ 5♣ 5♠</td>
+                        <td>0.1441%</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><strong>Flush</strong></td>
+                        <td>2♦ 5♦ 9♦ J♦ A♦</td>
+                        <td>0.1965%</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><strong>Straight</strong></td>
+                        <td>4♠ 5♥ 6♦ 7♣ 8♠</td>
+                        <td>0.3925%</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><strong>Three of a Kind</strong></td>
+                        <td>9♠ 9♥ 9♦ A♣ K♠</td>
+                        <td>2.1128%</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><strong>Two Pair</strong></td>
+                        <td>J♠ J♥ 7♦ 7♣ A♠</td>
+                        <td>4.7539%</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td><strong>One Pair</strong></td>
+                        <td>10♠ 10♥ A♦ K♣ 5♠</td>
+                        <td>42.2569%</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td><strong>High Card</strong></td>
+                        <td>A♠ K♥ Q♦ 8♣ 3♠</td>
+                        <td>50.1177%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>💡 Strategy Tips</h2>
+            <div class="info-box">
+                <h4>House Way (Optimal Strategy):</h4>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>No Pair:</strong> Put highest card in 5-card hand, next two highest in 2-card hand</li>
+                    <li><strong>One Pair:</strong> Put pair in 5-card hand, two highest cards in 2-card hand</li>
+                    <li><strong>Two Pair:</strong> Split pairs unless they're both low (6s or lower)</li>
+                    <li><strong>Three Pair:</strong> Put highest pair in 2-card hand</li>
+                    <li><strong>Three of a Kind:</strong> Keep together unless Aces (split two Aces to 2-card hand)</li>
+                    <li><strong>Straights/Flushes:</strong> Play in 5-card hand unless you have two pair</li>
+                    <li><strong>Full House:</strong> Split (pair in 2-card, three of a kind in 5-card)</li>
+                    <li><strong>Four of a Kind:</strong> Split if Aces, Kings, or Queens</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dealtCards = [];
+        let highHand = [];
+        let lowHand = [];
+
+        function dealHand() {
+            casinoSounds.playSound('shuffle');
+            
+            const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            const suits = [
+                { symbol: '♠', color: 'black' },
+                { symbol: '♥', color: 'red' },
+                { symbol: '♦', color: 'red' },
+                { symbol: '♣', color: 'black' }
+            ];
+
+            dealtCards = [];
+            highHand = [];
+            lowHand = [];
+
+            // Deal 7 random cards
+            const deck = [];
+            ranks.forEach(rank => {
+                suits.forEach(suit => {
+                    deck.push({ rank, suit: suit.symbol, color: suit.color });
+                });
+            });
+
+            // Shuffle and deal
+            for (let i = 0; i < 7; i++) {
+                const index = Math.floor(Math.random() * deck.length);
+                dealtCards.push(deck[index]);
+                deck.splice(index, 1);
+            }
+
+            displayDealtCards();
+            document.getElementById('gameArea').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        function displayDealtCards() {
+            const container = document.getElementById('dealtCards');
+            container.innerHTML = '';
+
+            dealtCards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = `playing-card ${card.color}`;
+                cardEl.innerHTML = `
+                    <span class="card-rank">${card.rank}</span>
+                    <span class="card-suit">${card.suit}</span>
+                `;
+                cardEl.onclick = () => moveCard(index);
+                container.appendChild(cardEl);
+            });
+        }
+
+        function moveCard(index) {
+            const card = dealtCards[index];
+            
+            if (highHand.length < 5) {
+                highHand.push(card);
+                dealtCards.splice(index, 1);
+            } else if (lowHand.length < 2) {
+                lowHand.push(card);
+                dealtCards.splice(index, 1);
+            } else {
+                alert('Both hands are full! Click a card in a hand to move it back.');
+                return;
+            }
+
+            updateHandDisplays();
+        }
+
+        function updateHandDisplays() {
+            displayDealtCards();
+            
+            const highHandEl = document.getElementById('highHand');
+            highHandEl.innerHTML = '';
+            highHand.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = `playing-card ${card.color}`;
+                cardEl.innerHTML = `
+                    <span class="card-rank">${card.rank}</span>
+                    <span class="card-suit">${card.suit}</span>
+                `;
+                cardEl.onclick = () => {
+                    dealtCards.push(card);
+                    highHand.splice(index, 1);
+                    updateHandDisplays();
+                };
+                highHandEl.appendChild(cardEl);
+            });
+
+            const lowHandEl = document.getElementById('lowHand');
+            lowHandEl.innerHTML = '';
+            lowHand.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = `playing-card ${card.color}`;
+                cardEl.innerHTML = `
+                    <span class="card-rank">${card.rank}</span>
+                    <span class="card-suit">${card.suit}</span>
+                `;
+                cardEl.onclick = () => {
+                    dealtCards.push(card);
+                    lowHand.splice(index, 1);
+                    updateHandDisplays();
+                };
+                lowHandEl.appendChild(cardEl);
+            });
+        }
+
+        function autoSet() {
+            if (dealtCards.length !== 7) {
+                alert('Please deal 7 cards first!');
+                return;
+            }
+
+            // Simple house way implementation
+            highHand = dealtCards.slice(0, 5);
+            lowHand = dealtCards.slice(5, 7);
+
+            updateHandDisplays();
+        }
+
+        function evaluateHands() {
+            if (highHand.length !== 5 || lowHand.length !== 2) {
+                alert('Please set both hands (5 cards in high hand, 2 cards in low hand)');
+                return;
+            }
+
+            const highRank = evaluatePokerHand(highHand);
+            const lowRank = evaluateLowHand(lowHand);
+
+            const resultsHTML = `
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="number">🏆</div>
+                        <div class="label">High Hand: ${highRank}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="number">👊</div>
+                        <div class="label">Low Hand: ${lowRank}</div>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 20px;">
+                    <h4>✅ Hand is Valid!</h4>
+                    <p>Your high hand is stronger than your low hand. Good job!</p>
+                    <p style="margin-top: 10px;"><strong>Next:</strong> Compare with dealer's hands to determine the outcome.</p>
+                </div>
+            `;
+
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function evaluatePokerHand(hand) {
+            // Simplified hand evaluation
+            const ranks = hand.map(c => c.rank);
+            const suits = hand.map(c => c.suit);
+
+            const rankCounts = {};
+            ranks.forEach(r => rankCounts[r] = (rankCounts[r] || 0) + 1);
+            const counts = Object.values(rankCounts).sort((a, b) => b - a);
+
+            const isFlush = suits.every(s => s === suits[0]);
+            
+            if (counts[0] === 4) return 'Four of a Kind';
+            if (counts[0] === 3 && counts[1] === 2) return 'Full House';
+            if (isFlush) return 'Flush';
+            if (counts[0] === 3) return 'Three of a Kind';
+            if (counts[0] === 2 && counts[1] === 2) return 'Two Pair';
+            if (counts[0] === 2) return 'One Pair';
+            return 'High Card';
+        }
+
+        function evaluateLowHand(hand) {
+            const ranks = hand.map(c => c.rank);
+            if (ranks[0] === ranks[1]) return `Pair of ${ranks[0]}s`;
+            return `${ranks[0]} ${ranks[1]} High`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+🎰 CASINO ASSISTANT - DIRECTORY STRUCTURE
+==========================================
+
+CAS.Assist/
+│
+├── 📄 index.html                          # Main Dashboard (Entry Point)
+├── 📄 README.md                           # Project Overview & Quick Start
+├── 📄 PROJECT_STRUCTURE.md                # Detailed File Documentation
+├── 📄 DIRECTORY_TREE.txt                  # This File
+├── 📄 .gitignore                          # Git Ignore Rules
+│
+├── 📁 auth/                               # AUTHENTICATION SYSTEM
+│   ├── login.html                         # Login & Register Page
+│   └── settings.html                      # User Settings & Preferences
+│
+├── 📁 games/                              # ALL CASINO GAMES (10 Total)
+│   ├── poker_odds.html                    # Texas Hold'em Odds Calculator
+│   ├── roulette_odds.html                 # Roulette Wheel Simulator
+│   ├── slots_odds.html                    # Online Slot Machine
+│   ├── craps_odds.html                    # Craps Dice Roller
+│   ├── baccarat_odds.html                 # Baccarat Hand Simulator
+│   ├── keno_odds.html                     # 80-Number Keno Board
+│   ├── paigow_odds.html                   # Pai Gow Poker Splitter
+│   ├── video_poker.html                   # Video Poker (Jacks or Better)
+│   ├── blackjack_dashboard.html           # Blackjack Strategy Center (NEW)
+│   ├── blackjack_client.html              # Blackjack Dashboard (Legacy)
+│   └── blackjack_live_advisor.html        # Live Blackjack Advisor
+│
+├── 📁 simulators/                         # DART COMMAND-LINE TOOLS
+│   ├── blackjack_odds.dart                # 100K Hand Simulation Engine
+│   ├── poker_odds.dart                    # Monte Carlo Poker Simulator
+│   ├── roulette_odds.dart                 # Roulette Probability Calculator
+│   ├── craps_odds.dart                    # Dice Combination Analyzer
+│   ├── baccarat_odds.dart                 # 8-Deck Shoe Simulator
+│   ├── slots_odds.dart                    # RTP Calculator
+│   ├── keno_odds.dart                     # Keno Probability Engine
+│   └── paigow_odds.dart                   # Pai Gow Hand Analyzer
+│
+├── 📁 docs/                               # DOCUMENTATION & ASSETS
+│   │
+│   ├── 🌐 HTML Files
+│   ├── help.html                          # Complete User Guide
+│   ├── mobile-preview.html                # Mobile UI Preview Page
+│   │
+│   ├── 🔊 JavaScript
+│   ├── sounds.js                          # Web Audio API Sound System
+│   │
+│   └── 📚 Documentation (Markdown)
+│       ├── README.md                      # Documentation Index
+│       ├── CHANGELOG.md                   # Version History & Updates
+│       ├── BUG_FIXES.md                   # Bug Fixes Log
+│       ├── IMPROVEMENTS.md                # Feature Improvements
+│       ├── SOUND_EFFECTS.md               # Sound System Guide
+│       ├── ACCURACY_ANALYSIS.md           # Data Validation Report
+│       ├── ACCURACY_IMPROVEMENTS.md       # Accuracy Enhancements
+│       ├── BUILD_MOBILE_APPS.md           # Mobile App Build Guide
+│       ├── CASINO_GAMES_GUIDE.md          # Games Strategy Guide
+│       ├── COMPLETE_GUIDE.md              # Complete Documentation
+│       ├── MOBILE_QUICKSTART.md           # Mobile Quick Start
+│       └── PLATFORM_SUPPORT.md            # Platform Compatibility
+│
+├── 📁 flutter_app/                        # MOBILE APP (Future)
+│   └── (Empty - Reserved for Flutter)
+│
+├── 📁 .git/                               # GIT VERSION CONTROL
+│   └── (Git Repository Data)
+│
+└── 🔧 Setup Scripts
+    ├── setup_flutter.bat                  # Windows Flutter Setup
+    └── setup_flutter.sh                   # Linux/Mac Flutter Setup
+
+
+FILE COUNT SUMMARY
+==================
+Root Level:          4 files
+auth/:               2 files
+games/:             11 files
+simulators/:         8 files
+docs/:              15 files
+TOTAL:              40 files
+
+
+FOLDER PURPOSE
+==============
+📁 auth/         → User authentication and settings
+📁 games/        → All playable casino games (HTML)
+📁 simulators/   → Command-line simulation tools (Dart)
+📁 docs/         → Documentation, guides, and assets
+📁 flutter_app/  → Future mobile app development
+📁 .git/         → Version control history
+
+
+KEY FILES
+=========
+🏠 index.html                    → Main entry point
+📖 README.md                     → Project overview
+📋 PROJECT_STRUCTURE.md          → Detailed documentation
+🔊 docs/sounds.js                → Sound effects system
+📚 docs/help.html                → User guide
+⚙️ auth/settings.html            → User preferences
+🎰 games/video_poker.html        → Newest game
+🃏 games/blackjack_dashboard.html → Strategy center
+
+
+DOCUMENTATION HIERARCHY
+=======================
+1. README.md                     → Start here
+2. PROJECT_STRUCTURE.md          → File details
+3. docs/COMPLETE_GUIDE.md        → Full guide
+4. docs/help.html                → Interactive help
+5. docs/CHANGELOG.md             → Version history
+6. docs/BUG_FIXES.md             → Bug log
+7. docs/IMPROVEMENTS.md          → Features
+8. docs/SOUND_EFFECTS.md         → Sound guide
+
+
+NAVIGATION PATHS
+================
+Dashboard → Games:
+  index.html → games/*.html
+
+Dashboard → Settings:
+  index.html → auth/settings.html
+
+Dashboard → Help:
+  index.html → docs/help.html
+
+Games → Dashboard:
+  games/*.html → ../index.html
+
+Settings → Dashboard:
+  auth/settings.html → ../index.html
+
+
+TECHNOLOGIES USED
+=================
+Frontend:
+  - HTML5
+  - CSS3 (Grid, Flexbox, Animations)
+  - Vanilla JavaScript (ES6+)
+  - Web Audio API
+  - localStorage API
+
+Backend:
+  - None (100% client-side)
+
+Simulators:
+  - Dart programming language
+
+Build Tools:
+  - None required
+
+
+QUICK START
+===========
+1. Open index.html in browser
+2. Create account or login
+3. Select any game from dashboard
+4. Enjoy!
+
+
+MAINTENANCE
+===========
+All HTML files:     Self-contained
+All CSS:            Inline in HTML
+All JavaScript:     Inline in HTML (except sounds.js)
+All Documentation:  Markdown in docs/
+All Games:          In games/ folder
+All Auth:           In auth/ folder
+
+
+VERSION INFO
+============
+Version:      2.0
+Status:       Production Ready
+Last Updated: October 2025
+Files:        40
+Lines:        25,000+
+Games:        10
+Sounds:       9 types
+
+
+SUPPORT
+=======
+Documentation:  docs/ folder
+User Guide:     docs/help.html
+Bug Reports:    docs/BUG_FIXES.md
+Improvements:   docs/IMPROVEMENTS.md
+Structure:      PROJECT_STRUCTURE.md
+
+
+==========================================
+Generated: October 12, 2025
+Project: Casino Assistant v2.0
+Status: ✅ Production Ready
+==========================================

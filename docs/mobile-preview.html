@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Casino Assistant - Mobile Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mobile-frame {
+            max-width: 400px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            background: #000;
+            color: white;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75em;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .app-header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .app-header p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .user-profile {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+            background: white;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-card .label {
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .games-grid {
+            padding: 15px;
+            background: white;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .game-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .game-icon {
+            font-size: 3em;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .game-info {
+            flex: 1;
+        }
+
+        .game-info h3 {
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .game-info p {
+            color: #666;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .bottom-nav {
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .nav-item {
+            text-align: center;
+            padding: 5px;
+            color: #999;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-item .icon {
+            font-size: 1.8em;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 80px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .floating-action:active {
+            transform: scale(0.9);
+        }
+
+        .section-title {
+            padding: 15px 20px 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-frame {
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>12:01</span>
+            <span>📶 5G ⚡ 85%</span>
+        </div>
+
+        <!-- App Header -->
+        <div class="app-header">
+            <h1>🎰 Casino Assistant</h1>
+            <p>Your Professional Odds Calculator</p>
+            
+            <div class="user-profile">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                        👤
+                    </div>
+                    <div style="text-align: left;">
+                        <div style="font-weight: bold;">Welcome back!</div>
+                        <div style="font-size: 0.85em; opacity: 0.9;">Player123</div>
+                    </div>
+                </div>
+                <div style="font-size: 1.5em;">⚙️</div>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="number">9</div>
+                <div class="label">Games</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">∞</div>
+                <div class="label">Free</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">⚡</div>
+                <div class="label">Instant</div>
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="section-title">🎮 Available Games</div>
+
+        <!-- Games Grid -->
+        <div class="games-grid">
+            <a href="blackjack_client.html" class="game-card">
+                <div class="game-icon">🃏</div>
+                <div class="game-info">
+                    <h3>Blackjack</h3>
+                    <p>Strategy calculator & live advisor</p>
+                    <span class="badge">POPULAR</span>
+                </div>
+            </a>
+
+            <a href="poker_odds.html" class="game-card">
+                <div class="game-icon">🎴</div>
+                <div class="game-info">
+                    <h3>Poker</h3>
+                    <p>Hand odds & card selector</p>
+                    <span class="badge">NEW</span>
+                </div>
+            </a>
+
+            <a href="roulette_odds.html" class="game-card">
+                <div class="game-icon">🎡</div>
+                <div class="game-info">
+                    <h3>Roulette</h3>
+                    <p>Spin wheel & betting calculator</p>
+                    <span class="badge">NEW</span>
+                </div>
+            </a>
+
+            <a href="slots_odds.html" class="game-card">
+                <div class="game-icon">🎰</div>
+                <div class="game-info">
+                    <h3>Slots</h3>
+                    <p>Online slot machine simulator</p>
+                    <span class="badge">HOT</span>
+                </div>
+            </a>
+
+            <a href="craps_odds.html" class="game-card">
+                <div class="game-icon">🎲</div>
+                <div class="game-info">
+                    <h3>Craps</h3>
+                    <p>Dice roller & odds calculator</p>
+                </div>
+            </a>
+
+            <a href="baccarat_odds.html" class="game-card">
+                <div class="game-icon">💎</div>
+                <div class="game-info">
+                    <h3>Baccarat</h3>
+                    <p>Hand simulator & strategy</p>
+                </div>
+            </a>
+
+            <a href="keno_odds.html" class="game-card">
+                <div class="game-icon">🎱</div>
+                <div class="game-info">
+                    <h3>Keno</h3>
+                    <p>80-number board & payouts</p>
+                    <span class="badge">NEW</span>
+                </div>
+            </a>
+
+            <a href="paigow_odds.html" class="game-card">
+                <div class="game-icon">🀄</div>
+                <div class="game-info">
+                    <h3>Pai Gow Poker</h3>
+                    <p>7-card hand splitter</p>
+                    <span class="badge">NEW</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <span class="icon">🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">🎮</span>
+                <span>Games</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">📊</span>
+                <span>Stats</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">📚</span>
+                <span>Help</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">👤</span>
+                <span>Profile</span>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="floating-action">+</div>
+    </div>
+
+    <div style="text-align: center; padding: 20px; color: white;">
+        <p style="margin-bottom: 10px;">📱 <strong>Mobile Preview</strong></p>
+        <p style="font-size: 0.9em; opacity: 0.9;">This is how Casino Assistant looks on Android devices</p>
+        <p style="font-size: 0.85em; opacity: 0.8; margin-top: 10px;">
+            To test on real device: Open this page on your Android phone
+        </p>
+    </div>
+
+    <script>
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Bottom nav interaction
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Floating action button
+        document.querySelector('.floating-action').addEventListener('click', function() {
+            alert('Quick Actions:\n\n• New Calculation\n• Favorite Games\n• Recent History\n• Settings');
+        });
+    </script>
+</body>
+</html>
