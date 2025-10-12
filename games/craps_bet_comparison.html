@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craps Bet Comparison - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-5px); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
+        }
+        .card h2 {
+            color: var(--accent-color, #2c5364); margin-bottom: 20px;
+            font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
+        }
+        table {
+            width: 100%; border-collapse: collapse; background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px 0;
+        }
+        th, td { padding: 15px; text-align: left; border: 1px solid #ddd; }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; font-size: 1.1em;
+        }
+        .edge-excellent { background: #4CAF50; color: white; font-weight: bold; }
+        .edge-good { background: #8BC34A; color: white; }
+        .edge-fair { background: #FFC107; color: #333; }
+        .edge-poor { background: #FF9800; color: white; }
+        .edge-terrible { background: #f44336; color: white; }
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 20px; border-radius: 15px; margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="craps_odds.html" class="back-btn">← Back to Craps</a>
+        
+        <div class="header">
+            <h1>🎲 Craps Bet Comparison</h1>
+            <p>Complete guide to all craps bets and house edges</p>
+        </div>
+
+        <!-- Best Bets -->
+        <div class="card">
+            <h2>✅ Best Bets (Lowest House Edge)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bet</th>
+                        <th>Payout</th>
+                        <th>House Edge</th>
+                        <th>True Odds</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pass Line + Odds</strong></td>
+                        <td>1:1 + varies</td>
+                        <td class="edge-excellent">0.00% (odds)</td>
+                        <td>Varies</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Don't Pass + Odds</strong></td>
+                        <td>1:1 + varies</td>
+                        <td class="edge-excellent">0.00% (odds)</td>
+                        <td>Varies</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pass Line</strong></td>
+                        <td>1:1</td>
+                        <td class="edge-excellent">1.41%</td>
+                        <td>251:244</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Don't Pass</strong></td>
+                        <td>1:1</td>
+                        <td class="edge-excellent">1.36%</td>
+                        <td>976:949</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Come</strong></td>
+                        <td>1:1</td>
+                        <td class="edge-excellent">1.41%</td>
+                        <td>251:244</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Don't Come</strong></td>
+                        <td>1:1</td>
+                        <td class="edge-excellent">1.36%</td>
+                        <td>976:949</td>
+                        <td>⭐⭐⭐⭐⭐</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Place Bets -->
+        <div class="card">
+            <h2>📍 Place Bets</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bet</th>
+                        <th>Payout</th>
+                        <th>House Edge</th>
+                        <th>True Odds</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Place 6 or 8</strong></td>
+                        <td>7:6</td>
+                        <td class="edge-good">1.52%</td>
+                        <td>6:5</td>
+                        <td>⭐⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Place 5 or 9</strong></td>
+                        <td>7:5</td>
+                        <td class="edge-fair">4.00%</td>
+                        <td>3:2</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Place 4 or 10</strong></td>
+                        <td>9:5</td>
+                        <td class="edge-poor">6.67%</td>
+                        <td>2:1</td>
+                        <td>⭐⭐</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Field & Proposition Bets -->
+        <div class="card">
+            <h2>⚠️ Other Bets (Higher House Edge)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bet</th>
+                        <th>Payout</th>
+                        <th>House Edge</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Field (2x on 2, 3x on 12)</strong></td>
+                        <td>1:1, 2:1, 3:1</td>
+                        <td class="edge-fair">2.78%</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Field (2x on 2 & 12)</strong></td>
+                        <td>1:1, 2:1</td>
+                        <td class="edge-poor">5.56%</td>
+                        <td>⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Big 6 or Big 8</strong></td>
+                        <td>1:1</td>
+                        <td class="edge-poor">9.09%</td>
+                        <td>⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Any 7</strong></td>
+                        <td>4:1</td>
+                        <td class="edge-terrible">16.67%</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Any Craps</strong></td>
+                        <td>7:1</td>
+                        <td class="edge-terrible">11.11%</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardway 6 or 8</strong></td>
+                        <td>9:1</td>
+                        <td class="edge-terrible">9.09%</td>
+                        <td>⭐</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardway 4 or 10</strong></td>
+                        <td>7:1</td>
+                        <td class="edge-terrible">11.11%</td>
+                        <td>❌</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Strategy Tips -->
+        <div class="card">
+            <div class="info-box">
+                <h3>💡 Optimal Craps Strategy</h3>
+                <ul style="margin: 15px 0 15px 20px; line-height: 2;">
+                    <li><strong>Always take maximum odds</strong> - 0% house edge on odds bets</li>
+                    <li><strong>Stick to Pass/Don't Pass</strong> - Lowest house edge at 1.36-1.41%</li>
+                    <li><strong>Place 6 and 8</strong> - Best place bets at 1.52% house edge</li>
+                    <li><strong>Avoid proposition bets</strong> - House edge 9-17%</li>
+                    <li><strong>Never bet Big 6/8</strong> - Place bets pay better</li>
+                    <li><strong>Field bet only if 3x on 12</strong> - Reduces edge to 2.78%</li>
+                    <li><strong>Hardways are sucker bets</strong> - 9-11% house edge</li>
+                    <li><strong>Any 7 is the worst bet</strong> - 16.67% house edge</li>
+                </ul>
+                <h4 style="margin-top: 20px;">Recommended Betting Strategy:</h4>
+                <p style="margin-top: 10px; line-height: 1.8;">
+                    1. Bet Pass Line<br>
+                    2. Take maximum odds when point is established<br>
+                    3. Optional: Place 6 and 8 if different from point<br>
+                    4. Avoid everything else
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            casinoSounds.playSound('deal');
+        });
+    </script>
+</body>
+</html>

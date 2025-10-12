@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roulette Bet Coverage - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh; color: var(--text-primary, white); padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block; padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2); color: white;
+            text-decoration: none; border-radius: 10px;
+            margin-bottom: 20px; transition: all 0.3s; font-weight: bold;
+        }
+        .back-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(-5px); }
+        .header { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
+        .header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); color: var(--text-primary, #333);
+        }
+        .card h2 {
+            color: var(--accent-color, #2c5364); margin-bottom: 20px;
+            font-size: 2em; border-bottom: 3px solid var(--accent-color, #2c5364); padding-bottom: 10px;
+        }
+        .roulette-board {
+            display: grid; grid-template-columns: repeat(13, 1fr);
+            gap: 5px; margin: 20px 0; max-width: 100%; overflow-x: auto;
+        }
+        .number-cell {
+            aspect-ratio: 1; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; font-size: 1.2em;
+            border-radius: 8px; cursor: pointer; transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+        .number-cell:hover { transform: scale(1.1); }
+        .number-cell.selected { border-color: #FFD700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+        .red { background: #c31432; color: white; }
+        .black { background: #000; color: white; }
+        .green { background: #0a6e0a; color: white; }
+        .bet-options {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; margin: 20px 0;
+        }
+        .bet-btn {
+            padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; border-radius: 10px;
+            cursor: pointer; font-size: 1.1em; font-weight: bold;
+            transition: all 0.3s;
+        }
+        .bet-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px; border-radius: 15px; text-align: center; color: white;
+        }
+        .stat-number { font-size: 2.5em; font-weight: bold; }
+        .stat-label { margin-top: 10px; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="roulette_odds.html" class="back-btn">← Back to Roulette</a>
+        
+        <div class="header">
+            <h1>🎡 Bet Coverage Analyzer</h1>
+            <p>Visualize which numbers you're covering</p>
+        </div>
+
+        <!-- Quick Bets -->
+        <div class="card">
+            <h2>Quick Bet Selection</h2>
+            <div class="bet-options">
+                <button class="bet-btn" onclick="selectBet('red')">🔴 Red Numbers</button>
+                <button class="bet-btn" onclick="selectBet('black')">⚫ Black Numbers</button>
+                <button class="bet-btn" onclick="selectBet('even')">Even Numbers</button>
+                <button class="bet-btn" onclick="selectBet('odd')">Odd Numbers</button>
+                <button class="bet-btn" onclick="selectBet('low')">1-18 (Low)</button>
+                <button class="bet-btn" onclick="selectBet('high')">19-36 (High)</button>
+                <button class="bet-btn" onclick="selectBet('dozen1')">1st Dozen (1-12)</button>
+                <button class="bet-btn" onclick="selectBet('dozen2')">2nd Dozen (13-24)</button>
+                <button class="bet-btn" onclick="selectBet('dozen3')">3rd Dozen (25-36)</button>
+                <button class="bet-btn" onclick="selectBet('column1')">Column 1</button>
+                <button class="bet-btn" onclick="selectBet('column2')">Column 2</button>
+                <button class="bet-btn" onclick="selectBet('column3')">Column 3</button>
+                <button class="bet-btn" onclick="clearAll()" style="background: #f44336;">Clear All</button>
+            </div>
+        </div>
+
+        <!-- Roulette Board -->
+        <div class="card">
+            <h2>Roulette Board (Click numbers to select)</h2>
+            <div class="roulette-board" id="rouletteBoard"></div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="card">
+            <h2>Coverage Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="numbersSelected">0</div>
+                    <div class="stat-label">Numbers Selected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="coveragePercent">0%</div>
+                    <div class="stat-label">Board Coverage</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="winChance">0%</div>
+                    <div class="stat-label">Win Probability</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="expectedValue">$0</div>
+                    <div class="stat-label">Expected Value ($10 bet)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const redNumbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+        let selectedNumbers = new Set();
+
+        function generateBoard() {
+            const board = document.getElementById('rouletteBoard');
+            board.innerHTML = '';
+            
+            // Add 0 and 00
+            const zero = createNumberCell(0, 'green');
+            const doubleZero = createNumberCell(37, 'green', '00');
+            board.appendChild(zero);
+            board.appendChild(doubleZero);
+            
+            // Add 1-36
+            for (let i = 1; i <= 36; i++) {
+                const color = redNumbers.includes(i) ? 'red' : 'black';
+                board.appendChild(createNumberCell(i, color));
+            }
+        }
+
+        function createNumberCell(num, color, display = null) {
+            const cell = document.createElement('div');
+            cell.className = `number-cell ${color}`;
+            cell.textContent = display || num;
+            cell.onclick = () => toggleNumber(num, cell);
+            cell.dataset.number = num;
+            return cell;
+        }
+
+        function toggleNumber(num, cell) {
+            casinoSounds.playSound('click');
+            if (selectedNumbers.has(num)) {
+                selectedNumbers.delete(num);
+                cell.classList.remove('selected');
+            } else {
+                selectedNumbers.add(num);
+                cell.classList.add('selected');
+            }
+            updateStats();
+        }
+
+        function selectBet(type) {
+            casinoSounds.playSound('chip');
+            clearAll();
+            
+            switch(type) {
+                case 'red':
+                    redNumbers.forEach(n => selectedNumbers.add(n));
+                    break;
+                case 'black':
+                    for (let i = 1; i <= 36; i++) {
+                        if (!redNumbers.includes(i)) selectedNumbers.add(i);
+                    }
+                    break;
+                case 'even':
+                    for (let i = 2; i <= 36; i += 2) selectedNumbers.add(i);
+                    break;
+                case 'odd':
+                    for (let i = 1; i <= 36; i += 2) selectedNumbers.add(i);
+                    break;
+                case 'low':
+                    for (let i = 1; i <= 18; i++) selectedNumbers.add(i);
+                    break;
+                case 'high':
+                    for (let i = 19; i <= 36; i++) selectedNumbers.add(i);
+                    break;
+                case 'dozen1':
+                    for (let i = 1; i <= 12; i++) selectedNumbers.add(i);
+                    break;
+                case 'dozen2':
+                    for (let i = 13; i <= 24; i++) selectedNumbers.add(i);
+                    break;
+                case 'dozen3':
+                    for (let i = 25; i <= 36; i++) selectedNumbers.add(i);
+                    break;
+                case 'column1':
+                    for (let i = 1; i <= 34; i += 3) selectedNumbers.add(i);
+                    break;
+                case 'column2':
+                    for (let i = 2; i <= 35; i += 3) selectedNumbers.add(i);
+                    break;
+                case 'column3':
+                    for (let i = 3; i <= 36; i += 3) selectedNumbers.add(i);
+                    break;
+            }
+            
+            updateBoard();
+            updateStats();
+        }
+
+        function clearAll() {
+            selectedNumbers.clear();
+            updateBoard();
+            updateStats();
+        }
+
+        function updateBoard() {
+            document.querySelectorAll('.number-cell').forEach(cell => {
+                const num = parseInt(cell.dataset.number);
+                if (selectedNumbers.has(num)) {
+                    cell.classList.add('selected');
+                } else {
+                    cell.classList.remove('selected');
+                }
+            });
+        }
+
+        function updateStats() {
+            const count = selectedNumbers.size;
+            const coverage = ((count / 38) * 100).toFixed(1);
+            const winChance = ((count / 38) * 100).toFixed(1);
+            const ev = ((count * 35 - 38 * 10) / 38).toFixed(2);
+            
+            document.getElementById('numbersSelected').textContent = count;
+            document.getElementById('coveragePercent').textContent = coverage + '%';
+            document.getElementById('winChance').textContent = winChance + '%';
+            document.getElementById('expectedValue').textContent = '$' + ev;
+            
+            // Color code EV
+            const evEl = document.getElementById('expectedValue');
+            if (parseFloat(ev) > 0) {
+                evEl.style.color = '#4CAF50';
+            } else {
+                evEl.style.color = '#f44336';
+            }
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            generateBoard();
+            updateStats();
+            casinoSounds.playSound('spin');
+        });
+    </script>
+</body>
+</html>
