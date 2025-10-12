@@ -38,6 +38,24 @@ class ThemeManager {
     }
 
     setTheme(themeName) {
+        // Check if theme is premium
+        const premiumThemes = ['blue', 'green', 'purple', 'gold'];
+        const isPremium = this.checkPremiumStatus();
+        
+        if (premiumThemes.includes(themeName) && !isPremium) {
+            if (confirm('🎨 Premium Themes are locked!\n\n' +
+                       'Upgrade to Premium to unlock:\n' +
+                       '✓ 6 beautiful premium themes\n' +
+                       '✓ Ocean Blue\n' +
+                       '✓ Forest Green\n' +
+                       '✓ Royal Purple\n' +
+                       '✓ Golden Luxury\n\n' +
+                       'Want to upgrade now?')) {
+                window.location.href = 'games/premium.html';
+            }
+            return;
+        }
+        
         const themes = {
             'light': this.getLightTheme(),
             'dark': this.getDarkTheme(),
@@ -53,6 +71,23 @@ class ThemeManager {
             this.saveTheme();
             this.applyTheme();
         }
+    }
+    
+    checkPremiumStatus() {
+        const premium = localStorage.getItem('casinoPremium');
+        const plan = localStorage.getItem('premiumPlan');
+        const date = localStorage.getItem('premiumDate');
+        
+        if (premium !== 'true' || !date) return false;
+        
+        const startDate = new Date(date);
+        const now = new Date();
+        const daysSince = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+        
+        if (plan === 'yearly') return daysSince < 365;
+        if (plan === 'monthly') return daysSince < 30;
+        
+        return false;
     }
 
     applyCustomTheme(theme) {

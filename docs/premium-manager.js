@@ -224,11 +224,23 @@ class PremiumManager {
 
     // Export user data (Premium feature)
     exportUserData() {
-        if (!this.lockFeature('exportData', 'Data export is a Premium feature')) return;
+        if (!this.premiumStatus.isPremium) {
+            if (confirm('💾 Data Export is a Premium feature!\n\n' +
+                       'Upgrade to Premium to unlock:\n' +
+                       '✓ Export all your data\n' +
+                       '✓ Backup statistics\n' +
+                       '✓ Download settings\n' +
+                       '✓ Data portability\n\n' +
+                       'Want to upgrade now?')) {
+                window.location.href = 'games/premium.html';
+            }
+            return;
+        }
 
         const userData = {
             account: JSON.parse(localStorage.getItem('currentUser') || '{}'),
             settings: JSON.parse(localStorage.getItem('casinoSettings') || '{}'),
+            academyStats: JSON.parse(localStorage.getItem('casinoAcademyStats') || '{}'),
             premium: this.premiumStatus,
             exportDate: new Date().toISOString()
         };
@@ -243,6 +255,24 @@ class PremiumManager {
         link.click();
         
         alert('✓ Your data has been exported successfully!');
+    }
+    
+    // View advanced analytics (Premium feature)
+    viewAdvancedAnalytics() {
+        if (!this.premiumStatus.isPremium) {
+            if (confirm('📊 Advanced Analytics is a Premium feature!\n\n' +
+                       'Upgrade to Premium to unlock:\n' +
+                       '✓ Detailed performance graphs\n' +
+                       '✓ Win/loss trend analysis\n' +
+                       '✓ Session history tracking\n' +
+                       '✓ Custom date ranges\n' +
+                       '✓ Visual charts & graphs\n\n' +
+                       'Want to upgrade now?')) {
+                window.location.href = 'games/premium.html';
+            }
+            return false;
+        }
+        return true;
     }
 }
 

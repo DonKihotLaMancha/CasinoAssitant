@@ -504,16 +504,33 @@ function openLesson(game) {
     const lesson = lessons[game];
     if (!lesson) return;
     
+    // Check if this is an advanced lesson (free users get first 5 lessons only)
+    const isPremium = checkPremiumStatus();
+    const stats = JSON.parse(localStorage.getItem('casinoAcademyStats') || '{}');
+    const viewCount = stats.lessonsViewed ? stats.lessonsViewed.filter(g => g === game).length : 0;
+    
+    // Free users can only view each lesson once (5 lessons total per game)
+    if (!isPremium && viewCount >= 5) {
+        if (confirm('🔒 Advanced Lessons are Premium Only!\n\n' +
+                   'You\'ve viewed the 5 free lessons for this game.\n\n' +
+                   'Upgrade to Premium to unlock:\n' +
+                   '✓ 60+ advanced lessons\n' +
+                   '✓ Expert strategies\n' +
+                   '✓ Professional techniques\n' +
+                   '✓ All 11 game quizzes\n\n' +
+                   'Want to upgrade now?')) {
+            window.location.href = 'premium.html';
+        }
+        return;
+    }
+    
     document.getElementById('lessonContent').innerHTML = lesson.content;
     document.getElementById('lessonModal').style.display = 'block';
     
     // Track lesson view
-    const stats = JSON.parse(localStorage.getItem('casinoAcademyStats') || '{}');
     if (!stats.lessonsViewed) stats.lessonsViewed = [];
-    if (!stats.lessonsViewed.includes(game)) {
-        stats.lessonsViewed.push(game);
-        localStorage.setItem('casinoAcademyStats', JSON.stringify(stats));
-    }
+    stats.lessonsViewed.push(game); // Track each view
+    localStorage.setItem('casinoAcademyStats', JSON.stringify(stats));
 }
 
 function closeLesson() {
