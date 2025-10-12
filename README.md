@@ -2,12 +2,14 @@
 
 **Professional odds calculators and strategy tools for all major casino games**
 
-![Version](https://img.shields.io/badge/version-3.0-blue)
+![Version](https://img.shields.io/badge/version-4.0_ULTIMATE-blue)
 ![Status](https://img.shields.io/badge/status-complete-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Games](https://img.shields.io/badge/games-13-orange)
 ![Tools](https://img.shields.io/badge/tools-11-purple)
 ![Odds](https://img.shields.io/badge/odds_calculators-11/11-success)
+![Lessons](https://img.shields.io/badge/lessons-60+-success)
+![Academy](https://img.shields.io/badge/casino_academy-NEW-red)
 
 ## 🌟 Features
 
@@ -27,14 +29,16 @@
 - 🎴 **Blackjack Client** - Classic game
 
 ### **Core Features**
+- ✅ **🎓 Casino Academy** - Learn ALL 11 games with 60+ comprehensive lessons
 - ✅ **11/11 Odds Calculators** - Every game calculates winning chances
-- ✅ **Duolingo-Style Learning** - Daily goals, streaks, XP, levels
+- ✅ **Complete Strategy Guides** - Mathematical odds, tips, bankroll management
 - ✅ **PWA Ready** - Installable app with offline support
 - ✅ **6 Custom Themes** - Light, Dark, Ocean, Forest, Purple, Golden
 - ✅ **9 Sound Effects** - Professional casino audio
 - ✅ **Real-Time Probabilities** - Live odds calculations
 - ✅ **Mobile Optimized** - 100% responsive design
 - ✅ **Statistics Tracking** - Win/loss records, accuracy, streaks
+- ✅ **Modern UI** - Dark theme with glassmorphism effects
 - ✅ **No Installation** - Works directly in browser
 - ✅ **No Ads** - Clean, professional interface
 
@@ -291,9 +295,10 @@ MIT License - Feel free to use, modify, and distribute.
 ## 👥 Credits
 
 **Developed by**: Casino Assistant Team  
-**Version**: 3.0 ULTIMATE  
+**Version**: 4.0 ULTIMATE  
 **Last Updated**: October 12, 2025  
-**Status**: 100% Complete & Production Ready
+**Status**: 100% Complete & Production Ready  
+**New**: Casino Academy with 60+ lessons for all games
 
 ## 🙏 Acknowledgments
 
