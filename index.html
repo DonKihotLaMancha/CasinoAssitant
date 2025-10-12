@@ -15,25 +15,6 @@
     <meta name="apple-mobile-web-app-title" content="BetSage">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
-    <!-- Using system fonts for faster loading -->
-    <style>
-        @font-face {
-            font-family: 'SystemUI';
-            src: local('Segoe UI'), local('San Francisco'), local('Roboto'), local('Helvetica Neue'), local('Arial');
-        }
-    </style>
-    
-    <!-- Google AdSense - Temporarily disabled for faster loading -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6377780758752429"
-         crossorigin="anonymous"></script> -->
-    
-    <!-- Scripts temporarily disabled for faster loading -->
-    <!-- <script src="config.js" defer></script> -->
-    <!-- <script src="docs/theme-manager.js" defer></script> -->
-    <!-- <script src="docs/adsense.js" defer></script> -->
-    <!-- <script src="docs/affiliates.js" defer></script> -->
-    <!-- <script src="docs/seo-meta.js" defer></script> -->
-    
     <style>
         * {
             margin: 0;
@@ -738,7 +719,7 @@
     <script>
         // Check authentication on page load
         window.addEventListener('DOMContentLoaded', function() {
-            const currentUser = localStorage.getItem('currentUser');
+            let currentUser = localStorage.getItem('currentUser');
             
             // Allow browsing without login - optional authentication
             if (!currentUser) {
@@ -748,25 +729,36 @@
                     isGuest: true
                 };
                 localStorage.setItem('currentUser', JSON.stringify(guestUser));
+                currentUser = JSON.stringify(guestUser);
             }
 
             const userData = JSON.parse(currentUser);
             
-            // Display user profile
-            document.getElementById('displayUsername').textContent = userData.username;
-            document.getElementById('userProfile').style.display = 'block';
+            // Display user profile if elements exist
+            const displayUsername = document.getElementById('displayUsername');
+            const userProfile = document.getElementById('userProfile');
+            
+            if (displayUsername && userData) {
+                displayUsername.textContent = userData.username;
+            }
+            if (userProfile) {
+                userProfile.style.display = 'block';
+            }
 
             // Update welcome message for logged in users
-            if (!userData.isGuest) {
+            if (userData && !userData.isGuest) {
                 setTimeout(() => {
                     const popup = document.getElementById('achievementPopup');
-                    document.getElementById('achievementText').innerHTML = 
-                        `<strong>Welcome back, ${userData.username}!</strong><br>Ready to calculate some odds?`;
-                    popup.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        popup.style.display = 'none';
-                    }, 3000);
+                    const achievementText = document.getElementById('achievementText');
+                    if (popup && achievementText) {
+                        achievementText.innerHTML = 
+                            `<strong>Welcome back, ${userData.username}!</strong><br>Ready to calculate some odds?`;
+                        popup.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            popup.style.display = 'none';
+                        }, 3000);
+                    }
                 }, 500);
             }
         });
@@ -799,14 +791,16 @@
         if (!sessionStorage.getItem('welcomed')) {
             setTimeout(() => {
                 const popup = document.getElementById('achievementPopup');
-                document.getElementById('achievementText').innerHTML = 
-                    '<strong>Welcome to Casino Assistant!</strong><br>Click "NEW Features" to see what\'s new!';
-                popup.style.display = 'block';
-                
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                }, 5000);
-                
+                const achievementText = document.getElementById('achievementText');
+                if (popup && achievementText) {
+                    achievementText.innerHTML = 
+                        '<strong>Welcome to BetSage!</strong><br>Professional odds calculators for all casino games';
+                    popup.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 5000);
+                }
                 sessionStorage.setItem('welcomed', 'true');
             }, 1000);
         }
