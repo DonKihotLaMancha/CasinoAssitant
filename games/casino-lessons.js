@@ -521,9 +521,167 @@ function closeLesson() {
     document.getElementById('lessonModal').style.display = 'none';
 }
 
+// Quiz questions for each game
+const quizzes = {
+    blackjack: [
+        {
+            question: "What is the house edge with perfect basic strategy?",
+            options: ["0.5%", "2%", "5%", "10%"],
+            correct: 0
+        },
+        {
+            question: "What should you do with a pair of Aces?",
+            options: ["Hit", "Stand", "Split", "Double Down"],
+            correct: 2
+        },
+        {
+            question: "In Hi-Lo counting, what value is a King?",
+            options: ["+1", "0", "-1", "+2"],
+            correct: 2
+        }
+    ],
+    poker: [
+        {
+            question: "What is the best starting hand in Texas Hold'em?",
+            options: ["A-K suited", "Pocket Aces", "Pocket Kings", "Q-Q"],
+            correct: 1
+        },
+        {
+            question: "If the pot is $100 and you need to call $20, what are your pot odds?",
+            options: ["2:1", "5:1", "6:1", "4:1"],
+            correct: 2
+        }
+    ],
+    roulette: [
+        {
+            question: "What is the house edge on a European roulette wheel?",
+            options: ["2.7%", "5.26%", "1.35%", "7.89%"],
+            correct: 0
+        },
+        {
+            question: "How many numbers are on an American roulette wheel?",
+            options: ["36", "37", "38", "40"],
+            correct: 2
+        }
+    ]
+};
+
+let currentQuiz = null;
+let currentQuestion = 0;
+let score = 0;
+
 function startQuiz(game) {
     casinoSounds.playSound('click');
-    alert(`📝 ${lessons[game].title} Quiz\n\nQuiz feature coming soon!\n\nYou'll be able to test your knowledge and earn XP for correct answers.`);
+    
+    if (!quizzes[game]) {
+        alert(`📝 ${lessons[game].title} Quiz\n\nQuiz questions for this game are being prepared!\n\nCheck back soon.`);
+        return;
+    }
+    
+    currentQuiz = game;
+    currentQuestion = 0;
+    score = 0;
+    
+    showQuizQuestion();
+}
+
+function showQuizQuestion() {
+    const quiz = quizzes[currentQuiz];
+    const q = quiz[currentQuestion];
+    
+    let html = `
+        <h2>📝 ${lessons[currentQuiz].title} - Quiz</h2>
+        <div class="lesson-section">
+            <p><strong>Question ${currentQuestion + 1} of ${quiz.length}</strong></p>
+            <h3>${q.question}</h3>
+            <div style="margin: 20px 0;">
+    `;
+    
+    q.options.forEach((option, index) => {
+        html += `
+            <button class="quiz-btn" onclick="checkAnswer(${index})" style="display: block; width: 100%; margin: 10px 0;">
+                ${String.fromCharCode(65 + index)}. ${option}
+            </button>
+        `;
+    });
+    
+    html += `
+            </div>
+            <p style="color: rgba(255,255,255,0.7);">Score: ${score}/${currentQuestion}</p>
+        </div>
+    `;
+    
+    document.getElementById('lessonContent').innerHTML = html;
+    document.getElementById('lessonModal').style.display = 'block';
+}
+
+function checkAnswer(selected) {
+    const quiz = quizzes[currentQuiz];
+    const q = quiz[currentQuestion];
+    
+    if (selected === q.correct) {
+        casinoSounds.playSound('win');
+        score++;
+        alert('✅ Correct!');
+    } else {
+        casinoSounds.playSound('lose');
+        alert(`❌ Incorrect!\n\nThe correct answer was: ${q.options[q.correct]}`);
+    }
+    
+    currentQuestion++;
+    
+    if (currentQuestion < quiz.length) {
+        showQuizQuestion();
+    } else {
+        showQuizResults();
+    }
+}
+
+function showQuizResults() {
+    const quiz = quizzes[currentQuiz];
+    const percentage = Math.round((score / quiz.length) * 100);
+    
+    let grade = '';
+    let emoji = '';
+    if (percentage >= 90) {
+        grade = 'Excellent!';
+        emoji = '🏆';
+        casinoSounds.playSound('bigwin');
+    } else if (percentage >= 70) {
+        grade = 'Good Job!';
+        emoji = '⭐';
+        casinoSounds.playSound('win');
+    } else if (percentage >= 50) {
+        grade = 'Not Bad';
+        emoji = '👍';
+    } else {
+        grade = 'Keep Studying';
+        emoji = '📚';
+    }
+    
+    let html = `
+        <h2>${emoji} Quiz Complete!</h2>
+        <div class="lesson-section" style="text-align: center;">
+            <h3>${grade}</h3>
+            <p style="font-size: 2em; margin: 20px 0;">${score} / ${quiz.length}</p>
+            <p style="font-size: 1.5em; color: #F7B801;">${percentage}%</p>
+            <button class="quiz-btn" onclick="startQuiz('${currentQuiz}')" style="margin: 10px;">
+                🔄 Retake Quiz
+            </button>
+            <button class="quiz-btn" onclick="closeLesson()" style="margin: 10px;">
+                ✓ Done
+            </button>
+        </div>
+    `;
+    
+    document.getElementById('lessonContent').innerHTML = html;
+    
+    // Save quiz result
+    const stats = JSON.parse(localStorage.getItem('casinoAcademyStats') || '{}');
+    if (!stats.quizResults) stats.quizResults = {};
+    if (!stats.quizResults[currentQuiz]) stats.quizResults[currentQuiz] = [];
+    stats.quizResults[currentQuiz].push({ score, total: quiz.length, percentage, date: new Date().toISOString() });
+    localStorage.setItem('casinoAcademyStats', JSON.stringify(stats));
 }
 
 // Close modal when clicking outside
