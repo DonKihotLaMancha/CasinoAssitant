@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Basic Strategy - Casino Assistant</title>
+    <script src="../docs/sounds.js"></script>
+    <script src="../docs/theme-manager.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary, linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%));
+            min-height: 100vh;
+            color: var(--text-primary, white);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.95));
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: var(--text-primary, #333);
+        }
+
+        .card h2 {
+            color: var(--accent-color, #2c5364);
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid var(--accent-color, #2c5364);
+            padding-bottom: 10px;
+        }
+
+        .strategy-table {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .action-H { background: #4CAF50; color: white; }
+        .action-S { background: #f44336; color: white; }
+        .action-D { background: #2196F3; color: white; }
+        .action-P { background: #ff9800; color: white; }
+        .action-R { background: #9c27b0; color: white; }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .info-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="blackjack_dashboard.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>📋 Blackjack Basic Strategy</h1>
+            <p>The mathematically optimal play for every hand</p>
+        </div>
+
+        <!-- Legend -->
+        <div class="card">
+            <h2>Action Legend</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box action-H">H</div>
+                    <span><strong>Hit</strong> - Take another card</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box action-S">S</div>
+                    <span><strong>Stand</strong> - Keep your hand</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box action-D">D</div>
+                    <span><strong>Double</strong> - Double bet, take one card</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box action-P">P</div>
+                    <span><strong>Split</strong> - Split pairs into two hands</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box action-R">R</div>
+                    <span><strong>Surrender</strong> - Give up half your bet</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hard Totals -->
+        <div class="card">
+            <h2>Hard Totals (No Ace or Ace counted as 1)</h2>
+            <div class="strategy-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Your Hand</th>
+                            <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                            <th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hardTotals"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Soft Totals -->
+        <div class="card">
+            <h2>Soft Totals (Ace counted as 11)</h2>
+            <div class="strategy-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Your Hand</th>
+                            <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                            <th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                        </tr>
+                    </thead>
+                    <tbody id="softTotals"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pairs -->
+        <div class="card">
+            <h2>Pairs</h2>
+            <div class="strategy-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Your Pair</th>
+                            <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                            <th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pairs"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Strategy Tips -->
+        <div class="card">
+            <div class="info-box">
+                <h3>💡 Key Strategy Tips</h3>
+                <ul>
+                    <li><strong>Always split Aces and 8s</strong> - These are the most profitable splits</li>
+                    <li><strong>Never split 5s or 10s</strong> - Play them as hard totals instead</li>
+                    <li><strong>Double on 11 against dealer 2-10</strong> - Highest expected value play</li>
+                    <li><strong>Stand on 17 or higher</strong> - Risk of busting is too high</li>
+                    <li><strong>Hit on 12-16 vs dealer 7-Ace</strong> - Dealer likely has strong hand</li>
+                    <li><strong>Double soft 13-18 vs dealer 5-6</strong> - Dealer most likely to bust</li>
+                    <li><strong>Surrender 16 vs dealer 9, 10, A</strong> - If surrender is allowed</li>
+                    <li><strong>Never take insurance</strong> - House edge is too high</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Rules Info -->
+        <div class="card">
+            <h2>ℹ️ Important Notes</h2>
+            <div class="info-box" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+                <h3>This chart assumes:</h3>
+                <ul>
+                    <li>4-8 deck shoe</li>
+                    <li>Dealer stands on soft 17</li>
+                    <li>Double after split allowed</li>
+                    <li>Surrender allowed</li>
+                    <li>Blackjack pays 3:2</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Note:</strong> Different rules may slightly change optimal strategy. Always check the specific rules of your game.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Basic Strategy Data
+        const hardTotals = {
+            '17-20': ['S','S','S','S','S','S','S','S','S','S'],
+            '16': ['S','S','S','S','S','H','H','R','R','R'],
+            '15': ['S','S','S','S','S','H','H','H','R','H'],
+            '14': ['S','S','S','S','S','H','H','H','H','H'],
+            '13': ['S','S','S','S','S','H','H','H','H','H'],
+            '12': ['H','H','S','S','S','H','H','H','H','H'],
+            '11': ['D','D','D','D','D','D','D','D','D','H'],
+            '10': ['D','D','D','D','D','D','D','D','H','H'],
+            '9': ['H','D','D','D','D','H','H','H','H','H'],
+            '5-8': ['H','H','H','H','H','H','H','H','H','H']
+        };
+
+        const softTotals = {
+            'A,9': ['S','S','S','S','S','S','S','S','S','S'],
+            'A,8': ['S','S','S','S','S','S','S','S','S','S'],
+            'A,7': ['S','D','D','D','D','S','S','H','H','H'],
+            'A,6': ['H','D','D','D','D','H','H','H','H','H'],
+            'A,5': ['H','H','D','D','D','H','H','H','H','H'],
+            'A,4': ['H','H','D','D','D','H','H','H','H','H'],
+            'A,3': ['H','H','H','D','D','H','H','H','H','H'],
+            'A,2': ['H','H','H','D','D','H','H','H','H','H']
+        };
+
+        const pairs = {
+            'A,A': ['P','P','P','P','P','P','P','P','P','P'],
+            '10,10': ['S','S','S','S','S','S','S','S','S','S'],
+            '9,9': ['P','P','P','P','P','S','P','P','S','S'],
+            '8,8': ['P','P','P','P','P','P','P','P','P','P'],
+            '7,7': ['P','P','P','P','P','P','H','H','H','H'],
+            '6,6': ['P','P','P','P','P','H','H','H','H','H'],
+            '5,5': ['D','D','D','D','D','D','D','D','H','H'],
+            '4,4': ['H','H','H','P','P','H','H','H','H','H'],
+            '3,3': ['P','P','P','P','P','P','H','H','H','H'],
+            '2,2': ['P','P','P','P','P','P','H','H','H','H']
+        };
+
+        function generateTable(data, tbody) {
+            const container = document.getElementById(tbody);
+            for (const [hand, actions] of Object.entries(data)) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<th>${hand}</th>`;
+                actions.forEach(action => {
+                    row.innerHTML += `<td class="action-${action}">${action}</td>`;
+                });
+                container.appendChild(row);
+            }
+        }
+
+        // Generate all tables
+        generateTable(hardTotals, 'hardTotals');
+        generateTable(softTotals, 'softTotals');
+        generateTable(pairs, 'pairs');
+
+        // Play sound on load
+        window.addEventListener('DOMContentLoaded', () => {
+            casinoSounds.playSound('deal');
+        });
+    </script>
+</body>
+</html>
