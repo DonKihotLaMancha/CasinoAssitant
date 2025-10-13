@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - BetSage</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -818,35 +824,79 @@
             window.location.href = 'index.html';
         }
         
-        function socialLogin(provider) {
-            // Show coming soon message for social login
-            alert(`🔐 ${provider.charAt(0).toUpperCase() + provider.slice(1)} Login\n\n` +
-                  `Social login integration is coming soon!\n\n` +
-                  `We're working on adding secure ${provider} authentication.\n` +
-                  `For now, please use email/password or continue as guest.\n\n` +
-                  `Features coming:\n` +
-                  `✓ One-click login\n` +
-                  `✓ Secure OAuth 2.0\n` +
-                  `✓ No password needed\n` +
-                  `✓ Instant access`);
+        // Initialize Firebase on page load
+        window.addEventListener('load', () => {
+            if (window.firebaseAuth) {
+                window.firebaseAuth.initialize();
+            }
+        });
+
+        async function socialLogin(provider) {
+            const loadingMsg = showLoading(`Connecting to ${provider}...`);
             
-            // TODO: Implement actual OAuth integration
-            // For now, simulate social login for testing
-            if (confirm(`Demo: Would you like to simulate ${provider} login?`)) {
-                const socialUser = {
-                    username: `${provider}_user_${Math.floor(Math.random() * 1000)}`,
-                    email: `user@${provider}.com`,
-                    rememberMe: true,
-                    socialProvider: provider,
-                    loginTime: new Date().toISOString()
-                };
+            try {
+                let result;
                 
-                localStorage.setItem('currentUser', JSON.stringify(socialUser));
-                showSuccess(`Logged in with ${provider}! Redirecting...`);
+                // Call appropriate Firebase auth method
+                switch(provider.toLowerCase()) {
+                    case 'google':
+                        result = await window.firebaseAuth.signInWithGoogle();
+                        break;
+                    case 'facebook':
+                        result = await window.firebaseAuth.signInWithFacebook();
+                        break;
+                    case 'apple':
+                        result = await window.firebaseAuth.signInWithApple();
+                        break;
+                    case 'microsoft':
+                        result = await window.firebaseAuth.signInWithMicrosoft();
+                        break;
+                    default:
+                        throw new Error('Unknown provider');
+                }
                 
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
+                if (result.success) {
+                    showSuccess(`✅ Logged in with ${provider}! Redirecting...`);
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1000);
+                } else {
+                    showError(result.error || `Failed to login with ${provider}`);
+                }
+            } catch (error) {
+                console.error('Social login error:', error);
+                showError(`Authentication failed: ${error.message}`);
+            } finally {
+                hideLoading(loadingMsg);
+            }
+        }
+
+        function showLoading(message) {
+            const loading = document.createElement('div');
+            loading.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 30px 50px;
+                border-radius: 15px;
+                z-index: 10000;
+                text-align: center;
+                font-weight: 600;
+            `;
+            loading.innerHTML = `
+                <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
+                <div>${message}</div>
+            `;
+            document.body.appendChild(loading);
+            return loading;
+        }
+
+        function hideLoading(element) {
+            if (element && element.parentNode) {
+                element.parentNode.removeChild(element);
             }
         }
     </script>
