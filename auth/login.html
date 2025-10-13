@@ -658,14 +658,14 @@
 
             if (user) {
                 // Successful login
-                const currentUser = {
-                    username: user.username,
-                    email: user.email,
-                    rememberMe: rememberMe,
-                    loginTime: new Date().toISOString()
+                const socialUser = {
+                    username: `${provider}User`,
+                    email: `user@${provider.toLowerCase()}.com`,
+                    provider: provider,
+                    loginTime: Date.now()
                 };
 
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('currentUser', JSON.stringify(socialUser));
 
                 // Show success message
                 showSuccess('Login successful! Redirecting...');
@@ -751,8 +751,8 @@
             const currentUser = {
                 username: newUser.username,
                 email: newUser.email,
-                rememberMe: true,
-                loginTime: new Date().toISOString()
+                rememberMe: false,
+                loginTime: Date.now()
             };
 
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -811,7 +811,7 @@
                 email: 'guest@casino.local',
                 rememberMe: false,
                 isGuest: true,
-                loginTime: new Date().toISOString()
+                loginTime: Date.now()
             };
 
             localStorage.setItem('currentUser', JSON.stringify(guestUser));
