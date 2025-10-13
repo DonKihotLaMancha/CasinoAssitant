@@ -25,11 +25,9 @@ const urlsToCache = [
 
 // Install event - cache resources
 self.addEventListener('install', event => {
-  console.log('[ServiceWorker] Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[ServiceWorker] Caching app shell');
         return cache.addAll(urlsToCache);
       })
       .then(() => self.skipWaiting())
@@ -38,13 +36,11 @@ self.addEventListener('install', event => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
-  console.log('[ServiceWorker] Activating...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('[ServiceWorker] Removing old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -95,7 +91,6 @@ self.addEventListener('sync', event => {
 
 async function syncStats() {
   // Sync user statistics when back online
-  console.log('[ServiceWorker] Syncing statistics...');
   // Implementation would go here
 }
 

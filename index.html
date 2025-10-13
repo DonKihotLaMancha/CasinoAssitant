@@ -929,10 +929,10 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
-                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                        // Service Worker registered successfully
                     })
                     .catch(error => {
-                        console.log('❌ Service Worker registration failed:', error);
+                        // Service Worker registration failed
                     });
             });
         }
@@ -952,7 +952,6 @@
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response: ${outcome}`);
                     deferredPrompt = null;
                     installBtn.remove();
                 }
