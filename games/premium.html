@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Go Premium - Casino Assistant</title>
     <script src="../docs/sounds.js" defer></script>
+    <script src="../auth/paypal-config.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -237,7 +238,7 @@
                     <li>Priority email support</li>
                     <li>Cancel anytime</li>
                 </ul>
-                <button class="subscribe-btn" onclick="selectPlan('monthly')">Subscribe Monthly</button>
+                <div id="paypal-button-monthly"></div>
             </div>
 
             <!-- Yearly Plan -->
@@ -256,7 +257,7 @@
                     <li>Priority email support</li>
                     <li>Cancel anytime</li>
                 </ul>
-                <button class="subscribe-btn featured" onclick="selectPlan('yearly')">Subscribe Yearly</button>
+                <div id="paypal-button-yearly"></div>
             </div>
         </div>
 
@@ -318,7 +319,7 @@
 
         <div style="text-align: center; margin: 40px 0;">
             <p style="color: rgba(255, 255, 255, 0.6);">
-                💳 Secure payment via Stripe • Cancel anytime • No refunds on digital products
+                💳 Secure payment via PayPal • Cancel anytime • No refunds on digital products
             </p>
             <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.9em; margin-top: 10px;">
                 By subscribing, you agree to our Terms of Service and Privacy Policy
@@ -327,39 +328,60 @@
     </div>
 
     <script>
+        // Initialize PayPal buttons on page load
+        window.addEventListener('load', async () => {
+            try {
+                // Create monthly subscription button
+                await window.paypalSubscription.createSubscriptionButton('paypal-button-monthly', 'monthly');
+                
+                // Create yearly subscription button
+                await window.paypalSubscription.createSubscriptionButton('paypal-button-yearly', 'yearly');
+                
+                console.log('PayPal buttons initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize PayPal buttons:', error);
+                
+                // Show fallback message
+                document.getElementById('paypal-button-monthly').innerHTML = `
+                    <button class="subscribe-btn" onclick="showPayPalSetupInfo()">
+                        Subscribe Monthly - $9.99/mo
+                    </button>
+                `;
+                document.getElementById('paypal-button-yearly').innerHTML = `
+                    <button class="subscribe-btn featured" onclick="showPayPalSetupInfo()">
+                        Subscribe Yearly - $49.99/yr
+                    </button>
+                `;
+            }
+        });
+
         function selectPlan(plan) {
-            casinoSounds.playSound('click');
-            
             if (plan === 'free') {
                 alert('You are currently on the Free plan!');
                 return;
             }
-            
-            // In production, integrate with Stripe/PayPal
-            const prices = {
-                monthly: '$9.99/month',
-                yearly: '$49.99/year'
-            };
-            
-            // In production, integrate with Stripe payment
-            // For now, show coming soon message
+        }
+
+        function showPayPalSetupInfo() {
             alert(
-                `🎉 Upgrade to Premium ${plan === 'yearly' ? 'Annual' : 'Monthly'}!\n\n` +
-                `Price: ${prices[plan]}\n\n` +
-                `💳 Secure Payment Integration Coming Soon!\n\n` +
-                `We're finalizing our payment system with Stripe.\n` +
-                `You'll be able to subscribe very soon.\n\n` +
-                `Want to be notified when it's ready?\n` +
-                `Contact us at: premium@betsage.com`
+                '💳 PayPal Setup Required\n\n' +
+                'To enable payments, please:\n\n' +
+                '1. Create a PayPal Business account\n' +
+                '2. Set up subscription plans\n' +
+                '3. Add your Client ID to paypal-config.js\n\n' +
+                'See PAYPAL_SETUP.md for detailed instructions.\n\n' +
+                'For testing, you can activate premium manually in developer mode.'
             );
             
-            // Temporary: Allow activation for testing
+            // Developer mode activation
             if (confirm('⚙️ Developer Mode: Activate premium for testing?')) {
                 localStorage.setItem('casinoPremium', 'true');
-                localStorage.setItem('premiumPlan', plan);
+                localStorage.setItem('premiumPlan', 'yearly');
                 localStorage.setItem('premiumDate', new Date().toISOString());
                 
-                casinoSounds.playSound('bigwin');
+                if (typeof casinoSounds !== 'undefined') {
+                    casinoSounds.playSound('bigwin');
+                }
                 alert('✅ Premium activated!\n\nAll features unlocked!\nAds disabled!');
                 
                 window.location.href = '../index.html';
