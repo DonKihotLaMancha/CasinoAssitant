@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | BetSage</title>
+    <meta name="description" content="View your statistics, progress, and subscription status">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 53, 0.5);
+        }
+        
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #F7B801;
+        }
+        
+        .subscription-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+            border: 2px solid #FFD700;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .subscription-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .status-badge.premium {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+        }
+        
+        .status-badge.free {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B35, #F7B801);
+            transition: width 0.5s ease;
+        }
+        
+        .activity-list {
+            list-style: none;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #FF6B35;
+        }
+        
+        .activity-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+        
+        .activity-details {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .activity-time {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .achievement {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .achievement.unlocked {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .achievement.locked {
+            opacity: 0.4;
+            filter: grayscale(100%);
+        }
+        
+        .achievement:hover {
+            transform: scale(1.05);
+        }
+        
+        .achievement-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-name {
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 My Dashboard</h1>
+            <div class="header-actions">
+                <a href="/" class="btn btn-secondary">← Home</a>
+                <a href="settings.html" class="btn btn-secondary">⚙️ Settings</a>
+            </div>
+        </div>
+        
+        <!-- Subscription Status -->
+        <div class="subscription-card" id="subscriptionCard">
+            <div class="subscription-status">
+                <div>
+                    <h2 style="margin-bottom: 10px;">Subscription Status</h2>
+                    <span class="status-badge" id="statusBadge">Free</span>
+                </div>
+                <div>
+                    <p id="subscriptionDetails" style="margin-bottom: 10px;">No active subscription</p>
+                    <a href="/games/premium.html" class="btn btn-primary" id="upgradeBtn">👑 Upgrade to Premium</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎮</div>
+                <div class="stat-label">Games Played</div>
+                <div class="stat-value" id="gamesPlayed">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-label">Lessons Completed</div>
+                <div class="stat-value" id="lessonsCompleted">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-label">Quizzes Taken</div>
+                <div class="stat-value" id="quizzesTaken">0</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-label">Achievements</div>
+                <div class="stat-value" id="achievementsUnlocked">0/20</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-label">Total Time</div>
+                <div class="stat-value" id="totalTime">0h</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-value" id="currentStreak">0</div>
+            </div>
+        </div>
+        
+        <!-- Progress Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">📈 Your Progress</h2>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Overall Completion</span>
+                    <span id="overallProgress">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="overallProgressBar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Lessons Progress</span>
+                    <span id="lessonsProgress">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="lessonsProgressBar" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Quizzes Progress</span>
+                    <span id="quizzesProgress">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="quizzesProgressBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">🕐 Recent Activity</h2>
+                <button class="btn btn-secondary" onclick="clearActivity()">Clear All</button>
+            </div>
+            <ul class="activity-list" id="activityList">
+                <li class="activity-item">
+                    <div class="activity-icon">📊</div>
+                    <div class="activity-details">
+                        <div class="activity-title">No recent activity</div>
+                        <div class="activity-time">Start using the app to see your activity here</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Achievements -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">🏆 Achievements</h2>
+            </div>
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Achievements will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Activity Chart -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">📊 Activity Chart</h2>
+            </div>
+            <div class="chart-container">
+                <p style="color: rgba(255,255,255,0.5);">Chart visualization coming soon...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../docs/premium-manager.js"></script>
+    <script src="subscription-checker.js"></script>
+    <script src="../docs/analytics-tracker.js"></script>
+    <script>
+        // Dashboard functionality
+        class Dashboard {
+            constructor() {
+                this.userData = this.loadUserData();
+                this.achievements = this.defineAchievements();
+                this.init();
+            }
+            
+            init() {
+                this.updateSubscriptionStatus();
+                this.updateStats();
+                this.updateProgress();
+                this.loadRecentActivity();
+                this.loadAchievements();
+                this.trackDashboardView();
+            }
+            
+            loadUserData() {
+                const defaultData = {
+                    gamesPlayed: 0,
+                    lessonsCompleted: 0,
+                    quizzesTaken: 0,
+                    totalTime: 0,
+                    currentStreak: 0,
+                    lastVisit: null,
+                    achievements: []
+                };
+                
+                const stored = localStorage.getItem('dashboardData');
+                return stored ? {...defaultData, ...JSON.parse(stored)} : defaultData;
+            }
+            
+            saveUserData() {
+                localStorage.setItem('dashboardData', JSON.stringify(this.userData));
+            }
+            
+            updateSubscriptionStatus() {
+                const subInfo = window.subscriptionChecker?.getSubscriptionInfo() || {active: false};
+                const statusBadge = document.getElementById('statusBadge');
+                const subscriptionDetails = document.getElementById('subscriptionDetails');
+                const upgradeBtn = document.getElementById('upgradeBtn');
+                
+                if (subInfo.active) {
+                    statusBadge.textContent = '👑 Premium';
+                    statusBadge.className = 'status-badge premium';
+                    subscriptionDetails.textContent = `${subInfo.plan} plan • ${subInfo.daysRemaining} days remaining`;
+                    upgradeBtn.textContent = '⚙️ Manage Subscription';
+                    upgradeBtn.href = '/auth/settings.html';
+                } else {
+                    statusBadge.textContent = 'Free';
+                    statusBadge.className = 'status-badge free';
+                    subscriptionDetails.textContent = 'Upgrade to unlock all features';
+                    upgradeBtn.textContent = '👑 Upgrade to Premium';
+                    upgradeBtn.href = '/games/premium.html';
+                }
+            }
+            
+            updateStats() {
+                document.getElementById('gamesPlayed').textContent = this.userData.gamesPlayed;
+                document.getElementById('lessonsCompleted').textContent = this.userData.lessonsCompleted;
+                document.getElementById('quizzesTaken').textContent = this.userData.quizzesTaken;
+                document.getElementById('totalTime').textContent = Math.round(this.userData.totalTime / 60) + 'h';
+                document.getElementById('currentStreak').textContent = this.userData.currentStreak + ' days';
+                
+                const unlockedAchievements = this.userData.achievements.length;
+                document.getElementById('achievementsUnlocked').textContent = `${unlockedAchievements}/20`;
+            }
+            
+            updateProgress() {
+                const totalLessons = 60;
+                const totalQuizzes = 11;
+                
+                const lessonsPercent = Math.round((this.userData.lessonsCompleted / totalLessons) * 100);
+                const quizzesPercent = Math.round((this.userData.quizzesTaken / totalQuizzes) * 100);
+                const overallPercent = Math.round((lessonsPercent + quizzesPercent) / 2);
+                
+                document.getElementById('overallProgress').textContent = overallPercent + '%';
+                document.getElementById('overallProgressBar').style.width = overallPercent + '%';
+                
+                document.getElementById('lessonsProgress').textContent = lessonsPercent + '%';
+                document.getElementById('lessonsProgressBar').style.width = lessonsPercent + '%';
+                
+                document.getElementById('quizzesProgress').textContent = quizzesPercent + '%';
+                document.getElementById('quizzesProgressBar').style.width = quizzesPercent + '%';
+            }
+            
+            loadRecentActivity() {
+                const activities = JSON.parse(localStorage.getItem('recentActivities') || '[]');
+                const activityList = document.getElementById('activityList');
+                
+                if (activities.length === 0) return;
+                
+                activityList.innerHTML = activities.slice(0, 10).map(activity => `
+                    <li class="activity-item">
+                        <div class="activity-icon">${activity.icon}</div>
+                        <div class="activity-details">
+                            <div class="activity-title">${activity.title}</div>
+                            <div class="activity-time">${this.formatTime(activity.timestamp)}</div>
+                        </div>
+                    </li>
+                `).join('');
+            }
+            
+            defineAchievements() {
+                return [
+                    {id: 'first_game', icon: '🎮', name: 'First Game', description: 'Play your first game', unlocked: false},
+                    {id: 'first_lesson', icon: '📚', name: 'Student', description: 'Complete your first lesson', unlocked: false},
+                    {id: 'first_quiz', icon: '📝', name: 'Quiz Master', description: 'Take your first quiz', unlocked: false},
+                    {id: 'games_10', icon: '🎯', name: 'Player', description: 'Play 10 games', unlocked: false},
+                    {id: 'games_50', icon: '🎲', name: 'Enthusiast', description: 'Play 50 games', unlocked: false},
+                    {id: 'games_100', icon: '🏅', name: 'Expert', description: 'Play 100 games', unlocked: false},
+                    {id: 'lessons_10', icon: '📖', name: 'Learner', description: 'Complete 10 lessons', unlocked: false},
+                    {id: 'lessons_30', icon: '🎓', name: 'Scholar', description: 'Complete 30 lessons', unlocked: false},
+                    {id: 'lessons_60', icon: '👨‍🎓', name: 'Graduate', description: 'Complete all 60 lessons', unlocked: false},
+                    {id: 'quiz_perfect', icon: '💯', name: 'Perfect Score', description: 'Get 100% on a quiz', unlocked: false},
+                    {id: 'streak_7', icon: '🔥', name: 'Week Warrior', description: '7 day streak', unlocked: false},
+                    {id: 'streak_30', icon: '⚡', name: 'Month Master', description: '30 day streak', unlocked: false},
+                    {id: 'premium', icon: '👑', name: 'Premium Member', description: 'Subscribe to Premium', unlocked: false},
+                    {id: 'all_games', icon: '🎰', name: 'Game Master', description: 'Try all 13 games', unlocked: false},
+                    {id: 'early_bird', icon: '🌅', name: 'Early Bird', description: 'Visit before 8 AM', unlocked: false},
+                    {id: 'night_owl', icon: '🦉', name: 'Night Owl', description: 'Visit after midnight', unlocked: false},
+                    {id: 'social', icon: '📱', name: 'Social Butterfly', description: 'Share on social media', unlocked: false},
+                    {id: 'feedback', icon: '💬', name: 'Voice Heard', description: 'Provide feedback', unlocked: false},
+                    {id: 'referral', icon: '🤝', name: 'Recruiter', description: 'Refer a friend', unlocked: false},
+                    {id: 'legend', icon: '🏆', name: 'Legend', description: 'Unlock all achievements', unlocked: false}
+                ];
+            }
+            
+            loadAchievements() {
+                const grid = document.getElementById('achievementsGrid');
+                const userAchievements = this.userData.achievements || [];
+                
+                grid.innerHTML = this.achievements.map(achievement => {
+                    const unlocked = userAchievements.includes(achievement.id);
+                    return `
+                        <div class="achievement ${unlocked ? 'unlocked' : 'locked'}" title="${achievement.description}">
+                            <div class="achievement-icon">${achievement.icon}</div>
+                            <div class="achievement-name">${achievement.name}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            formatTime(timestamp) {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(diff / 3600000);
+                const days = Math.floor(diff / 86400000);
+                
+                if (minutes < 1) return 'Just now';
+                if (minutes < 60) return `${minutes}m ago`;
+                if (hours < 24) return `${hours}h ago`;
+                return `${days}d ago`;
+            }
+            
+            trackDashboardView() {
+                if (window.analyticsTracker) {
+                    window.analyticsTracker.trackEvent('dashboard_view', {
+                        games_played: this.userData.gamesPlayed,
+                        lessons_completed: this.userData.lessonsCompleted
+                    });
+                }
+            }
+        }
+        
+        // Initialize dashboard
+        const dashboard = new Dashboard();
+        
+        // Clear activity function
+        function clearActivity() {
+            if (confirm('Clear all recent activity?')) {
+                localStorage.removeItem('recentActivities');
+                location.reload();
+            }
+        }
+        
+        // Export data function
+        function exportData() {
+            const data = {
+                userData: dashboard.userData,
+                subscription: window.subscriptionChecker?.getSubscriptionInfo(),
+                analytics: window.analyticsTracker?.getAnalyticsSummary(),
+                exportedAt: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `betsage-dashboard-${Date.now()}.json`;
+            link.click();
+        }
+    </script>
+</body>
+</html>

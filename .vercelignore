@@ -1,0 +1,30 @@
+# Vercel Ignore - Files to exclude from deployment
+
+# Documentation (not needed in production)
+*.md
+!README.md
+
+# Development files
+.git/
+.github/
+.vscode/
+.idea/
+*.log
+*.tmp
+
+# Flutter app (too large)
+flutter_app/
+
+# Scripts
+scripts/
+*.ps1
+*.sh
+*.bat
+
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local

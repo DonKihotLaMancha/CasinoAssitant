@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Diagnostic Tool - BetSage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #FF6B35;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h2 {
+            color: #F7B801;
+            margin-bottom: 15px;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+        
+        .status.loading {
+            color: #FFD700;
+        }
+        
+        .status.success {
+            color: #4CAF50;
+        }
+        
+        .status.error {
+            color: #f44336;
+        }
+        
+        .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #FF6B35, #ff8c5a);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            margin-top: 20px;
+        }
+        
+        .url-test {
+            padding: 8px;
+            margin: 3px 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .info-box {
+            background: rgba(0, 123, 255, 0.1);
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .error-box {
+            background: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B35, #F7B801);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Site Diagnostic Tool</h1>
+        
+        <div class="section">
+            <h2>📊 System Information</h2>
+            <div id="systemInfo"></div>
+        </div>
+        
+        <div class="section">
+            <h2>🌐 Network Status</h2>
+            <div id="networkStatus"></div>
+        </div>
+        
+        <div class="section">
+            <h2>🔗 URL Testing</h2>
+            <button onclick="testAllUrls()" id="testBtn">Test All Pages</button>
+            <button onclick="clearCache()">Clear Cache & Reload</button>
+            <button onclick="unregisterServiceWorker()">Unregister Service Worker</button>
+            <div class="progress" id="progressContainer" style="display: none;">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div id="urlResults" class="results"></div>
+        </div>
+        
+        <div class="section">
+            <h2>💾 Cache Status</h2>
+            <button onclick="checkCache()">Check Cache</button>
+            <div id="cacheResults" class="results"></div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 Service Worker</h2>
+            <div id="swStatus"></div>
+        </div>
+        
+        <div class="section">
+            <h2>📝 Recommendations</h2>
+            <div id="recommendations"></div>
+        </div>
+    </div>
+    
+    <script>
+        // System Information
+        function displaySystemInfo() {
+            const info = document.getElementById('systemInfo');
+            info.innerHTML = `
+                <div class="status"><span class="icon">🌍</span> URL: ${window.location.href}</div>
+                <div class="status"><span class="icon">📱</span> User Agent: ${navigator.userAgent.substring(0, 80)}...</div>
+                <div class="status"><span class="icon">🌐</span> Online: ${navigator.onLine ? '✅ Yes' : '❌ No'}</div>
+                <div class="status"><span class="icon">🔄</span> Service Worker: ${navigator.serviceWorker ? '✅ Supported' : '❌ Not Supported'}</div>
+                <div class="status"><span class="icon">💾</span> Cache API: ${window.caches ? '✅ Supported' : '❌ Not Supported'}</div>
+                <div class="status"><span class="icon">🕐</span> Time: ${new Date().toLocaleString()}</div>
+            `;
+        }
+        
+        // Network Status
+        function displayNetworkStatus() {
+            const status = document.getElementById('networkStatus');
+            if (navigator.onLine) {
+                status.innerHTML = '<div class="status success"><span class="icon">✅</span> Connected to Internet</div>';
+            } else {
+                status.innerHTML = '<div class="status error"><span class="icon">❌</span> No Internet Connection</div>';
+            }
+        }
+        
+        // Test URLs
+        const urlsToTest = [
+            '/',
+            '/index.html',
+            '/test.html',
+            '/404.html',
+            '/games/blackjack_client.html',
+            '/games/poker_odds.html',
+            '/games/roulette_odds.html',
+            '/games/craps_odds.html',
+            '/games/baccarat_odds.html',
+            '/games/premium.html',
+            '/games/casino_academy.html',
+            '/docs/help.html',
+            '/auth/login.html',
+            '/auth/settings.html',
+            '/legal/terms.html',
+            '/legal/privacy.html',
+            '/manifest.json',
+            '/sw.js'
+        ];
+        
+        async function testAllUrls() {
+            const results = document.getElementById('urlResults');
+            const btn = document.getElementById('testBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            
+            btn.disabled = true;
+            progressContainer.style.display = 'block';
+            results.innerHTML = '<div class="info-box">Testing all URLs... This may take a moment.</div>';
+            
+            let passed = 0;
+            let failed = 0;
+            let html = '';
+            
+            for (let i = 0; i < urlsToTest.length; i++) {
+                const url = urlsToTest[i];
+                const progress = Math.round(((i + 1) / urlsToTest.length) * 100);
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+                
+                try {
+                    const response = await fetch(url, { method: 'HEAD' });
+                    if (response.ok) {
+                        html += `<div class="url-test status success"><span class="icon">✅</span> ${url} - OK (${response.status})</div>`;
+                        passed++;
+                    } else {
+                        html += `<div class="url-test status error"><span class="icon">❌</span> ${url} - FAILED (${response.status})</div>`;
+                        failed++;
+                    }
+                } catch (error) {
+                    html += `<div class="url-test status error"><span class="icon">❌</span> ${url} - ERROR: ${error.message}</div>`;
+                    failed++;
+                }
+            }
+            
+            const summary = `
+                <div class="info-box">
+                    <strong>Test Complete!</strong><br>
+                    ✅ Passed: ${passed} | ❌ Failed: ${failed} | Total: ${urlsToTest.length}
+                </div>
+            `;
+            
+            results.innerHTML = summary + html;
+            btn.disabled = false;
+            progressContainer.style.display = 'none';
+            
+            updateRecommendations(failed);
+        }
+        
+        // Check Cache
+        async function checkCache() {
+            const results = document.getElementById('cacheResults');
+            results.innerHTML = '<div class="status loading"><span class="icon">⏳</span> Checking cache...</div>';
+            
+            if (!window.caches) {
+                results.innerHTML = '<div class="error-box">Cache API not supported</div>';
+                return;
+            }
+            
+            try {
+                const cacheNames = await caches.keys();
+                let html = `<div class="info-box">Found ${cacheNames.length} cache(s)</div>`;
+                
+                for (const cacheName of cacheNames) {
+                    const cache = await caches.open(cacheName);
+                    const keys = await cache.keys();
+                    html += `
+                        <div class="status success">
+                            <span class="icon">💾</span> 
+                            <strong>${cacheName}</strong>: ${keys.length} items
+                        </div>
+                    `;
+                }
+                
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="error-box">Error: ${error.message}</div>`;
+            }
+        }
+        
+        // Clear Cache
+        async function clearCache() {
+            if (!window.caches) {
+                alert('Cache API not supported');
+                return;
+            }
+            
+            if (!confirm('Clear all caches and reload? This will remove offline data.')) {
+                return;
+            }
+            
+            try {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+                alert('Cache cleared! Reloading page...');
+                window.location.reload(true);
+            } catch (error) {
+                alert('Error clearing cache: ' + error.message);
+            }
+        }
+        
+        // Service Worker Status
+        async function checkServiceWorker() {
+            const status = document.getElementById('swStatus');
+            
+            if (!navigator.serviceWorker) {
+                status.innerHTML = '<div class="error-box">Service Worker not supported</div>';
+                return;
+            }
+            
+            try {
+                const registration = await navigator.serviceWorker.getRegistration();
+                if (registration) {
+                    const sw = registration.active || registration.installing || registration.waiting;
+                    status.innerHTML = `
+                        <div class="status success"><span class="icon">✅</span> Service Worker: Active</div>
+                        <div class="status"><span class="icon">📍</span> Scope: ${registration.scope}</div>
+                        <div class="status"><span class="icon">🔄</span> State: ${sw ? sw.state : 'Unknown'}</div>
+                    `;
+                } else {
+                    status.innerHTML = '<div class="warning-box">No Service Worker registered</div>';
+                }
+            } catch (error) {
+                status.innerHTML = `<div class="error-box">Error: ${error.message}</div>`;
+            }
+        }
+        
+        // Unregister Service Worker
+        async function unregisterServiceWorker() {
+            if (!navigator.serviceWorker) {
+                alert('Service Worker not supported');
+                return;
+            }
+            
+            if (!confirm('Unregister Service Worker? This will remove offline functionality.')) {
+                return;
+            }
+            
+            try {
+                const registration = await navigator.serviceWorker.getRegistration();
+                if (registration) {
+                    await registration.unregister();
+                    alert('Service Worker unregistered! Reloading page...');
+                    window.location.reload(true);
+                } else {
+                    alert('No Service Worker to unregister');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        // Update Recommendations
+        function updateRecommendations(failedCount) {
+            const rec = document.getElementById('recommendations');
+            
+            if (failedCount === 0) {
+                rec.innerHTML = `
+                    <div class="status success">
+                        <span class="icon">🎉</span> 
+                        All tests passed! Your site is working correctly.
+                    </div>
+                `;
+            } else {
+                rec.innerHTML = `
+                    <div class="error-box">
+                        <strong>⚠️ ${failedCount} test(s) failed</strong><br><br>
+                        <strong>Recommended Actions:</strong><br>
+                        1. Clear cache and reload (button above)<br>
+                        2. Check if files exist in deployment<br>
+                        3. Verify vercel.json configuration<br>
+                        4. Check browser console for errors (F12)<br>
+                        5. Wait 60 seconds after deployment<br>
+                        6. Try hard refresh (Ctrl+Shift+R)
+                    </div>
+                `;
+            }
+        }
+        
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            displaySystemInfo();
+            displayNetworkStatus();
+            checkServiceWorker();
+            
+            // Update network status on change
+            window.addEventListener('online', displayNetworkStatus);
+            window.addEventListener('offline', displayNetworkStatus);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | BetSage</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="/icons/icon-192x192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #F7B801;
+            --dark: #1A1A2E;
+            --darker: #16213E;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,107,53,0.03) 35px, rgba(255,107,53,0.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,78,137,0.03) 35px, rgba(0,78,137,0.03) 70px);
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0; }
+            100% { background-position: 70px 70px, -70px 70px; }
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            line-height: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #ff8c5a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .suggestions {
+            margin-top: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .suggestions h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .suggestions ul {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .suggestions li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .suggestions li:last-child {
+            border-bottom: none;
+        }
+        
+        .suggestions a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .suggestions a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 80px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            p {
+                font-size: 1em;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1>Page Not Found</h1>
+        <p>Oops! The page you're looking for seems to have wandered off the casino floor. Let's get you back to the action!</p>
+        
+        <div class="buttons">
+            <a href="/" class="btn btn-primary">🏠 Back to Home</a>
+            <button onclick="history.back()" class="btn btn-secondary">← Go Back</button>
+        </div>
+        
+        <div class="suggestions">
+            <h3>🎰 Popular Destinations</h3>
+            <ul>
+                <li><a href="/games/blackjack.html">♠️ Blackjack Calculator</a></li>
+                <li><a href="/games/poker.html">🃏 Poker Odds Calculator</a></li>
+                <li><a href="/games/roulette.html">🎡 Roulette Calculator</a></li>
+                <li><a href="/games/craps.html">🎲 Craps Calculator</a></li>
+                <li><a href="/games/premium.html">⭐ Premium Features</a></li>
+                <li><a href="/docs/lessons.html">📚 Strategy Lessons</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Log 404 error for analytics
+        if (window.gtag) {
+            gtag('event', 'exception', {
+                'description': '404_error',
+                'fatal': false,
+                'page_path': window.location.pathname
+            });
+        }
+        
+        // Auto-redirect common typos
+        const path = window.location.pathname.toLowerCase();
+        const redirects = {
+            '/game/': '/games/',
+            '/calculator/': '/games/',
+            '/premium/': '/games/premium.html',
+            '/lesson/': '/docs/lessons.html',
+            '/doc/': '/docs/'
+        };
+        
+        for (const [typo, correct] of Object.entries(redirects)) {
+            if (path.includes(typo)) {
+                const newPath = path.replace(typo, correct);
+                console.log('Redirecting typo:', path, '->', newPath);
+                window.location.href = newPath;
+                break;
+            }
+        }
+    </script>
+</body>
+</html>

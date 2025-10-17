@@ -1,11 +1,13 @@
 // Casino Assistant - Service Worker
-// Version 2.0
+// Version 2.1 - Fixed 404 errors
 
-const CACHE_NAME = 'casino-assistant-v2.0';
+const CACHE_NAME = 'casino-assistant-v2.1';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/404.html',
+  '/test.html',
   '/auth/login.html',
   '/auth/settings.html',
   '/games/poker_odds.html',
@@ -19,8 +21,12 @@ const urlsToCache = [
   '/games/blackjack_dashboard.html',
   '/games/blackjack_client.html',
   '/games/blackjack_live_advisor.html',
+  '/games/casino_academy.html',
+  '/games/premium.html',
   '/docs/sounds.js',
-  '/docs/help.html'
+  '/docs/help.html',
+  '/legal/terms.html',
+  '/legal/privacy.html'
 ];
 
 // Install event - cache resources
@@ -49,7 +55,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - serve from cache, fallback to network, handle 404
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
@@ -63,6 +69,13 @@ self.addEventListener('fetch', event => {
         const fetchRequest = event.request.clone();
 
         return fetch(fetchRequest).then(response => {
+          // If 404, serve custom 404 page
+          if (response.status === 404) {
+            return caches.match('/404.html').then(cached404 => {
+              return cached404 || response;
+            });
+          }
+
           // Check if valid response
           if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
@@ -77,6 +90,14 @@ self.addEventListener('fetch', event => {
             });
 
           return response;
+        }).catch(error => {
+          // Network error - serve 404 page
+          return caches.match('/404.html').then(cached404 => {
+            return cached404 || new Response('Page not found', {
+              status: 404,
+              statusText: 'Not Found'
+            });
+          });
         });
       })
   );

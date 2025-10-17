@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free vs Premium - Feature Comparison | BetSage</title>
+    <meta name="description" content="Compare Free and Premium features of BetSage. See what you get with Premium subscription.">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .plan-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 53, 0.5);
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+        }
+        
+        .plan-card.premium {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+        }
+        
+        .plan-card.premium::before {
+            content: '⭐ BEST VALUE';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 5px 40px;
+            font-weight: bold;
+            font-size: 0.8em;
+            transform: rotate(45deg);
+        }
+        
+        .plan-name {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .plan-price {
+            font-size: 3em;
+            font-weight: 900;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #FF6B35, #F7B801);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .plan-price .period {
+            font-size: 0.4em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .plan-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-icon {
+            margin-right: 12px;
+            font-size: 1.2em;
+        }
+        
+        .feature-icon.check {
+            color: #4CAF50;
+        }
+        
+        .feature-icon.cross {
+            color: #f44336;
+        }
+        
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .cta-button.free {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .cta-button.free:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .cta-button.premium {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.4);
+        }
+        
+        .cta-button.premium:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 48px rgba(255, 215, 0, 0.6);
+        }
+        
+        .detailed-comparison {
+            margin: 60px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detailed-comparison h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #F7B801;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th {
+            background: rgba(255, 107, 53, 0.2);
+            padding: 20px;
+            text-align: left;
+            font-size: 1.1em;
+            border-bottom: 2px solid rgba(255, 107, 53, 0.5);
+        }
+        
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .check-icon {
+            color: #4CAF50;
+            font-size: 1.5em;
+        }
+        
+        .cross-icon {
+            color: #f44336;
+            font-size: 1.5em;
+        }
+        
+        .faq-section {
+            margin: 60px 0;
+        }
+        
+        .faq-section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #F7B801;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .faq-question {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #FF6B35;
+        }
+        
+        .faq-answer {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #FF6B35;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-table {
+                font-size: 0.9em;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>🎯 Choose Your Plan</h1>
+            <p class="subtitle">Compare features and find the perfect plan for you</p>
+        </div>
+        
+        <div class="comparison-grid">
+            <!-- Free Plan -->
+            <div class="plan-card">
+                <div class="plan-name">🆓 Free</div>
+                <div class="plan-price">
+                    $0
+                    <span class="period">/forever</span>
+                </div>
+                <p class="plan-description">
+                    Perfect for casual players who want to try out basic features
+                </p>
+                
+                <ul class="features-list">
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        13 casino game calculators
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        5 lessons per game
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        Basic themes
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        Standard support
+                    </li>
+                    <li>
+                        <span class="feature-icon cross">✗</span>
+                        Ads displayed
+                    </li>
+                    <li>
+                        <span class="feature-icon cross">✗</span>
+                        Limited lessons
+                    </li>
+                    <li>
+                        <span class="feature-icon cross">✗</span>
+                        No advanced analytics
+                    </li>
+                    <li>
+                        <span class="feature-icon cross">✗</span>
+                        No data export
+                    </li>
+                </ul>
+                
+                <a href="/" class="cta-button free">
+                    Continue with Free
+                </a>
+            </div>
+            
+            <!-- Premium Plan -->
+            <div class="plan-card premium">
+                <div class="plan-name">👑 Premium</div>
+                <div class="plan-price">
+                    $9.99
+                    <span class="period">/month</span>
+                </div>
+                <p class="plan-description">
+                    Best for serious players who want the complete experience
+                </p>
+                
+                <ul class="features-list">
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        All 13 game calculators
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>60+ complete lessons</strong>
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>100% Ad-Free</strong>
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>All premium themes</strong>
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>Advanced analytics</strong>
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>Export all data</strong>
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>Priority support</strong>
+                    </li>
+                    <li>
+                        <span class="feature-icon check">✓</span>
+                        <strong>Exclusive features</strong>
+                    </li>
+                </ul>
+                
+                <a href="premium.html" class="cta-button premium">
+                    👑 Upgrade to Premium
+                </a>
+                
+                <p style="text-align: center; margin-top: 15px; color: rgba(255,255,255,0.6); font-size: 0.9em;">
+                    Or save 58% with yearly plan: <strong>$49.99/year</strong>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Detailed Comparison Table -->
+        <div class="detailed-comparison">
+            <h2>📊 Detailed Feature Comparison</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th style="text-align: center;">Free</th>
+                        <th style="text-align: center;">Premium</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Game Calculators</strong></td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> All 13</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> All 13</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Casino Academy Lessons</strong></td>
+                        <td style="text-align: center;">5 per game</td>
+                        <td style="text-align: center;"><strong>60+ lessons</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quizzes & Tests</strong></td>
+                        <td style="text-align: center;">Limited</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Advertisements</strong></td>
+                        <td style="text-align: center;"><span class="cross-icon">✗</span> Ads shown</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> Ad-Free</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Themes</strong></td>
+                        <td style="text-align: center;">2 basic themes</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> All themes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Advanced Analytics</strong></td>
+                        <td style="text-align: center;"><span class="cross-icon">✗</span></td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Export</strong></td>
+                        <td style="text-align: center;"><span class="cross-icon">✗</span></td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> JSON/CSV</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cloud Sync</strong></td>
+                        <td style="text-align: center;"><span class="cross-icon">✗</span></td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Priority Support</strong></td>
+                        <td style="text-align: center;">Standard</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> Priority</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Early Access to Features</strong></td>
+                        <td style="text-align: center;"><span class="cross-icon">✗</span></td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Custom Settings</strong></td>
+                        <td style="text-align: center;">Basic</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> Advanced</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Offline Mode</strong></td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> Basic</td>
+                        <td style="text-align: center;"><span class="check-icon">✓</span> Full</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I try Premium before buying?</div>
+                <div class="faq-answer">
+                    Yes! We offer a 7-day free trial for Premium. You can cancel anytime during the trial period without being charged.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I cancel my subscription anytime?</div>
+                <div class="faq-answer">
+                    Absolutely! You can cancel your Premium subscription at any time from your account settings. You'll continue to have access until the end of your billing period.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What payment methods do you accept?</div>
+                <div class="faq-answer">
+                    We accept all major credit cards, debit cards, and PayPal through our secure payment processor.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is the yearly plan really worth it?</div>
+                <div class="faq-answer">
+                    Yes! The yearly plan saves you 58% compared to monthly billing. That's like getting 5 months free! ($119.88/year vs $49.99/year)
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Will I lose my data if I cancel?</div>
+                <div class="faq-answer">
+                    No, your data is safe! You can export all your data before canceling, and we keep your account data for 90 days in case you want to resubscribe.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do you offer refunds?</div>
+                <div class="faq-answer">
+                    Yes, we offer a 30-day money-back guarantee. If you're not satisfied with Premium, contact us within 30 days for a full refund.
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 60px 0;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">Ready to upgrade?</h2>
+            <p style="font-size: 1.2em; color: rgba(255,255,255,0.7); margin-bottom: 30px;">
+                Join thousands of players who have upgraded to Premium
+            </p>
+            <a href="premium.html" class="cta-button premium" style="max-width: 400px; margin: 0 auto;">
+                👑 Start Your Premium Trial
+            </a>
+        </div>
+    </div>
+</body>
+</html>
